@@ -30,7 +30,6 @@ TwoWaySwitch
 ```
 RGSS3-MACL (https://github.com/IceDragon200/RGSS3-MACL)
   Specifically
-    MACL::Mixin::Archijust (can be dropped by changing all *_accessor/reader/writers back to attr_*)
     MACL::Mixin::Callback
 ```
 
