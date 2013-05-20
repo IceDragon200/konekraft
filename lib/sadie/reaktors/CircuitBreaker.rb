@@ -44,6 +44,6 @@ class Sadie::CircuitBreakerReaktor < Sadie::ReaktorBase
     super(input_id, energy)
   end
 
-  register('fuse')
+  register('circuitbreaker')
 
 end

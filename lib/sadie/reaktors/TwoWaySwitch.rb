@@ -45,6 +45,6 @@ class Sadie::TwoWaySwitchReaktor < Sadie::ReaktorBase
     super(input_id, energy)
   end
 
-  register('counter')
+  register('switch-twoway')
 
 end

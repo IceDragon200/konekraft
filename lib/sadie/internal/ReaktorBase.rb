@@ -7,6 +7,9 @@ module Sadie
 
   class ReaktorBase
 
+    class RegistrationError < Exception
+    end
+
     if defined?(MACL::Mixin::Callback)
       include MACL::Mixin::Callback
       Sadie.try_log { |l| l.puts("callbacks are enabled")}
@@ -142,6 +145,10 @@ module Sadie
     ##
     # ::register(String name)
     def self.register(name)
+      raise(RegistrationError,
+            "%s tried to register, but %s is already registered as %s" %
+            [self, name, @@reaktor_register[name]]
+            ) if @@reaktor_register.has_key?(name)
       @@reaktor_register[name] = self
     end
 

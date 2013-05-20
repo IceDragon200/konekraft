@@ -103,9 +103,9 @@ module Sadie
           return code
         end
       when :integer # Hex or Integer
-        if mtch_data = data.match(/(?:0x([A-F0-9]+)|([A-F0-9]+H))/i # is a Hexi Decimal
+        if mtch_data = data.match(/(?:0x([A-F0-9]+)|([A-F0-9]+H))/i) # is a Hexi Decimal
           return (mtch_data[1] || mtch_data[2]).hex
-        elsif mtch_data = data.match(/(0[01]+)/ # is a binary number
+        elsif mtch_data = data.match(/(0[01]+)/) # is a binary number
           return mtch_data[1].to_i(2)
         elsif mtch_data = data.match(/([1-9][0-9]*)/) # is a regular integer
           return mtch_data[1].to_i
