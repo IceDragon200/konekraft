@@ -9,7 +9,6 @@ things (well currently it just passes an energy parameter around)
 ```
 Callback
 Capacitor
-CircuitBreaker
 Counter
 Drain
 Emitter

@@ -116,27 +116,29 @@ module Sadie
       raise(CastFailure, "failed to cast %s as a %s" % [data, target_datatype])
     end
 
+    ##
+    #
+    def self.compile_chunk(src_a)
+      src_a.map do |(inst, param_count, params)|
+        code_id = @@nmemonic_to_code[inst.upcase]
+        raise(CompileError,
+              "Code ID for instruction %s does not exist" % inst
+             ) unless code_id
+        inst = @@inst_table[code_id]
+        raise(CompileError,
+              "Instruction %s expected %d args %s but received %d args %s" %
+              [inst.name, inst.param_count, inst.param_types,
+               param_count, params]) if param_count != inst.param_count
+        # [[Type, Data]..]
+        zipdata = inst.param_types.zip(params)
+        param_data = zipdata.map { |(type, data)| data_cast_as(data, type) }
+        [code_id, param_data.size, param_data]
+      end
+    end
+
     def self.compile(code_chunks)
       code_chunks.map do |(label, src_a)|
-        src_a_new = src_a.map do |(inst, param_count, params)|
-          code_id = @@nmemonic_to_code[inst.upcase]
-          unless code_id
-            raise(CompileError,
-                  "Code ID for instruction %s does not exist" % inst)
-          end
-          inst = @@inst_table[code_id]
-          if param_count != inst.param_count
-            raise(CompileError,
-                  "Instruction %s expected %d args %s but received %d args %s" %
-                  [inst.name, inst.param_count, inst.param_types,
-                   param_count, params])
-          end
-          # [[Type, Data]..]
-          zipdata = inst.param_types.zip(params)
-          param_data = zipdata.map { |(type, data)| data_cast_as(data, type) }
-          [code_id, param_data.size, param_data]
-        end
-        [label, src_a_new]
+        [label, compile_chunk(src_a)]
       end
     end
 
