@@ -24,7 +24,7 @@ TwoWaySwitch
 ```
 
 ## require
-[![RGSS3-MACL]](https://github.com/IceDragon200/RGSS3-MACL)
+[RGSS3-MACL](https://github.com/IceDragon200/RGSS3-MACL)
 ```
   Specifically
     MACL::Mixin::Callback
