@@ -12,9 +12,9 @@ module Sadie
 
     if defined?(MACL::Mixin::Callback)
       include MACL::Mixin::Callback
-      Sadie.try_log { |l| l.puts("callbacks are enabled")}
+      Sadie.try_log { |l| l.puts("callbacks are enabled") }
     else
-      Sadie.try_log { |l| l.puts("MACL::Mixin::Callback was not loaded: callbacks will be disabled")}
+      Sadie.try_log { |l| l.puts("MACL::Mixin::Callback was not loaded: callbacks will be disabled") }
 
       def try_callback(*args, &block)
         return false
@@ -97,7 +97,6 @@ module Sadie
     ##
     # connect_to_input(ReaktorBase* reaktor, INPUT input_id, OUTPUT from_output_id)
     def connect_to_input(reaktor, input_id, from_output_id)
-      raise(ArgumentError, "nil reaktor") unless reaktor
       raise(ArgumentError,
             "input_id #{input_id} Invalid") unless valid_input?(input_id)
       @input[input_id] = Sadie::Connection.new(reaktor, input_id, from_output_id)
@@ -106,7 +105,6 @@ module Sadie
     ##
     # connect_to_input(ReaktorBase* reaktor, OUTPUT output_id, INPUT from_input_id)
     def connect_to_output(reaktor, output_id, from_input_id)
-      raise(ArgumentError, "nil reaktor") unless reaktor
       raise(ArgumentError,
             "output_id #{output_id} Invalid") unless valid_output?(output_id)
       @output[output_id] = Sadie::Connection.new(reaktor, from_input_id, output_id)
