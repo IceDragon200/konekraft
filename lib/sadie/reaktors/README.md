@@ -11,6 +11,7 @@ class MyReaktor < Sadie::ReaktorBase
   # insert your reaktor code here
 end
 ```
+
 2. Reaktors must initialize their data members, variables using the init super method.
 ```ruby
 def init
@@ -18,6 +19,7 @@ def init
   # initialize_your_stuff_here
 end
 ```
+
 3. Overwrite #setup_ports to initialize all I/O ports you plan to use with the Reaktor (initialize them to nil)
 ```ruby
 def setup_ports
@@ -25,6 +27,7 @@ def setup_ports
   @output_id[OUTPUT_ID] = nil
 end
 ```
+
 4. Create a custom reaction using the following format:
 ```ruby
 def react(input_id, energy)
@@ -34,7 +37,8 @@ def react(input_id, energy)
   super(input_id, energy)
 end
 ```ruby
-## optional
+
+## OPTIONAL
 5. Add a VERSION constant to your Reaktor, VERSION is done in the format of MAJOR.MINOR.PATCH
 ```ruby
 class MyReaktor < Sadie::ReaktorBase
