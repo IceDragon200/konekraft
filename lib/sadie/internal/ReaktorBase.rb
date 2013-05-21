@@ -2,7 +2,7 @@
 # Sadie/src/ReaktorBase.rb
 #   by IceDragon
 #   dc 11/03/2013
-#   dm 18/05/2013
+#   dm 20/05/2013
 module Sadie
 
   class ReaktorBase
@@ -22,7 +22,7 @@ module Sadie
     end
 
     ## constants
-    VERSION = "1.4.0".freeze
+    VERSION = "1.5.0".freeze
 
     ## class variables
     @@reaktor_register = {}
@@ -90,24 +90,22 @@ module Sadie
     ##
     # connect(OUTPUT from_output_id, INPUT to_input_id, ReaktorBase* reaktor)
     def connect(from_output_id, to_input_id, reaktor)
-              connect_to_output(reaktor, from_output_id, to_input_id)
-      reaktor.connect_to_input(self, to_input_id, from_output_id)
+              connect_to(:output, reaktor, from_output_id, to_input_id)
+      reaktor.connect_to(:input, self, to_input_id, from_output_id)
     end
 
     ##
-    # connect_to_input(ReaktorBase* reaktor, INPUT input_id, OUTPUT from_output_id)
-    def connect_to_input(reaktor, input_id, from_output_id)
-      raise(ArgumentError,
-            "input_id #{input_id} Invalid") unless valid_input?(input_id)
-      @input[input_id] = Sadie::Connection.new(reaktor, input_id, from_output_id)
-    end
-
-    ##
-    # connect_to_input(ReaktorBase* reaktor, OUTPUT output_id, INPUT from_input_id)
-    def connect_to_output(reaktor, output_id, from_input_id)
-      raise(ArgumentError,
-            "output_id #{output_id} Invalid") unless valid_output?(output_id)
-      @output[output_id] = Sadie::Connection.new(reaktor, from_input_id, output_id)
+    # connect_to(Symbol[:input, :output] i_or_o,
+    #            ReaktorBase* reaktor, INTERFACE to, INTERFACE from)
+    def connect_to(i_or_o, reaktor, to, from)
+      to_input  = i_or_o == :input
+      to_output = i_or_o == :output
+      raise(ArgumentError) unless to_input || to_output
+      interface = to_input ? @input : @output
+      valid = to_input ? valid_input?(to) : valid_output?(to)
+      raise(ArgumentError, "interface_id #{to} for #{i_or_o} is invalid") unless valid
+      input_id, output_id = to_input ? [to, from] : [from, to]
+      interface[to] = Sadie::Connection.new(reaktor, input_id, output_id)
     end
 
     ##
