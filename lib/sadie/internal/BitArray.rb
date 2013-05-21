@@ -21,6 +21,25 @@ module Sadie
       @size = size
     end
 
+  private
+
+    def cast_data(obj)
+      self.class.cast_data(obj)
+    end
+
+    def wrap_data!
+      yield if block_given?
+      @data %= 2 ** @size
+      self
+    end
+
+    def assert_bit_index(bit_index)
+      raise(ArgumentError,
+            "bit_index is out of range") if bit_index < 0 || @size < bit_index
+    end
+
+  public
+
     def [](bit_index)
       assert_bit_index(bit_index)
       (@data >> bit_index) & 0x1
@@ -105,23 +124,6 @@ module Sadie
 
     def band(other)
       dup.band!(other)
-    end
-
-  private
-
-    def cast_data(obj)
-      self.class.cast_data(obj)
-    end
-
-    def wrap_data!
-      yield if block_given?
-      @data %= 2 ** @size
-      self
-    end
-
-    def assert_bit_index(bit_index)
-      raise(ArgumentError,
-            "bit_index is out of range") if bit_index < 0 || @size < bit_index
     end
 
   public
