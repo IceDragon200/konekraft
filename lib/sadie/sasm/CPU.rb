@@ -1,10 +1,9 @@
 #
-# Sadie/src/CPU.rb
+# Sadie/lib/sadie/sasm/CPU.rb
 #   by IceDragon
 #   dc 14/05/2013
-#   dm 14/05/2013
+#   dm 20/05/2013
 
-# one day this place will grow codez
 # Sadie's Sacpu is a 16 bit CPU based on the Intel
 # 8085 CPU, it interprets assembled SASM code
 # Using 16 bit opcodes
@@ -64,20 +63,24 @@ module Sadie
       "L" => REG_L,
     }
 
+    REGISTER_SIZE = {
+      REG_ACM      => 8,
+      REG_FLAG     => 8,
+      REG_B        => 8,
+      REG_C        => 8,
+      REG_D        => 8,
+      REG_E        => 8,
+      REG_H        => 8,
+      REG_L        => 8,
+      REG_STCK_PNT => 16,
+      REG_PROG_CNT => 16
+    }
+
     attr_reader :register
 
     def initialize
       @register = {}
-      @register[REG_ACM]      = Register.new(8)
-      @register[REG_FLAG]     = Register.new(8)
-      @register[REG_B]        = Register.new(8)
-      @register[REG_C]        = Register.new(8)
-      @register[REG_D]        = Register.new(8)
-      @register[REG_E]        = Register.new(8)
-      @register[REG_H]        = Register.new(8)
-      @register[REG_L]        = Register.new(8)
-      @register[REG_STCK_PNT] = Register.new(16)
-      @register[REG_PROG_CNT] = Register.new(16)
+      REGISTER_SIZE.each_pair { |k, size| @register[k] = Register.new(size) }
     end
 
     def reg(id)
