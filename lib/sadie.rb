@@ -5,7 +5,7 @@
 #   dm 11/03/2013
 module Sadie
 
-  VERSION = "1.1.1".freeze
+  VERSION = "1.1.2".freeze
 
   class SadieError < Exception
   end
@@ -22,7 +22,6 @@ module Sadie
 
 end
 
-dir = File.dirname(__FILE__)
-require File.join(dir, 'sadie', 'internal.rb')
-require File.join(dir, 'sadie', 'reaktors.rb')
-require File.join(dir, 'sadie', 'sasm.rb')
+require 'sadie/internal'
+require 'sadie/reaktors'
+require 'sadie/sasm'
