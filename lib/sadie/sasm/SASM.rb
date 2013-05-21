@@ -2,18 +2,15 @@
 # Sadie/src/SASM.rb
 #   by IceDragon
 #   dc 14/05/2013
-#   dm 14/05/2013
+#   dm 20/05/2013
 # TODO
 #   define entry point for a SASM program
-#   finish SASM VM to read SASM compiled code
 #
 # SASM - Sadie Assembly VM
-
-# one day this place will grow codez
 module Sadie
   module SASM
 
-    VERSION = "0.1.0".freeze
+    VERSION = "0.1.1".freeze
 
     class CompileError < Exception
     end
@@ -79,7 +76,7 @@ module Sadie
             label  = data[1]
             params = [data[2], data[3], data[4]]
             params.compact!
-            result.push([label, params.size, params])
+            result.push([label, params])
             break
           end
         end
@@ -116,30 +113,50 @@ module Sadie
       raise(CastFailure, "failed to cast %s as a %s" % [data, target_datatype])
     end
 
+    def self.assert_code_id(instname, code_id)
+      raise(CompileError,
+              "Code ID for instruction %s does not exist" % instname
+            ) unless code_id
+      return true
+    end
+
+    def self.assert_instruction(inst, given_params)
+      raise(CompileError,
+            "Instruction %s expected %d args %s but received %d args %s" %
+              [inst.name, inst.param_count, inst.param_types,
+               given_params.size, given_params]
+            ) if given_params.size != inst.param_count
+      return true
+    end
+
+    def self.instname_to_code_id(instname)
+      code_id = @@nmemonic_to_code[instname.upcase]
+      assert_code_id(instname, code_id)
+      return code_id
+    end
+
+    def self.code_id_to_inst(code_id)
+      inst = @@inst_table[code_id]
+      assert_instruction(inst, params)
+      return inst
+    end
+
+    def self.compile_instruction(instname, params)
+      code_id    = instname_to_code_id(instname)
+      inst       = code_id_to_inst(code_id)
+      zipdata    = inst.param_types.zip(params)
+      param_data = zipdata.map { |(type, data)| data_cast_as(data, type) }
+      return [code_id, param_data.size, param_data]
+    end
+
     ##
     #
     def self.compile_chunk(src_a)
-      src_a.map do |(inst, param_count, params)|
-        code_id = @@nmemonic_to_code[inst.upcase]
-        raise(CompileError,
-              "Code ID for instruction %s does not exist" % inst
-             ) unless code_id
-        inst = @@inst_table[code_id]
-        raise(CompileError,
-              "Instruction %s expected %d args %s but received %d args %s" %
-              [inst.name, inst.param_count, inst.param_types,
-               param_count, params]) if param_count != inst.param_count
-        # [[Type, Data]..]
-        zipdata = inst.param_types.zip(params)
-        param_data = zipdata.map { |(type, data)| data_cast_as(data, type) }
-        [code_id, param_data.size, param_data]
-      end
+      src_a.map { |(instname, params)| compile_instruction(instname, params) }
     end
 
     def self.compile(code_chunks)
-      code_chunks.map do |(label, src_a)|
-        [label, compile_chunk(src_a)]
-      end
+      code_chunks.map { |(label, src_a)| [label, compile_chunk(src_a)] }
     end
 
     def self.build(string)
@@ -166,19 +183,6 @@ module Sadie
     reg('DIVI', e.next, :register, :integer)
     reg('MOV',  e.next, :register, :register)
     reg('HLT',  e.next)
-
-    class SASMVM
-
-      def initialize(cpu)
-        @cpu = cpu
-      end
-
-      def run(sasm)
-        # TODO O:
-        #sasm.each do |()|
-      end
-
-    end
 
   end
 end
