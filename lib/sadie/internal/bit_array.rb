@@ -2,12 +2,15 @@
 # Sadie/src/internal/BitArray.rb
 #   by IceDragon
 #   dc 11/05/2013
-#   dm 14/05/2013
-# vr 1.0.0
+#   dm 23/05/2013
 # Array<Bit> used by Sadie::Sacpu for its registers, otherwise
 # pretty much useless
 module Sadie
   class BitArray
+
+    VERSION = "1.1.0"
+
+    include Sadie::SASM::Interface::IRegister
 
     attr_reader :data
     attr_reader :size
@@ -21,85 +24,49 @@ module Sadie
       @size = size
     end
 
-  private
-
-    def cast_data(obj)
-      self.class.cast_data(obj)
+    def [](*args)
+      bit_at(*args)
     end
 
-    def wrap_data!
-      yield if block_given?
+    def []=(*args)
+      bit_at_set(*args)
+    end
+
+    ### IRegister
+    ##
+    # block_data
+    def block_data
+      @data
+    end
+
+    ##
+    # block_data_set
+    def block_data_set(n)
+      @data = n
+    end
+
+    ##
+    # block_size
+    def block_size
+      @size
+    end
+
+    ##
+    # post_access_data
+    def post_access_data
       @data %= 2 ** @size
-      self
     end
 
-    def assert_bit_index(bit_index)
-      raise(ArgumentError,
-            "bit_index is out of range") if bit_index < 0 || @size < bit_index
+    def inc
+      dup.inc!
     end
 
-  public
-
-    def [](bit_index)
-      assert_bit_index(bit_index)
-      (@data >> bit_index) & 0x1
+    def dec
+      dup.dec!
     end
 
-    def []=(bit_index, bit)
-      assert_bit_index(bit_index)
-      bit = BitArray.cast_bit(bit)
-      @data |= (bit & 0x1) << bit_index
-    end
-
-    def inc(n)
-      @data += n
-    end
-
-    def dec(n)
-      @data -= n
-    end
-
-    ##
-    # set!(BitArray other)
-    def set!(other)
-      wrap_data! { @data = cast_data(other) }
-    end
-
-    ##
-    # add!(BitArray other)
-    def add!(other)
-      wrap_data! { @data += cast_data(other) }
-    end
-
-    ##
-    # sub!(BitArray other)
-    def sub!(other)
-      wrap_data! { @data -= cast_data(other) }
-    end
-
-    ##
-    # mul!(BitArray other)
-    def mul!(other)
-      wrap_data! { @data *= cast_data(other) }
-    end
-
-    ##
-    # div!(BitArray other)
-    def div!(other)
-      wrap_data! { @data /= cast_data(other) }
-    end
-
-    ### Binary Operation
-    ##
-    # bor!(BitArray other)
-    def bor!(other)
-      wrap_data! { @data |= cast_data(other) }
-    end
-
-    ##
-    # band!(BitArray other)
-    def band!(other)
-      wrap_data! { @data &= cast_data(other) }
+    def set(other)
+      dup.set!(other)
     end
 
     def add(other)
@@ -118,22 +85,20 @@ module Sadie
       dup.div!(other)
     end
 
-    def bor(other)
-      dup.bor!(other)
+    def lor(other)
+      dup.lor!(other)
     end
 
-    def band(other)
-      dup.band!(other)
+    def land(other)
+      dup.land!(other)
     end
 
-  public
-
-    def self.cast_data(obj)
-      obj.kind_of?(BitArray) ? obj.data : obj
+    def complement
+      dup.complement!
     end
 
-    def self.cast_bit(obj)
-      obj.kind_of?(Numeric) ? obj.to_i : (!!obj ? 1 : 0)
+    def mend(other)
+      self.class.mend(self, mend)
     end
 
     def self.mend(barray1, barray2)
@@ -151,12 +116,12 @@ module Sadie
       return barray
     end
 
-    alias :+ :add
-    alias :- :sub
-    alias :* :mul
-    alias :/ :div
-    alias :| :bor
-    alias :& :band
+    alias :+ :add  # Arithmetic Add
+    alias :- :sub  # Arithmetic Subtract
+    alias :* :mul  # Arithmetic Multiply
+    alias :/ :div  # Arithmetic Divide
+    alias :| :lor  # Logical OR
+    alias :& :land # Logical AND
 
   end
 end
