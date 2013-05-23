@@ -89,35 +89,69 @@ module Sadie
         end
       end
 
+      def cast_as_null(data)
+        return Sadie::SASM::Sacpu::BNULL
+      end
+
+      def cast_as_register(data)
+        if code = Sadie::SASM::Sacpu::REGISTER2CODE[data]
+          return code
+        else
+          raise(RegisterError, "invalid register %s" % data)
+        end
+      end
+
+      def cast_as_register_pair(data)
+        reg2code = Sadie::SASM::Sacpu::REGISTER2CODE
+        a = data[0]
+        b = data[1]
+        return (reg2code[a] << 8) | reg2code[b]
+      end
+
+      def cast_as_int(data)
+        if mtch_data = data.match(/(?:0x([A-F0-9]+)|([A-F0-9]+H))/i) # is a Hexi Decimal
+          return (mtch_data[1] || mtch_data[2]).hex
+        elsif mtch_data = data.match(/(0[01]+)/) # is a binary number
+          return mtch_data[1].to_i(2)
+        #elsif mtch_data = data.match(/(\d+)/) # is a regular integer
+        else
+          return mtch_data[1].to_i
+        end
+      end
+
+      def cast_as_float(data)
+        raise(UnimplementedError, "Sacpu does not support casting to 16 bit float")
+      end
+
+      def cast_as_address(data)
+        raise(UnimplementedError, "8 bit address is not yet supported")
+      end
+
+      def cast_as_address16(data)
+        raise(UnimplementedError, "16 bit address is not yet supported")
+      end
+
       def data_cast_as(target_datatype, data)
         case target_datatype
         when :null
-          return Sadie::SASM::Sacpu::BNULL
+          cast_as_null(data)
         when :register, :reg # A, B, C, D, E, H, L
-          if code = Sadie::SASM::Sacpu::REGISTER2CODE[data]
-            return code
-          end
+          cast_as_register(data)
         when :register_pair, :reg_pair
-          reg2code = Sadie::SASM::Sacpu::REGISTER2CODE
-          a = data[0]
-          b = data[1]
-          return (reg2code[a] << 8) | reg2code[b]
+          cast_as_register_pair(data)
         when :integer, :int # Hex or Integer
-          if mtch_data = data.match(/(?:0x([A-F0-9]+)|([A-F0-9]+H))/i) # is a Hexi Decimal
-            return (mtch_data[1] || mtch_data[2]).hex
-          elsif mtch_data = data.match(/(0[01]+)/) # is a binary number
-            return mtch_data[1].to_i(2)
-          elsif mtch_data = data.match(/(\d+)/) # is a regular integer
-            return mtch_data[1].to_i
-          end
+          cast_as_int(data)
         when :float, :flt   # unimplemented
-          raise(UnimplementedError, "Sacpu does not support casting to 16 bit float")
+          cast_as_float(data)
         when :address, :adr
-          raise(UnimplementedError, "8 bit address is not yet supported")
+          cast_as_address(data)
         when :address16, :adr16
-          raise(UnimplementedError, "16 bit address is not yet supported")
+          cast_as_address16(data)
+        else
+          raise(CastFailure,
+                "failed to cast %s as a %s" % [data.inspect,
+                                               target_datatype.inspect])
         end
-        raise(CastFailure, "failed to cast %s as a %s" % [data.inspect, target_datatype.inspect])
       end
 
       def assert_code_id(instname, code_id)
