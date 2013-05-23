@@ -72,13 +72,7 @@ module Sadie
 
         uinst :call, :adr16
         uinst :cc,   :adr16
-        uinst :cnc,  :adr16
-        uinst :cp,   :adr16
         uinst :cm,   :adr16
-        uinst :cpe,  :adr16
-        uinst :cpo,  :adr16
-        uinst :cz,   :adr16
-        uinst :cnz,  :adr16
 
         ## complement accumulator
         # cma
@@ -98,11 +92,19 @@ module Sadie
           compare(accum, reg(reg_id))
         end
 
+        uinst :cnc,  :adr16
+        uinst :cnz,  :adr16
+        uinst :cp,   :adr16
+        uinst :cpe,  :adr16
+
         ## compare accumulator with immediate
         # cpi(Integer int)
         inst :cpi, :int do |int|
           compare(accum, int)
         end
+
+        uinst :cpo,  :adr16
+        uinst :cz,   :adr16
 
         uinst :daa
         uinst :dad, :reg_pair
@@ -116,6 +118,7 @@ module Sadie
         uinst :dcx, :reg_pair
         uinst :di
         uinst :ei
+
         uinst :hlt
 
         uinst :in, :adr
@@ -127,15 +130,17 @@ module Sadie
         end
 
         uinst :inx, :reg_pair
-        uinst :jmp, :adr16
+
         uinst :jc,  :adr16
-        uinst :jnc, :adr16
-        uinst :jp,  :adr16
         uinst :jm,  :adr16
+        uinst :jmp, :adr16
+        uinst :jnc, :adr16
+        uinst :jnz, :adr16
+        uinst :jp,  :adr16
         uinst :jpe, :adr16
         uinst :jpo, :adr16
         uinst :jz,  :adr16
-        uinst :jnz, :adr16
+
         uinst :lda, :adr16
         uinst :ldax, :reg_pair
         uinst :lhld, :adr16
@@ -174,33 +179,30 @@ module Sadie
         uinst :out, :adr
 
         uinst :phcl
-        uinst :pop, :reg_pair
-        uinst :push, :reg_pair
-        uinst :ral
-        uinst :rar
-        uinst :rlc
-        uinst :rrc
-        uinst :ret
-        uinst :rc
-        uinst :rnc
-        uinst :rp
-        uinst :rm
-        uinst :rpe
-        uinst :rpo
-        uinst :rz
         uinst :rnz
 
-        uinst :rim
+        uinst :pop, :reg_pair
+        uinst :push, :reg_pair
 
+        uinst :ral
+        uinst :rar
+        uinst :rc
+        uinst :ret
+        uinst :rim
+        uinst :rlc
+        uinst :rm
+        uinst :rnc
+        uinst :rp
+        uinst :rpe
+        uinst :rpo
+        uinst :rrc
         uinst :rst, :int
+        uinst :rz
 
         uinst :sbb, :reg
         uinst :sbi, :int
-
         uinst :shld, :adr16
-
         uinst :sim
-
         uinst :sphl
 
         uinst :sta, :adr16
@@ -220,7 +222,7 @@ module Sadie
 
         ## subtract immediate from accumulator
         # sbi(Integer int)
-        inst :sbi, :int do |int|
+        inst :sui, :int do |int|
           accum.sbi!(int)
         end
 
@@ -250,8 +252,6 @@ module Sadie
         uinst :xthl
 
         setup_nmemonic_table
-
-        #p "#{@inst_state.values.count(-1)} / #{@inst_state.size}"
 
       end
     end

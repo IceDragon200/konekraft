@@ -89,7 +89,7 @@ module Sadie
       end
 
       def self.inst(srcname, *param_types, &block)
-        (@inst_state ||= {})[srcname.upcase] = 1
+        (@inst_state ||= {})[srcname.upcase] = 1 # TEMP
         name  = fix_inst_name(srcname)
         reg_instspec(name, param_types) # register the InstructionSpec
         define_method(name, &block)
@@ -99,7 +99,13 @@ module Sadie
         inst(srcname, *param_types) do |*args|
           puts "Unimplemented Instruction #{srcname.upcase}"
         end
-        (@inst_state ||= {})[srcname.upcase] = -1
+        (@inst_state ||= {})[srcname.upcase] = -1 # TEMP
+      end
+
+      ## TEMP
+      # _completion_rate -> Rate
+      def self._completion_rate
+        [@inst_state.values.count(-1), @inst_state.size]
       end
 
     end

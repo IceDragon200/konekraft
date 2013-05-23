@@ -12,7 +12,12 @@ module Sadie
 
     VERSION = "0.1.3".freeze
 
+    ## Completion (28.75%)
+    # IS8085 Assembler (Based off the Intel 8085 micro-processor)
     ASM_8085 = Sadie::SASM::Assembler.new(Sadie::SASM::InstructionSet::IS8085)
+
+    ## Incomplete (??.??%)
+    # ISAVR Assembler (Based off the AVR micro-processor)
     ASM_AVR  = Sadie::SASM::Assembler.new(Sadie::SASM::InstructionSet::ISAVR)
 
   end
