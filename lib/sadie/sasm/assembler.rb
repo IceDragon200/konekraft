@@ -117,7 +117,7 @@ module Sadie
           return mtch_data[1].to_i(2)
         #elsif mtch_data = data.match(/(\d+)/) # is a regular integer
         else
-          return mtch_data[1].to_i
+          return data.to_i
         end
       end
 

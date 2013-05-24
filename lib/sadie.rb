@@ -5,8 +5,6 @@
 #   dm 23/05/2013
 module Sadie
 
-  VERSION = "1.2.0".freeze
-
   class SadieError < Exception
   end
 
@@ -14,14 +12,18 @@ module Sadie
   end
 
   class << self
+
     attr_accessor :log # IO
+
     def try_log
       yield(@log) if @log
     end
+
   end
 
 end
 
+require 'sadie/version'
 require 'sadie/prototype'
 require 'sadie/internal'
 require 'sadie/reaktors'

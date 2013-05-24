@@ -10,16 +10,7 @@ module Sadie
     class RegistrationError < Exception
     end
 
-    if defined?(MACL::Mixin::Callback)
-      include MACL::Mixin::Callback
-      Sadie.try_log { |l| l.puts("callbacks are enabled") }
-    else
-      Sadie.try_log { |l| l.puts("MACL::Mixin::Callback was not loaded: callbacks will be disabled") }
-
-      def try_callback(*args, &block)
-        return false
-      end
-    end
+    include Sadie::Callback
 
     ## constants
     VERSION = "1.5.0".freeze
