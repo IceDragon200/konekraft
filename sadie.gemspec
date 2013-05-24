@@ -1,29 +1,24 @@
 #
 # Sadie/sadie.gemspec
 #
+PKG_VERSION = "1.2.0"
+
 Gem::Specification.new do |s|
-  s.name               = "sadie"
-  s.version            = "1.1.2"
-  #s.default_executable = ""
+  s.platform    = Gem::Platform::RUBY
+  s.name        = "sadie"
+  s.summary     = "Sadie's Reaktors"
+  s.description = %q(Reactive component library)
+  s.date        = %q(2013-05-21)
+  s.version     = PKG_VERSION
+  s.homepage = %q{https://github.com/IceDragon200/Sadie}
+  s.license = 'MIT'
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Corey Powell"]
-  s.date = %q(2013-05-21)
-  s.description = %q{A kind of circuit simulation library}
+  s.author = "Corey Powell"
   s.email = %q{mistdragon100@gmail.com}
-  s.files = ["Rakefile", "lib/sadie/sadie.rb", "lib/sadie/sadie/*"]
-  s.test_files = []
-  #s.homepage = %q{}
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Sadie's Reaktors}
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
+  s.require_path = "lib"
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-    else
-    end
-  else
-  end
+  s.files = ["Rakefile", "MIT-LICENSE", "README.md"]
+  s.files.concat(Dir.glob( "lib/**/*" ).delete_if { |item| item.include?( "\.svn" ) })
+  s.files.concat(Dir.glob( "test/**/*" ).delete_if { |item| item.include?( "\.svn" ) })
 end

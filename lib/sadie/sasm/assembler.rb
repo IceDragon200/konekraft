@@ -45,7 +45,9 @@ module Sadie
           chunk = [name, []]
           chunk
         end
+
         label_regex = /(?<name>[A-Z][A-Z0-9]*):/i
+
         string.each_line do |line|
           line.gsub!("\n", "")
           line.gsub!(/\A\s*/, "")
