@@ -7,15 +7,17 @@ module Sadie
     class Sacpu
       class Clock
 
+        ### constants
         VERSION = "1.0.0".freeze
 
+        ### instance_variables
         attr_accessor :frequency
         attr_reader :cpu
         attr_reader :cycle_count
         attr_reader :cycle_tick
         attr_reader :tick
 
-        def initialize(cpu, frequency=60)
+        def initialize(cpu, frequency=6_000_000)
           @cpu = cpu
           @frequency = frequency
           init_ticks

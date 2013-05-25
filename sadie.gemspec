@@ -13,11 +13,11 @@ Gem::Specification.new do |s|
   s.description = %q(Reactive component library)
   s.date        = %q(2013-05-21)
   s.version     = Sadie::VERSION
-  s.homepage = %q{https://github.com/IceDragon200/Sadie}
-  s.license = 'MIT'
+  s.homepage    = %q{https://github.com/IceDragon200/Sadie}
+  s.license     = 'MIT'
 
   s.author = "Corey Powell"
-  s.email = %q{mistdragon100@gmail.com}
+  s.email  = %q{mistdragon100@gmail.com}
 
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'

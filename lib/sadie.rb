@@ -13,6 +13,7 @@ module Sadie
 
   class << self
 
+    ## instance_variables
     attr_accessor :log # IO
 
     def try_log

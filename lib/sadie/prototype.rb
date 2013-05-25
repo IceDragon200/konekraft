@@ -7,6 +7,7 @@ module Sadie
   module SASM
     module Interface
       module IRegister
+
       end
     end
   end

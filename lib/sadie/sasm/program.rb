@@ -7,8 +7,10 @@ module Sadie
   module SASM
     class Program
 
+      ### constants
       VERSION = "1.0.0".freeze
 
+      ### instance_variables
       attr_reader :instructions
       attr_accessor :entry_label
 

@@ -4,7 +4,6 @@
 #   dc 11/03/2013
 #   dm 20/05/2013
 module Sadie
-
   class ReaktorBase
 
     class RegistrationError < Exception

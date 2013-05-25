@@ -15,61 +15,61 @@ module Sadie
 
         ##
         # add(REG sreg1_id, REG sreg2_id)
-        inst :add, :reg, :reg do |sreg1_id, sreg2_id|
+        inst 0x00, :add, :reg, :reg do |sreg1_id, sreg2_id|
           reg(sreg1_id).add!(reg(sreg2_id))
         end
 
         # addi(REG sreg_id, Numeric num)
-        inst :addi, :reg, :int do |sreg_id, num|
+        inst 0x00, :addi, :reg, :int do |sreg_id, num|
           reg(sreg_id).add!(num)
         end
 
         # sub(REG sreg1_id, REG sreg2_id)
-        inst :sub, :reg, :reg do |sreg1_id, sreg2_id|
+        inst 0x00, :sub, :reg, :reg do |sreg1_id, sreg2_id|
           reg(sreg1_id).sub!(reg(sreg2_id))
         end
 
         # subi(REG sreg_id, Numeric num)
-        inst :subi, :reg, :int do |sreg_id, num|
+        inst 0x00, :subi, :reg, :int do |sreg_id, num|
           reg(sreg_id).sub!(num)
         end
 
         # mul(REG sreg1_id, REG sreg2_id)
-        inst :mul, :reg, :reg do |sreg1_id, sreg2_id|
+        inst 0x00, :mul, :reg, :reg do |sreg1_id, sreg2_id|
           reg(sreg1_id).mul!(reg(sreg2_id))
         end
 
         # muli(REG sreg_id, Numeric num)
-        inst :muli, :reg, :int do |sreg_id, num|
+        inst 0x00, :muli, :reg, :int do |sreg_id, num|
           reg(sreg_id).mul!(num)
         end
 
         # div(REG sreg1_id, REG sreg2_id)
-        inst :div, :reg, :reg do |sreg1_id, sreg2_id|
+        inst 0x00, :div, :reg, :reg do |sreg1_id, sreg2_id|
           reg(sreg1_id).div!(reg(sreg2_id))
         end
 
         # divi(REG sreg_id, Numeric num)
-        inst :divi, :reg, :int do |sreg_id, num|
+        inst 0x00, :divi, :reg, :int do |sreg_id, num|
           reg(sreg_id).div!(num)
         end
 
         # mov(REG reg1_id, REG reg2_id)
-        inst :mov, :reg, :reg do |reg1_id, reg2_id|
+        inst 0x00, :mov, :reg, :reg do |reg1_id, reg2_id|
           reg(reg1_id).set!(reg(reg2_id))
         end
 
         # nop
-        inst :nop do
+        inst 0x00, :nop do
           # do nothing :D
         end
 
         # hlt
-        inst :hlt do
+        inst 0x00, :hlt do
           interupt!
         end
 
-        setup_nmemonic_table
+        setup_mnemonic_table
 
       end
     end

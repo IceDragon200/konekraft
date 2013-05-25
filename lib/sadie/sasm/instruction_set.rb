@@ -6,6 +6,8 @@ module Sadie
   module SASM
     class InstructionSet
 
+      include Sadie::SASM::Constants
+
       class NoInstructionError < Exception
 
         def initialize(inst)
@@ -22,10 +24,10 @@ module Sadie
         #
       end
 
-      InstructionSpec = Struct.new(:code, :name, :cpu_sym, :param_types)
-
+      ### constants
       VERSION = "1.0.0".freeze
 
+      ### instance_variables
       attr_reader :cpu
       attr_reader :name
 
@@ -59,24 +61,30 @@ module Sadie
         @table ||= {}
       end
 
-      def self.nmemonic_to_code
-        @nmemonic_to_code ||= {}
+      def self.mnemonic_to_code
+        @mnemonic_to_code ||= {}
+      end
+
+      def self.name_to_code(name)
+        BitTool.ary4_to_int32be(name.to_s.bytes)
       end
 
       ##
-      # ::reg_instspec(String name, Array<Symbol>* param_types) -> InstructionSpec
-      def self.reg_instspec(name, param_types)
-        code = BitTool.ary4_to_int32be(name.bytes)
+      # ::reg_instspec(Integer opcode,
+      #                String name,
+      #                Array<Symbol>* param_types) -> InstructionSpec
+      def self.reg_instspec(opcode, name, param_types)
+        code = name_to_code(name)
         cpu_sym = name.downcase.to_sym
-        self.table[code] = InstructionSpec.new(code, name.upcase,
+        self.table[code] = InstructionSpec.new(code, opcode, name.upcase,
                                                     cpu_sym, param_types)
       end
 
       ##
-      # ::setup_nmemonic_table
-      def self.setup_nmemonic_table
+      # ::setup_mnemonic_table
+      def self.setup_mnemonic_table
         self.table.each_value do |instspec|
-          self.nmemonic_to_code[instspec.name] = instspec.code
+          self.mnemonic_to_code[instspec.name] = instspec.code
         end
       end
 
@@ -88,18 +96,25 @@ module Sadie
         return name
       end
 
-      def self.inst(srcname, *param_types, &block)
+      def self.inst(opcode, srcname, *param_types, &block)
         (@inst_state ||= {})[srcname.upcase] = 1 # TEMP
         name  = fix_inst_name(srcname)
-        reg_instspec(name, param_types) # register the InstructionSpec
+        reg_instspec(opcode, name, param_types) # register the InstructionSpec
         define_method(name, &block)
       end
 
-      def self.uinst(srcname, *param_types)
-        inst(srcname, *param_types) do |*args|
+      def self.uinst(opcode, srcname, *param_types)
+        inst(opcode, srcname, *param_types) do |*args|
           puts "Unimplemented Instruction #{srcname.upcase}"
         end
         (@inst_state ||= {})[srcname.upcase] = -1 # TEMP
+      end
+
+      def self.einstspec(srcname)
+        code = name_to_code(srcname)
+        instspec = table[code]
+        yield instspec if block_given?
+        instspec
       end
 
       ## TEMP

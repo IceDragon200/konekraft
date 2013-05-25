@@ -3,7 +3,9 @@
 #   by IceDragon
 #   dc 19/05/2013
 #   dm 22/05/2013
+require 'sadie/sasm/constants'
 require 'sadie/sasm/interface'       # SASM Interface (Class/Module)s
+require 'sadie/sasm/instruction_spec'# SASM Instruction Specification
 require 'sadie/sasm/instruction_set' # SASM Instruction Set
 require 'sadie/sasm/instruction'     # SASM Instruction
 require 'sadie/sasm/program'         # SASM Program

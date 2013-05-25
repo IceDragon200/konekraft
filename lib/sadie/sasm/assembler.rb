@@ -19,8 +19,10 @@ module Sadie
         #
       end
 
+      ### constants
       VERSION = "0.2.0".freeze
 
+      ### instance_variables
       attr_reader :instruction_set
 
       ##
@@ -29,10 +31,14 @@ module Sadie
         @instruction_set = instset
       end
 
+      ##
+      # strip_commments(String string) -> String
       def strip_commments(string)
         string.gsub(/;(.*)/, '')
       end
 
+      ##
+      # chunkify(String string) -> Array<Chunk>
       def chunkify(string)
         chunks = [] # [String name, Array<String> code]
         chunk = nil
@@ -104,10 +110,10 @@ module Sadie
       end
 
       def cast_as_register_pair(data)
-        reg2code = Sadie::SASM::Sacpu::REGISTER2CODE
+        reg2code = Sadie::SASM::Sacpu::REGISTERPAIR2CODE[data]
         a = data[0]
         b = data[1]
-        return (reg2code[a] << 8) | reg2code[b]
+        return (reg2code[a] << 4) | reg2code[b]
       end
 
       def cast_as_int(data)
@@ -121,16 +127,20 @@ module Sadie
         end
       end
 
+      def cast_as_int16(data)
+        cast_as_int(data)
+      end
+
       def cast_as_float(data)
         raise(UnimplementedError, "Sacpu does not support casting to 16 bit float")
       end
 
       def cast_as_address(data)
-        raise(UnimplementedError, "8 bit address is not yet supported")
+        cast_as_int(data)
       end
 
       def cast_as_address16(data)
-        raise(UnimplementedError, "16 bit address is not yet supported")
+        cast_as_int(data)
       end
 
       def data_cast_as(target_datatype, data)
@@ -143,6 +153,8 @@ module Sadie
           cast_as_register_pair(data)
         when :integer, :int # Hex or Integer
           cast_as_int(data)
+        when :integer16, :int16
+          cast_as_int16(data)
         when :float, :flt   # unimplemented
           cast_as_float(data)
         when :address, :adr
@@ -186,7 +198,7 @@ module Sadie
       ##
       # ::instname_to_code_id(String instname)
       def instname_to_code_id(instname)
-        code_id = @instruction_set.nmemonic_to_code[instname.upcase]
+        code_id = @instruction_set.mnemonic_to_code[instname.upcase]
         assert_code_id(instname, code_id)
         return code_id
       end

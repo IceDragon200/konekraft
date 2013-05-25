@@ -5,7 +5,7 @@
 #   dm 14/05/2013
 class Sadie::CallbackReaktor < Sadie::ReaktorBase
 
-  ## constants
+  ### constants
   VERSION = "1.0.3".freeze
 
   REACT_ID_START = 0x80

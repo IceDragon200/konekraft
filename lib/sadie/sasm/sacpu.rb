@@ -13,109 +13,66 @@ module Sadie
   module SASM
     class Sacpu
 
-      ##
-      # Constants
+      include Sadie::SASM::Constants
+
+      ### constants
       VERSION = "0.1.0".freeze
 
-      # Boolean and such
-      BNULL  = 0x0
-      BFALSE = 0x0
-      BTRUE  = 0x1
-
-      # BitMask[bit_index]
-      BITMASK = (Array.new(16) { |i| (i > 0) ? (2 ** (i - 1)) : 0 }).freeze
-
-      # Registers
-      REG_ACCUMULATOR =
-        REG_A      = 0x0 #  8-bit Accumulator
-      REG_FLAG =
-        REG_F      = 0x1 #  8-bit Flag Register
-      # B // C
-      REG_B        = 0x2 #  8-bit General Register B
-      REG_C        = 0x3 #  8-bit General Register C
-      # D // E
-      REG_D        = 0x4 #  8-bit General Register D
-      REG_E        = 0x5 #  8-bit General Register E
-      # HL Registers 16 bit pair - Memory Location (RAM)
-      REG_H        = 0x6 #  8-bit General Register H
-      REG_L        = 0x7 #  8-bit General Register L
-      # used for position in memory
-      REG_STACK_POINTER =
-        REG_SP     = 0x8 # 16-bit Stack Pointer (SP)
-      # used for the program index
-      REG_PROGRAM_COUNTER =
-        REG_PC     = 0x9 # 16-bit Program Counter (PC)
-
-      REG_MEMORY   = 0x10 # Not really a register used to access the memory bank
-
-      # Flag Register Index
-      FLAG_SIGN      = 0x0
-      FLAG_ZERO      = 0x1
-      FLAG_AUX_CARRY = 0x2
-      FLAG_PARITY    = 0x3
-      FLAG_CARRY     = 0x4
-
-      REGISTER2CODE = {
-        "A"    => REG_ACCUMULATOR,
-        "ACM"  => REG_ACCUMULATOR,
-        "B"    => REG_B,
-        "C"    => REG_C,
-        "D"    => REG_D,
-        "E"    => REG_E,
-        "H"    => REG_H,
-        "L"    => REG_L,
-        "SP"   => REG_STACK_POINTER,
-        "PC"   => REG_PROGRAM_COUNTER,
-        "FLAG" => REG_FLAG,
-        "M"    => REG_MEMORY,
-        "MEM"  => REG_MEMORY,
-      }
-
-      CODE2REGISTER = REGISTER2CODE.invert
-
-      REGISTER_SIZE = {
-        REG_A    => 8,
-        REG_B    => 8,
-        REG_C    => 8,
-        REG_D    => 8,
-        REG_E    => 8,
-        REG_H    => 8,
-        REG_L    => 8,
-        REG_SP   => 16,
-        REG_PC   => 16,
-        REG_FLAG => 8
-      }
-
+      ## InstructionSet
       IS_DEFAULT = Sadie::SASM::InstructionSet::IS8085
 
+      ### instance_variables
       attr_reader :clock
       attr_reader :interpreter
       attr_reader :memory
       attr_reader :register
 
+      ##
+      # initialize(Integer memory_size,)
       def initialize(memory_size, instset=IS_DEFAULT)
         @memory_size = memory_size
         @instruction_set = instset.new(self)
         init_clock
         init_register
         init_memory
+        init_port
         init_interpreter
       end
 
+      ##
+      # init_clock
       def init_clock
         @clock = Sadie::SASM::Sacpu::Clock.new(self)
       end
 
+      ##
+      # init_register
       def init_register
-        @register = REGISTER_SIZE.each_with_object({}) do |(k, size), register|
-          register[k] = Sadie::SASM::Sacpu::Register.new(self, size)
+        @register = {}
+        REGISTERS.each do |code|
+          size = REGISTER_SIZE[code]
+          @register[code] = Sadie::SASM::Sacpu::Register.new(self, size)
+        end.freeze
+        REGISTER_PAIR.each_pair do |code, (h_id, l_id)|
+          h, l = @register[h_id], @register[l_id]
+          @register[code] = Sadie::SASM::Sacpu::RegisterPair.new(self, h, l)
         end
       end
 
+      ##
+      # init_memory
       def init_memory
         @memory = Sadie::SASM::Sacpu::Memory.new(self, @memory_size, 8)
       end
 
+      ##
+      # init_port
+      def init_port
+        @port = Sadie::SASM::Sacpu::Ports.new(self, 256, 256)
+      end
+
+      ##
+      # init_interpreter
       def init_interpreter
         @interpreter = Sadie::SASM::Interpreter.new(self)
       end
@@ -127,78 +84,165 @@ module Sadie
         "CPU Clock Frequency: #{@clock.frequency} hz"
       end
 
+      ##
+      # reg_abs(REG_ID id) -> Register
+      def reg_abs(id)
+        @register[id]
+      end
+
+      ##
+      # reg(REG_ID id) -> Register
       def reg(id)
-        id == REG_MEMORY ? @memory : @register[id]
+        id == REG_MEMORY ? @memory : reg_abs(id)
       end
 
-      def reg_pair(aid, bid)
-        reg(aid).mend(reg(bid))
+      ##
+      # reg_pair(REG_ID id) -> RegisterPair
+      def reg_pair(id)
+        id == REG_MEMORY ? @memory : reg_abs(CODE2REGPAIRCODE[id])
       end
 
+      ##
+      # accumulator
       def accumulator
         reg(REG_ACCUMULATOR)
       end
 
+      ## REG_B
+      # b
       def b
         reg(REG_B)
       end
 
+      ## REG_C
+      # c
       def c
         reg(REG_C)
       end
 
+      ## REG_BC
+      # bc
+      def bc
+        reg_pair(REG_BC)
+      end
+
+      ## REG_D
+      # d
       def d
         reg(REG_D)
       end
 
+      ## REG_E
+      # e
       def e
         reg(REG_E)
       end
 
+      ## REG_DE
+      # de
+      def de
+        reg_pair(REG_DE)
+      end
+
+      ## REG_H
+      # h
       def h
         reg(REG_H)
       end
 
+      ## REG_L
+      # l
       def l
         reg(REG_L)
       end
 
+      ## REG_HL
+      # hl
+      def hl
+        reg_pair(REG_HL)
+      end
+
+      ## REG_SP
+      # stack_pointer
       def stack_pointer
         reg(REG_SP)
       end
 
+      ## REG_PC
+      # program_counter
       def program_counter
         reg(REG_PC)
       end
 
+      ### flags
+      ##
+      # flag
       def flag
         reg(REG_FLAG)
       end
 
+      ## flag.carry
+      # carry
       def carry
         flag[FLAG_CARRY]
       end
 
+      ##
+      # carry
       def carry=(n)
         flag[FLAG_CARRY] = n
       end
 
+      ##
+      # flag_z
       def flag_z
         flag[FLAG_ZERO]
       end
 
+      ##
+      # flag_z=(Integer n)
       def flag_z=(n)
         flag[FLAG_ZERO] = n
       end
 
-      def memory_pointer_reg
-        h.mend(l)
+      ##
+      # flag_p
+      def flag_p
+        flag[FLAG_PARITY]
       end
 
+      ##
+      # flag_p(Integer n)
+      def flag_p=(n)
+        flag[FLAG_PARITY] = n
+      end
+
+      ##
+      # flag_s
+      def flag_s
+        flag[FLAG_SIGN]
+      end
+
+      ##
+      # flag_s=(Integer n)
+      def flag_s=(n)
+        flag[FLAG_SIGN] = n
+      end
+
+      ##
+      # memory_pointer_reg -> Register
+      def memory_pointer_reg
+        hl
+      end
+
+      ##
+      # memory_pointer_value -> Integer
       def memory_pointer_value
         memory_pointer_reg.block_data
       end
 
+      ##
+      # to_s
       def to_s
         [[:A, a],
          [:B, b], [:C, c], [:D, d], [:E, e],
@@ -206,12 +250,16 @@ module Sadie
          ].map { |a| "%s[%s]" % [a[0], a[1].to_s] }.join("\n")
       end
 
+      ##
+      # interupt!
       def interupt!
         # TODO
       end
 
       ### Instructions
 
+      ##
+      # exec_inst(Instruction inst)
       def exec_inst(inst)
         @instruction_set.exec(inst)
       end
@@ -230,3 +278,5 @@ end
 require 'sadie/sasm/sacpu/clock'
 require 'sadie/sasm/sacpu/memory'
 require 'sadie/sasm/sacpu/register'
+require 'sadie/sasm/sacpu/register_pair'
+require 'sadie/sasm/sacpu/ports'

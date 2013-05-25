@@ -5,7 +5,7 @@
 #   dm 18/05/2013
 class Sadie::EmitterReaktor < Sadie::ReaktorBase
 
-  ## constants
+  ### constants
   VERSION = "1.1.0".freeze
 
   ##

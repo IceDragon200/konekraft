@@ -1,12 +1,12 @@
 $: << File.dirname(__FILE__)
-$: << File.join(Dir.getwd, "..", "lib")
+$LOAD_PATH.unshift(File.join(Dir.getwd, "..", "lib"))
 require 'test/unit'
 require 'sadie'
 
 class SasmTest < Test::Unit::TestCase
 
   def test_sasm_sacpu_clock
-    clock = Sadie::SASM::Sacpu::Clock.new(nil)
+    clock = Sadie::SASM::Sacpu::Clock.new(nil, 2 ** 4)
     10.times do
       clock.cycle do |clk|
         puts "TICK[#{clk.tick}] CYCLE[#{clk.cycle_count}] CYCLETICK[#{clk.cycle_tick}]"
@@ -19,7 +19,7 @@ class SasmTest < Test::Unit::TestCase
   def test_compile
     file = File.read('data/test.sasm')
     p Sadie::SASM::ASM_8085.instruction_set.table.values.map(&:name).join("|")
-    #p 1 - Sadie::SASM::ASM_8085.instruction_set._completion_rate.map(&:to_f).inject(&:/)
+    p 1 - Sadie::SASM::ASM_8085.instruction_set._completion_rate.map(&:to_f).inject(&:/)
     p Sadie::SASM::ASM_AVR.build(file)
   end
 

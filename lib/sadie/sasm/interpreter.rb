@@ -12,8 +12,10 @@ module Sadie
   module SASM
     class Interpreter
 
-      VERSION = "0.1.0".freeze
+      ### constants
+      VERSION = "0.2.0".freeze
 
+      ### instance_variables
       attr_reader :cpu
       attr_reader :prog_index
       attr_reader :program
@@ -85,7 +87,7 @@ module Sadie
           if inst = next_instruction
             @cpu.exec_inst(inst)
           else
-            break unless stack_return
+            break
           end
         end
         return true
