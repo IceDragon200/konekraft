@@ -14,11 +14,15 @@ module Sadie
       attr_reader :instructions
       attr_accessor :entry_label
 
+      ##
+      # initialize(Array<Instruction> instructions)
       def initialize(instructions)
         @instructions = instructions
         @entry_label = "main"
       end
 
+      ##
+      # assert_entry_label
       def assert_entry_label
         raise(NoEntryError,
               "this program has no entry label"
@@ -26,10 +30,14 @@ module Sadie
         return @entry_label
       end
 
+      ##
+      # block(String label)
       def block(label)
         @instructions[label]
       end
 
+      ##
+      # entry_block
       def entry_block
         block(@entry_label)
       end

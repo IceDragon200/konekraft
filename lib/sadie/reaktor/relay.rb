@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/Relay.rb
+# Sadie/lib/sadie/reaktors/relay.rb
 #   by IceDragon
 #   dc 11/03/2013
 #   dm 18/05/2013

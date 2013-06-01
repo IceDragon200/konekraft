@@ -7,7 +7,7 @@ module Sadie
   module SASM
     module Interface
       module IRegister
-
+        # sadie/sasm/interface/iregister.rb
       end
     end
   end

@@ -27,6 +27,10 @@ module Sadie
         init_program
       end
 
+      def instruction_set
+        @cpu.instruction_set
+      end
+
       def init_program
         @program = nil
       end

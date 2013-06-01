@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/Floodgate.rb
+# Sadie/lib/sadie/reaktor/floodgate.rb
 #   by IceDragon
 #   dc 12/03/2013
 #   dm 18/05/2013

@@ -1,5 +1,5 @@
 #
-# EDOS/src/sadie/reaktors/Drain.rb
+# EDOS/lib/sadie/reaktor/drain.rb
 #   by IceDragon
 #   dc 12/03/2013
 #   dm 18/05/2013

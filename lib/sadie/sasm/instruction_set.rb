@@ -57,14 +57,20 @@ module Sadie
         raise(NoInstructionError, inst)
       end
 
+      ##
+      # ::table
       def self.table
         @table ||= {}
       end
 
+      ##
+      # ::mnemonic_to_code
       def self.mnemonic_to_code
         @mnemonic_to_code ||= {}
       end
 
+      ##
+      # ::name_to_code(String code)
       def self.name_to_code(name)
         BitTool.ary4_to_int32be(name.to_s.bytes)
       end
@@ -110,6 +116,8 @@ module Sadie
         (@inst_state ||= {})[srcname.upcase] = -1 # TEMP
       end
 
+      ##
+      # einstspec()
       def self.einstspec(srcname)
         code = name_to_code(srcname)
         instspec = table[code]

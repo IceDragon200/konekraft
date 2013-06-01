@@ -2,7 +2,7 @@
 # Sadie/src/ReaktorBase.rb
 #   by IceDragon
 #   dc 11/03/2013
-#   dm 20/05/2013
+#   dm 31/05/2013
 module Sadie
   class ReaktorBase
 
@@ -12,7 +12,7 @@ module Sadie
     include Sadie::Callback
 
     ## constants
-    VERSION = "1.5.0".freeze
+    VERSION = "1.6.0".freeze
 
     ## class variables
     @@reaktor_register = {}
@@ -43,8 +43,8 @@ module Sadie
     def setup_ports
       # overwrite in sublass to add inputs and outputs (VERSION < 1.4.0)
       # Since VERSION 1.4.0 + IO is handled using the register_input/output sys
-      self.class.inputs.each_pair { |id, _| @input[id] = nil }
-      self.class.outputs.each_pair { |id, _| @output[id] = nil }
+      self.class.input_id.each_pair { |_, id| @input[id] = nil }
+      self.class.output_id.each_pair { |_, id| @output[id] = nil }
     end
 
     ##
@@ -104,8 +104,10 @@ module Sadie
       # react from another reaktor
       # handle the input_id and act on the given energy value
       connection = @input[input_id]
-      try_callback(:on_react,
-                   self, connection, energy) if valid_input?(input_id)
+      if valid_input?(input_id)
+        try_callback(:on_react, self, connection, energy)
+      end
+      try_callback(:on_react_abs, self, connection, energy)
     end
 
     ##
@@ -116,6 +118,10 @@ module Sadie
       @energy
     end
 
+    def emit_energy_null
+      Sadie::Energy.new
+    end
+
     ##
     # emit(OUTPUT output_id)
     # emit(OUTPUT output_id, Energy energy)
@@ -123,8 +129,20 @@ module Sadie
       # default emission action
       if connection = @output[output_id]
         connection.reaktor.react(connection.input_id, energy)
-        try_callback(:on_emit, self, connection, energy)
+        try_callback(:on_emit_abs, self, connection, energy)
       end
+    end
+
+    ##
+    # input_id(String name)
+    def input_id(name)
+      self.class.input_id[name]
+    end
+
+    ##
+    # output_id(String name)
+    def output_id(name)
+      self.class.output_id[name]
     end
 
     ### Reaktor Registration System
@@ -164,27 +182,27 @@ module Sadie
 
     ### Reaktor Settings
     ##
-    # ::inputs -> Hash<String name, Integer id>
-    def self.inputs
-      @inputs ||= {}
+    # ::input_id -> Hash<String name, Integer id>
+    def self.input_id
+      @input_id ||= {}
     end
 
     ##
-    # ::outputs -> Hash<String name, Integer id>
-    def self.outputs
-      @outputs ||= {}
+    # ::output_id -> Hash<String name, Integer id>
+    def self.output_id
+      @output_id ||= {}
     end
 
     ##
     # ::register_input(Integer id, String name)
     def self.register_input(id, name="")
-      inputs[id] = name
+      input_id[name] = id
     end
 
     ##
     # ::register_output(Integer id, String name)
     def self.register_output(id, name="")
-      outputs[id] = name
+      output_id[name] = id
     end
 
   end

@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/Fuse.rb
+# Sadie/lib/sadie/reaktor/fuse.rb
 #   by IceDragon
 #   dc 14/05/2013
 #   dm 18/05/2013

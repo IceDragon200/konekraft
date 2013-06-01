@@ -23,6 +23,7 @@ module Sadie
 
       ### instance_variables
       attr_reader :clock
+      attr_reader :instruction_set
       attr_reader :interpreter
       attr_reader :memory
       attr_reader :register
@@ -57,6 +58,7 @@ module Sadie
           h, l = @register[h_id], @register[l_id]
           @register[code] = Sadie::SASM::Sacpu::RegisterPair.new(self, h, l)
         end
+        sp.block_data_set(0xFFFF)
       end
 
       ##

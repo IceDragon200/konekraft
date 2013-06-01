@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/Counter.rb
+# Sadie/lib/sadie/reaktor/counter.rb
 #   by IceDragon
 #   dc 11/03/2013
 #   dm 18/05/2013

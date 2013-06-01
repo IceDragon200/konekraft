@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/TwoWaySwitch.rb
+# Sadie/lib/sadie/reaktor/two_way_switch.rb
 #   by IceDragon
 #   dc 14/05/2013
 #   dm 18/05/2013
@@ -45,6 +45,6 @@ class Sadie::TwoWaySwitchReaktor < Sadie::ReaktorBase
     super(input_id, energy)
   end
 
-  register('switch-twoway')
+  register('two_way_switch')
 
 end

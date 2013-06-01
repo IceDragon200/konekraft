@@ -253,7 +253,7 @@ module Sadie
         inst nil, :pop, :reg_pair do |reg_id|
           regpair = reg_pair(reg_id)
           regpair.low_data_set(mem.stack_data)
-          @cpu.sp.inc!
+          sp.inc!
           regpair.high_data_set(mem.stack_data)
         end
 
@@ -262,7 +262,7 @@ module Sadie
         inst nil, :push, :reg_pair do |reg_id|
           regpair = reg_pair(reg_id)
           mem.stack_data_set(regpair.high_data)
-          @cpu.sp.inc!
+          sp.dec!
           mem.stack_data_set(regpair.low_data)
         end
 
@@ -290,7 +290,7 @@ module Sadie
         inst 0xC9, :ret do
           adr16 = sp.block_data
           lbyte = mem[adr16]
-          hbyte = mem[adr16 - 1]
+          hbyte = mem[adr16 + 1]
           pc.low_data_set(lbyte)
           pc.high_data_set(hbyte)
         end
@@ -435,8 +435,6 @@ module Sadie
           l.set!(mem.stack_data)
           h.set!(mem.stack_data(+1))
         end
-
-        setup_mnemonic_table
 
         einstspec(:adc).bytesize = 2
 
@@ -726,7 +724,6 @@ module Sadie
               when [REG_M, REG_E] then 0x73
               when [REG_M, REG_H] then 0x74
               when [REG_M, REG_L] then 0x75
-              when [REG_M, REG_M] then 0x76
               when [REG_M, REG_A] then 0x77
 
               when [REG_A, REG_B] then 0x78
@@ -911,6 +908,8 @@ module Sadie
         end
 
         einstspec(:xri).bytesize  = 2
+
+        setup_mnemonic_table
 
       end
     end

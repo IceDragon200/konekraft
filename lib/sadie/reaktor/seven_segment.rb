@@ -1,5 +1,5 @@
 #
-# Sadie/src/reaktors/SevenSegment.rb
+# Sadie/lib/sadie/reaktor/seven_segment.rb
 #   by IceDragon
 #   dc 14/04/2013
 #   dm 18/05/2013
@@ -8,8 +8,7 @@ class Sadie::SevenSegmentReaktor < Sadie::ReaktorBase
   ### constants
   VERSION = "1.1.0".freeze
 
-  ##
-  # Input
+  ## input
   register_input(INPUT_ID_CLEAR_SEGS = 0x0, "clear")
   register_input(INPUT_ID_SEG1       = 0x1, "seg1")
   register_input(INPUT_ID_SEG2       = 0x2, "seg2")
@@ -19,8 +18,7 @@ class Sadie::SevenSegmentReaktor < Sadie::ReaktorBase
   register_input(INPUT_ID_SEG6       = 0x6, "seg6")
   register_input(INPUT_ID_SEG7       = 0x7, "seg7")
 
-  ##
-  # Output
+  ## output
   register_output(OUTPUT_ID          = 0x0, "output")
 
   attr_accessor :segment_trigger_energy # Integer
@@ -47,6 +45,6 @@ class Sadie::SevenSegmentReaktor < Sadie::ReaktorBase
     super(input_id, energy)
   end
 
-  register('sevensegment')
+  register('seven_segment')
 
 end
