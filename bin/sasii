@@ -1,0 +1,29 @@
+#!/usr/bin/ruby
+# Sadie/bin/sasii
+#   dc 28/07/2013
+#   dm 28/07/2013
+# vr 1.0.0
+#   sasii - SASM Interactive Interpreter
+dir = File.dirname(__FILE__)
+$LOAD_PATH.unshift(File.expand_path(File.join(dir, "..", "lib")))
+require 'sadie/sasm/sasii.rb'
+
+class String
+
+  def byte
+    bytes.first
+  end
+
+end
+
+begin
+  loop do 
+    begin
+      system("stty raw -echo")
+      str = STDIN.getc
+    ensure
+      system("stty -raw echo")
+    end
+    break if str == "\x03" # Interrupt
+  end
+end
