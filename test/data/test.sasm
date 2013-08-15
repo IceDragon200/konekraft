@@ -2,18 +2,17 @@
 ; Sadie/test/data/test.sasm
 ; using ISAVR Instruction Set
 
-entry main ; currently unimplemented
-using ISAVR ; currently unimplemented
+jmp main
 
 label: ; :D
-  NOP ; No Operation
+  nop ; No Operation
   ; DOSOMETHING param ; skip this
-  ADD A, B ; Add with other register
-  ADDI A, 12 ; Add with immediate value
+  add A, B ; Add with other register
+  adi A, 12 ; Add with immediate value
 
 main:
-  NOP ; No Operation
-  ADDI B, 12 ;
-  ADDI C, 2 ;
-  ADD B, C ; Add contents of register C to B
-  MOV A, B
+  nop ; No Operation
+  adi B, 12 ;
+  adi C, 2 ;
+  add B, C ; Add contents of register C to B
+  mov A, B

@@ -11,20 +11,16 @@ module Sadie
   class ReaktorError < SadieError
   end
 
-  class << self
-
-    ## instance_variables
-    attr_accessor :log # IO
-
-    def try_log
-      yield(@log) if @log
-    end
-
-  end
-
 end
 
+# remove this when building gem
+$:.unshift(Dir.getwd)
+
+require 'sadie/logger'
+Sadie.extend(Sadie::Logger)
+#Sadie.log = STDERR
 require 'sadie/version'
+require 'sadie/mixin'
 require 'sadie/prototype'
 require 'sadie/internal'
 require 'sadie/reaktors'

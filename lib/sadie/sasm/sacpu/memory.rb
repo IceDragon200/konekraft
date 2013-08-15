@@ -9,7 +9,7 @@ module Sadie
       class Memory
 
         include Enumerable
-        include Sadie::SASM::Interface::IRegister
+        include Sadie::SASM::Helper::IRegisterData
 
         ### constants
         VERSION = "1.1.0".freeze
@@ -17,16 +17,21 @@ module Sadie
         ### instance_variables
         attr_reader :block_size
         attr_reader :cpu
-        attr_reader :data
-        attr_reader :data_range
+        attr_reader :data       # Array<int>
+        attr_reader :data_range # int
 
         ##
-        # initialize(Sacpu cpu, Integer size_in_k, Integer block_size)
-        def initialize(cpu, size_in_k, block_size)
+        # initialize(Sacpu cpu, int size_in_bytes, Integer block_size)
+        def initialize(cpu, size_in_bytes, block_size)
           @cpu = cpu
           @block_size = block_size
-          @data = Array.new(((size_in_k * 1024) / @block_size).to_i, 0)
+          init_data(size_in_bytes)
           init_data_range
+          @cpu.memory = self
+        end
+
+        def init_data(size_in_bytes=0x10000)
+          @data = Array.new(((size_in_bytes * 1024) / @block_size).to_i, 0)
         end
 
         ##
@@ -61,14 +66,14 @@ module Sadie
         end
 
         ##
-        # block_data -> Integer
-        def block_data
+        # cell_data -> Integer
+        def cell_data
           self[@cpu.memory_pointer_value]
         end
 
         ##
-        # block_data_set(Integer data)
-        def block_data_set(data)
+        # cell_data_set(Integer data)
+        def cell_data_set(data)
           self[@cpu.memory_pointer_value] = data
         end
 
@@ -79,15 +84,19 @@ module Sadie
         end
 
         ##
-        # stack_data -> Integer
+        # stack_data -> int
         def stack_data(offset=0)
-          self[@cpu.sp.block_data + offset]
+          self[@cpu.sp.cell_data + offset]
         end
 
         ##
-        # stack_data_set(Integer data)
+        # stack_data_set(int data)
         def stack_data_set(data, offset=0)
-          self[@cpu.sp.block_data + offset] = data
+          self[@cpu.sp.cell_data + offset] = data
+        end
+
+        def dump
+          @data.pack("C*")
         end
 
       end

@@ -10,7 +10,7 @@ module Sadie
 
     VERSION = "1.1.0"
 
-    include Sadie::SASM::Interface::IRegister
+    include Sadie::SASM::Helper::IRegisterData
 
     attr_reader :data
     attr_reader :size
@@ -34,14 +34,14 @@ module Sadie
 
     ### IRegister
     ##
-    # block_data
-    def block_data
+    # cell_data
+    def cell_data
       @data
     end
 
     ##
-    # block_data_set
-    def block_data_set(n)
+    # cell_data_set
+    def cell_data_set(n)
       @data = n
     end
 
@@ -102,7 +102,7 @@ module Sadie
     end
 
     def self.mend(barray1, barray2)
-      # Create a new BitArray using the size of the both source registers summed
+      # Create a new BitArray using the size of the both source arrays summed
       barray = BitArray.new(barray1.size + barray2.size)
       # Assign the first bits from the first array
       for x in 0...barray1.size

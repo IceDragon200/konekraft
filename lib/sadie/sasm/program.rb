@@ -12,37 +12,26 @@ module Sadie
 
       ### instance_variables
       attr_reader :instructions
-      attr_accessor :entry_label
 
       ##
       # initialize(Array<Instruction> instructions)
       def initialize(instructions)
         @instructions = instructions
-        @entry_label = "main"
       end
 
-      ##
-      # assert_entry_label
-      def assert_entry_label
-        raise(NoEntryError,
-              "this program has no entry label"
-              ) unless @instructions.has_key?(@entry_label)
-        return @entry_label
+      def instructions_str
+        @instructions.map do |inst|
+          inst.to_s
+        end.join("\n")
       end
 
-      ##
-      # block(String label)
-      def block(label)
-        @instructions[label]
+      def [](index)
+        @instructions[index]
       end
 
-      ##
-      # entry_block
-      def entry_block
-        block(@entry_label)
+      def size
+        @instructions.size
       end
-
-      alias :[] :block
 
     end
   end

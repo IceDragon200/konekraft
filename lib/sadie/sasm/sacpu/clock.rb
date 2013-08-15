@@ -17,7 +17,7 @@ module Sadie
         attr_reader :cycle_tick
         attr_reader :tick
 
-        def initialize(cpu, frequency=6_000_000)
+        def initialize(cpu, frequency=120)
           @cpu = cpu
           @frequency = frequency
           init_ticks

@@ -18,26 +18,18 @@ module Sadie
       ### constants
       VERSION = "0.1.0".freeze
 
-      ## InstructionSet
-      IS_DEFAULT = Sadie::SASM::InstructionSet::IS8085
-
       ### instance_variables
       attr_reader :clock
-      attr_reader :instruction_set
-      attr_reader :interpreter
-      attr_reader :memory
       attr_reader :register
+      attr_accessor :memory
 
       ##
-      # initialize(Integer memory_size,)
-      def initialize(memory_size, instset=IS_DEFAULT)
-        @memory_size = memory_size
-        @instruction_set = instset.new(self)
+      # initialize([int memory_size, SASM::InstructionSet instset])
+      #   (memory_size) is in number of bytes
+      def initialize
         init_clock
         init_register
-        init_memory
         init_port
-        init_interpreter
       end
 
       ##
@@ -58,25 +50,13 @@ module Sadie
           h, l = @register[h_id], @register[l_id]
           @register[code] = Sadie::SASM::Sacpu::RegisterPair.new(self, h, l)
         end
-        sp.block_data_set(0xFFFF)
-      end
-
-      ##
-      # init_memory
-      def init_memory
-        @memory = Sadie::SASM::Sacpu::Memory.new(self, @memory_size, 8)
+        reg_sp.cell_data_set(0xFFFF)
       end
 
       ##
       # init_port
       def init_port
         @port = Sadie::SASM::Sacpu::Ports.new(self, 256, 256)
-      end
-
-      ##
-      # init_interpreter
-      def init_interpreter
-        @interpreter = Sadie::SASM::Interpreter.new(self)
       end
 
       ##
@@ -105,62 +85,62 @@ module Sadie
       end
 
       ##
-      # accumulator
-      def accumulator
+      # reg_accumulator
+      def reg_accumulator
         reg(REG_ACCUMULATOR)
       end
 
       ## REG_B
-      # b
-      def b
+      # reg_b
+      def reg_b
         reg(REG_B)
       end
 
       ## REG_C
-      # c
-      def c
+      # reg_c
+      def reg_c
         reg(REG_C)
       end
 
       ## REG_BC
-      # bc
-      def bc
+      # reg_bc
+      def reg_bc
         reg_pair(REG_BC)
       end
 
       ## REG_D
-      # d
-      def d
+      # reg_d
+      def reg_d
         reg(REG_D)
       end
 
       ## REG_E
-      # e
-      def e
+      # reg_e
+      def reg_e
         reg(REG_E)
       end
 
       ## REG_DE
-      # de
-      def de
+      # reg_de
+      def reg_de
         reg_pair(REG_DE)
       end
 
       ## REG_H
-      # h
-      def h
+      # reg_h
+      def reg_h
         reg(REG_H)
       end
 
       ## REG_L
-      # l
-      def l
+      # reg_l
+      def reg_l
         reg(REG_L)
       end
 
       ## REG_HL
-      # hl
-      def hl
+      # reg_hl
+      def reg_hl
         reg_pair(REG_HL)
       end
 
@@ -178,78 +158,95 @@ module Sadie
 
       ### flags
       ##
-      # flag
-      def flag
+      # reg_flag
+      def reg_flag
         reg(REG_FLAG)
       end
 
-      ## flag.carry
-      # carry
-      def carry
-        flag[FLAG_CARRY]
+      ## reg_flag.ac
+      # flag_ac
+      #   Auxillary Carry
+      def flag_ac
+        reg_flag[FLAG_AUX_CARRY]
       end
 
       ##
-      # carry
-      def carry=(n)
-        flag[FLAG_CARRY] = n
+      # flag_ac=(bit n)
+      def flag_ac=(n)
+        reg_flag[FLAG_AUX_CARRY] = n
+      end
+
+      ## reg_flag.carry
+      # flag_c
+      def flag_c
+        reg_flag[FLAG_C]
+      end
+
+      ##
+      # flag_c=(bit n)
+      def flag_c=(n)
+        reg_flag[FLAG_C] = n
       end
 
       ##
       # flag_z
       def flag_z
-        flag[FLAG_ZERO]
+        reg_flag[FLAG_ZERO]
       end
 
       ##
-      # flag_z=(Integer n)
+      # flag_z=(bit n)
       def flag_z=(n)
-        flag[FLAG_ZERO] = n
+        reg_flag[FLAG_ZERO] = n
       end
 
       ##
       # flag_p
       def flag_p
-        flag[FLAG_PARITY]
+        reg_flag[FLAG_PARITY]
       end
 
       ##
-      # flag_p(Integer n)
+      # flag_p(bit n)
       def flag_p=(n)
-        flag[FLAG_PARITY] = n
+        reg_flag[FLAG_PARITY] = n
       end
 
       ##
       # flag_s
       def flag_s
-        flag[FLAG_SIGN]
+        reg_flag[FLAG_SIGN]
       end
 
       ##
-      # flag_s=(Integer n)
+      # flag_s=(bit n)
       def flag_s=(n)
-        flag[FLAG_SIGN] = n
+        reg_flag[FLAG_SIGN] = n
       end
 
       ##
       # memory_pointer_reg -> Register
       def memory_pointer_reg
-        hl
+        reg_hl
       end
 
       ##
       # memory_pointer_value -> Integer
       def memory_pointer_value
-        memory_pointer_reg.block_data
+        memory_pointer_reg.cell_data
+      end
+
+      def clear_flags
+        reg_flag.cell_data_set(0)
       end
 
       ##
       # to_s
       def to_s
-        [[:A, a],
-         [:B, b], [:C, c], [:D, d], [:E, e],
-         [:H, h], [:L, l], [:PC, pc], [:SP, sp]
-         ].map { |a| "%s[%s]" % [a[0], a[1].to_s] }.join("\n")
+        [[:A, reg_a],
+         [:B, reg_b], [:C, reg_c], [:D, reg_d], [:E, reg_e],
+         [:H, reg_h], [:L, reg_l], [:PC, reg_pc], [:SP, reg_sp]
+         ].map { |a| "%s  %s" % [a[0], a[1].to_s] }.join("\n")
       end
 
       ##
@@ -258,20 +255,10 @@ module Sadie
         # TODO
       end
 
-      ### Instructions
-
-      ##
-      # exec_inst(Instruction inst)
-      def exec_inst(inst)
-        @instruction_set.exec(inst)
-      end
-
-      alias :a :accumulator
-      alias :f :flag
-      alias :pc :program_counter
-      alias :sp :stack_pointer
-      alias :m :memory
-      alias :mem :memory
+      alias :reg_a :reg_accumulator
+      alias :reg_f :reg_flag
+      alias :reg_pc :program_counter
+      alias :reg_sp :stack_pointer
 
     end
   end

@@ -1,0 +1,1 @@
+require 'sadie/sasm/struct/bit_array.rb'

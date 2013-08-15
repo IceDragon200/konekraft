@@ -28,13 +28,13 @@ module Sadie
         ##
         # high_data
         def high_data
-          @reg_high.block_data
+          @reg_high.cell_data
         end
 
         ##
         # high_data_set(Integer data)
         def high_data_set(data)
-          @reg_high.block_data_set(data)
+          @reg_high.cell_data_set(data)
         end
 
         ##
@@ -52,13 +52,13 @@ module Sadie
         ##
         # low_data
         def low_data
-          @reg_low.block_data
+          @reg_low.cell_data
         end
 
         ##
         # low_data_set(Integer data)
         def low_data_set(data)
-          @reg_low.block_data_set(data)
+          @reg_low.cell_data_set(data)
         end
 
         ##
@@ -74,14 +74,14 @@ module Sadie
         end
 
         ##
-        # block_data -> Integer
-        def block_data
+        # cell_data -> Integer
+        def cell_data
           (high_data << low_size) | low_data
         end
 
         ##
-        # block_data_set(Integer data)
-        def block_data_set(data)
+        # cell_data_set(Integer data)
+        def cell_data_set(data)
           low_data_set(data & low_mask)
           high_data_set((data >> low_size) & high_mask)
         end

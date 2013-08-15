@@ -1,9 +1,6 @@
 ;
 ; Sadie/test/data/test.sasm
-; using ISAVR Instruction Set
-
-entry main ; currently unimplemented
-using IS8085 ; currently unimplemented
+jmp main
 
 main:
   MVI A, 0
@@ -11,4 +8,4 @@ main:
   ADD B
   MVI C, 2
   ADD C
-  HLT ; currently unimplemented
+  HLT

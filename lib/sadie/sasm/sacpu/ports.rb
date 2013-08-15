@@ -20,13 +20,13 @@ module Sadie
           ## read
           # >>(IRegister ireg)
           def >>(ireg)
-            ireg.block_data_set(@data)
+            ireg.cell_data_set(@data)
           end
 
           ## write
           # <<(IRegister ireg)
           def <<(ireg)
-            @data = ireg.block_data
+            @data = ireg.cell_data
           end
 
         end
