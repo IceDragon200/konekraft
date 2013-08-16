@@ -6,9 +6,10 @@
 module Sadie
   module BitTool
 
+    ### constants
     VERSION = "0.1.0"
 
-    class CastFailure < Exception
+    class CastFailure < TypeError
       #
     end
 

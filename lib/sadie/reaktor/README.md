@@ -1,5 +1,11 @@
 Sadie - Reaktor Library
 =======================
+# VERSION 3.x
+  Coming soon!
+
+# VERSION 2.x
+
+# VERSION 1.x
 # How do Reaktors work? [V1.0.0]
 Reaktors will #emit a signal to their output ports, in which the other
 connected Reaktor's will #react.

@@ -20,8 +20,7 @@ require 'sadie/logger'
 Sadie.extend(Sadie::Logger)
 #Sadie.log = STDERR
 require 'sadie/version'
-require 'sadie/mixin'
 require 'sadie/prototype'
 require 'sadie/internal'
-require 'sadie/reaktors'
+require 'sadie/reaktor'
 require 'sadie/sasm'

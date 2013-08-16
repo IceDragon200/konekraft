@@ -1,12 +1,9 @@
 #!/usr/bin/ruby
+# Sadie/test/test-sasm.rb
 #
-#
-$: << File.dirname(__FILE__)
-$LOAD_PATH.unshift(File.join(Dir.getwd, "..", "lib"))
-require 'test/unit'
-require 'sadie'
+require_relative 'common'
 
-class SasmTest < Test::Unit::TestCase
+class SadieSasmTest < Test::Unit::TestCase
 
   def test_sasm_sacpu_clock
     clock = Sadie::SASM::Sacpu::Clock.new(nil, 2 ** 4)
