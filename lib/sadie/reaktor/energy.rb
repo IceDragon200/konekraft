@@ -2,17 +2,21 @@
 # Sadie/lib/sadie/reaktor/energy.rb
 #   by IceDragon
 #   dc 11/03/2013
-#   dm 09/04/2013
+#   dm 17/08/2013
 module Sadie
   module Reaktor
     class Energy
 
-      VERSION = "1.1.1".freeze
+      VERSION = "1.2.0".freeze
 
       attr_accessor :value
 
       def initialize(value=0)
         @value = value
+      end
+
+      def coerce(obj)
+        return self, obj
       end
 
       def cast_value(obj)
