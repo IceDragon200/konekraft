@@ -10,8 +10,8 @@ module Sadie
       ### constants
       VERSION = "2.2.0".freeze
 
-      include Reaktor
       include Sadie::Callback
+      include Sadie::Reaktor::Mixin::Reaktorable
 
       ### instance_attributes
       attr_accessor :id       # Integer
