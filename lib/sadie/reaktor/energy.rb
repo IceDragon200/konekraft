@@ -23,28 +23,40 @@ module Sadie
         obj.is_a?(Energy) ? obj.value : obj.to_i
       end
 
-      def +(other)
-        if v = cast_value(other)
-          @value += v
-        end
+      def add!(other)
+        @value += cast_value(other)
+        self
       end
 
-      def -(other)
-        if v = cast_value(other)
-          @value -= v
-        end
+      def sub!(other)
+        @value -= cast_value(other)
+        self
       end
 
-      def *(other)
-        if v = cast_value(other)
-          @value *= v
-        end
+      def mul!(other)
+        @value *= cast_value(other)
+        self
       end
 
-      def /(other)
-        if v = cast_value(other)
-          @value /= v
-        end
+      def div!(other)
+        @value /= cast_value(other)
+        self
+      end
+
+      def add(other)
+        dup.add!(other)
+      end
+
+      def sub(other)
+        dup.sub!(other)
+      end
+
+      def mul(other)
+        dup.mul!(other)
+      end
+
+      def div(other)
+        dup.div!(other)
       end
 
       def zero
@@ -62,8 +74,33 @@ module Sadie
         "power|#{@value}"
       end
 
+      def to_i
+        @value.to_i
+      end
+
+      def to_f
+        @value.to_f
+      end
+
+      def save
+        (@history ||= []).push(@value)
+      end
+
+      def restore
+        @value = @history.pop
+      end
+
       private :cast_value
+
+      alias :+ :add
+      alias :- :sub
+      alias :* :mul
+      alias :/ :div
 
     end
   end
 end
+
+en = Sadie::Reaktor::Energy.new(4)
+p en
+p en + en
