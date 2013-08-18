@@ -2,105 +2,131 @@
 # Sadie/lib/sadie/reaktor/energy.rb
 #   by IceDragon
 #   dc 11/03/2013
-#   dm 17/08/2013
+#   dm 18/08/2013
 module Sadie
   module Reaktor
     class Energy
 
-      VERSION = "1.2.0".freeze
+      ### constants
+      VERSION = "1.2.1".freeze
 
+      ### includes
+      include Sadie::Mixin::Mathable
+
+      ### instance_attributes
       attr_accessor :value
 
+      ##
+      # initialize(int value)
       def initialize(value=0)
         @value = value
       end
 
+      ##
+      # coerce(obj)
       def coerce(obj)
         return self, obj
       end
 
+      ##
+      # cast_value(obj)
       def cast_value(obj)
         obj.is_a?(Energy) ? obj.value : obj.to_i
       end
 
+      ##
+      # add!(int other)
+      # add!(Energy other)
       def add!(other)
         @value += cast_value(other)
         self
       end
 
+      ##
+      # sub!(int other)
+      # sub!(Energy other)
       def sub!(other)
         @value -= cast_value(other)
         self
       end
 
+      ##
+      # mul!(int other)
+      # mul!(Energy other)
       def mul!(other)
         @value *= cast_value(other)
         self
       end
 
+      ##
+      # div!(int other)
+      # div!(Energy other)
       def div!(other)
         @value /= cast_value(other)
         self
       end
 
-      def add(other)
-        dup.add!(other)
-      end
-
-      def sub(other)
-        dup.sub!(other)
-      end
-
-      def mul(other)
-        dup.mul!(other)
-      end
-
-      def div(other)
-        dup.div!(other)
-      end
-
-      def zero
+      ##
+      # zero!
+      def zero!
         @value = 0
+        self
       end
 
+      ##
+      # zero
+      def zero
+        dup.zero!
+      end
+
+      ##
+      # calc_pull(int src_energy, int max, int min, int cap)
+      # calc_pull(Energy src_energy, int max, int min, int cap)
       def calc_pull(src_energy, max, min, cap)
-        rem  = src_energy.value - max
+        rem  = cast_value(src_energy) - max
         pull = rem < 0 ? (max + rem) : max
-        pull = (n = self.value + pull) > cap ? n - cap : pull
+        pull = (n = @value + pull) > cap ? n - cap : pull
         return pull >= min ? pull : 0
       end
 
+      ##
+      # to_s -> String
       def to_s
         "power|#{@value}"
       end
 
+      ##
+      # to_i -> int
       def to_i
         @value.to_i
       end
 
+      ##
+      # to_f -> float
       def to_f
         @value.to_f
       end
 
-      def save
-        (@history ||= []).push(@value)
-      end
-
+      ### state manager
+      ##
+      # restore
       def restore
         @value = @history.pop
       end
 
-      private :cast_value
+      ##
+      # save
+      def save
+        (@history ||= []).push(@value)
+        if block_given?
+          yield self
+          restore
+        end
+      end
 
-      alias :+ :add
-      alias :- :sub
-      alias :* :mul
-      alias :/ :div
+      ### visibility
+      private :cast_value
 
     end
   end
 end
-
-en = Sadie::Reaktor::Energy.new(4)
-p en
-p en + en
