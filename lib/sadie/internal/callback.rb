@@ -5,12 +5,11 @@
 #   dm 23/05/2013
 # A copy of the MACL::Mixin::Callback, modified to fit Sadie's needs
 module Sadie
+  class CallbackError < RuntimeError
+  end
   module Callback
 
     VERSION = "1.1.3".freeze
-
-    class CallbackError < RuntimeError
-    end
 
     class << self
       attr_accessor :log
