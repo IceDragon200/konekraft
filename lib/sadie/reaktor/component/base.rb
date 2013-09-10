@@ -86,26 +86,6 @@ module Sadie
       end
 
       ##
-      # init
-      def init
-        # initialize the internals of the reaktor here
-        try_vlog { |io| io.puts "#{signature_s} [INIT]" }
-      end
-
-      ##
-      # terminate
-      def terminate
-        # used to dispose the reaktor
-        try_vlog { |io| io.puts "#{signature_s} [TERMINATE]" }
-      end
-
-      ##
-      # signature_s -> String
-      def signature_s
-        "#{id}|#{name}"
-      end
-
-      ##
       # export_h -> Hash
       def export_h
         { energy: @energy.to_s }
@@ -115,6 +95,50 @@ module Sadie
       # export_s -> String
       def export_s
         export_h.to_s
+      end
+
+      ##
+      # indent_s
+      def indent_s
+        " " * Sadie::Reaktor::Base.indent.to_i * 2
+      end
+
+      ##
+      # signature_s -> String
+      def signature_s
+        "#{id}|#{name}"
+      end
+
+      ##
+      # poll_s(String s, Energy energy, PORT_ID port_id, Port port)
+      def debug_s(s, energy, port_id, port)
+        indent_s + "[#{s}] #{signature_s}(#{energy.to_s} >> [#{port_id}|#{port.to_s}])"
+      end
+
+      ##
+      # react_s(String s, Energy energy, PORT_ID port_id, Port port)
+      def react_s(s, energy, port_id, port)
+        debug_s(s, energy, port_id, port) + " / " + export_s
+      end
+
+      ##
+      # emit_s(String s, Energy energy, PORT_ID port_id, Port port)
+      def emit_s(s, energy, port_id, port)
+        debug_s(s, energy, port_id, port)
+      end
+
+      ##
+      # init
+      def init
+        # initialize the internals of the reaktor here
+        try_vlog { |io| io.puts indent_s + "[INT] #{signature_s}" }
+      end
+
+      ##
+      # terminate
+      def terminate
+        # used to dispose the reaktor
+        try_vlog { |io| io.puts indent_s + "[TRM] #{signature_s}" }
       end
 
       ##
@@ -167,7 +191,7 @@ module Sadie
       # reset
       def reset
         # restore component to some original state
-        try_vlog { |io| io.puts "#{signature_s} [RESET]" }
+        try_vlog { |io| io.puts indent_s + "[RST] #{signature_s}" }
       end
 
       ##
@@ -188,14 +212,14 @@ module Sadie
       # trigger
       def trigger
         # have this Reaktor act on its own, only used by stand-alone reaktors
-        try_vlog { |io| io.puts "#{signature_s} [TRIGGER]" }
+        try_vlog { |io| io.puts indent_s + "[TRG] #{signature_s}" }
       end
 
       ##
       # tick
       def tick
         # update the reaktor internals, regardless of connection state
-        try_vlog { |io| io.puts "#{signature_s} [TICK]" }
+        try_vlog { |io| io.puts indent_s + "[TCK] #{signature_s}" }
         @ticks += 1
       end
 
@@ -203,7 +227,7 @@ module Sadie
       # post_tick
       def post_tick
         # update the reaktor internals, regardless of connection state
-        try_vlog { |io| io.puts "#{signature_s} [TICK-POST]" }
+        try_vlog { |io| io.puts indent_s + "[TKP] #{signature_s}" }
         @post_ticks += 1
       end
 
@@ -211,7 +235,7 @@ module Sadie
       # react_port(Port port, Energy energy)
       def react_port(port, energy)
         #
-        try_vlog { |io| io.puts "#{signature_s} [Rp=] (#{energy.to_s} >> #{port.to_s})" }
+        try_vlog { |io| io.puts react_s("Rp=", energy, port.id, port) }
       end
 
       ##
@@ -221,15 +245,17 @@ module Sadie
         # handle the port_id and act on the given energy value
         port = @port[port_id]
         if port_type_valid?(port_id, :in)
-          try_vlog { |io| io.puts "#{signature_s} [R+] (#{energy.to_s} >> #{port_id}|#{port.to_s}) / #{export_s}" }
-          react_port(port, energy)
+          Sadie::Reaktor::Base.indent do
+            try_vlog { |io| io.puts react_s("R +", energy, port_id, port) }
+            react_port(port, energy)
+          end
           try_callback(:on_react, self, port, energy)
           @stats[:react_count] += 1
         else
-          try_vlog { |io| io.puts "#{signature_s} [R-] (#{energy.to_s} >> #{port_id}|#{port.to_s}) / #{export_s}" }
+          try_vlog { |io| io.puts react_s("R -", energy, port_id, port) }
           @stats[:react_null_count] += 1
         end
-        try_vlog { |io| io.puts "#{signature_s} [R=] (#{energy.to_s} >> #{port_id}|#{port.to_s}) / #{export_s}" }
+        try_vlog { |io| io.puts react_s("R =", energy, port_id, port) }
         try_callback(:on_react_abs, self, port, energy)
         @stats[:react_abs_count] += 1
       end
@@ -237,7 +263,7 @@ module Sadie
       ##
       # emit_port(Port port, Energy energy)
       def emit_port(port, energy)
-        try_vlog { |io| io.puts "#{signature_s} [Ep=] (#{energy.to_s} >> #{port.to_s})" }
+        try_vlog { |io| io.puts emit_s("Ep=", energy, port.id, port) }
         port.client_send(energy)
       end
 
@@ -247,15 +273,17 @@ module Sadie
         # default emission action
         port = @port[port_id]
         if port_type_valid?(port_id, :out)
-          try_vlog { |io| io.puts "#{signature_s} [E+]( #{energy.to_s} >> #{port_id}|#{port.to_s})" }
-          emit_port(port, energy)
+          Sadie::Reaktor::Base.indent do
+            try_vlog { |io| io.puts emit_s("E +", energy, port_id, port) }
+            emit_port(port, energy)
+          end
           try_callback(:on_emit, self, port, energy)
           @stats[:emit_count] += 1
         else
-          try_vlog { |io| io.puts "#{signature_s} [E-] (#{energy.to_s} >> #{port_id}|#{port.to_s})" }
+          try_vlog { |io| io.puts emit_s("E -", energy, port_id, port) }
           @stats[:emit_null_count] += 1
         end
-        try_vlog { |io| io.puts "#{signature_s} [E=] (#{energy.to_s} >> #{port_id}|#{port.to_s})" }
+        try_vlog { |io| io.puts emit_s("E =", energy, port_id, port) }
         try_callback(:on_emit_abs, self, port, energy)
         @stats[:emit_abs_count] += 1
       end
@@ -342,9 +370,20 @@ module Sadie
 
       alias :/ :get_port
 
-      #class << self
+      class << self
+        attr_writer :indent
+        def indent
+          if block_given?
+            @indent += 1
+            yield @indent
+            @indent -= 1
+          end
+          @indent
+        end
       #  private :new
-      #end
+      end
+
+      @indent = 0
 
     end
   end
