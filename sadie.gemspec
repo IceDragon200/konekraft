@@ -9,7 +9,7 @@ require 'sadie/version'
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = "sadie"
-  s.summary     = "Sadie's Reaktors"
+  s.summary     = "Sadie"
   s.description = %q(Reactive component library)
   s.date        = %q(2013-05-21)
   s.version     = Sadie::VERSION
