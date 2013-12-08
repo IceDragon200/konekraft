@@ -2,10 +2,10 @@
 ; Sadie/test/data/test.sasm
 jmp main
 
-main:
-  MVI A, 0
-  MVI B, 12
-  ADD B
-  MVI C, 2
-  ADD C
-  HLT
+label main
+  mvi A, 0
+  mvi B, 12
+  add B
+  mvi C, 2
+  add C
+  hlt

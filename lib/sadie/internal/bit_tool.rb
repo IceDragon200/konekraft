@@ -18,8 +18,13 @@ module Sadie
     #   Converts an Array<int> to a |Little Endian| int
     def ary_to_int(ary)
       result = 0
-      ary.each_with_index { |i, index| result |= i << (8 * i) }
+      ary.each_with_index { |i, index| result |= i << (8 * index) }
       return result
+    end
+
+    def ary2_to_int16(ary)
+      a, b, = ary
+      return ary_to_int([a, b])
     end
 
     ##
@@ -79,36 +84,28 @@ module Sadie
     end
 
     def is_register?(data)
-      if data.is_a?(String)
-        !!Sadie::SASM::Sacpu::REGISTER2CODE[data.upcase]
-      else
-        data & REG_MASK == REG_MASK
-      end
+      return !!Sadie::Slate::CPU::REGISTER2CODE[data.to_s]
     end
 
     def is_register_pair?(data)
-      if data.is_a?(String)
-        !!Sadie::SASM::Sacpu::REGISTERPAIR2CODE[data.upcase]
-      else
-        data & REG_PAIR_MASK == REG_PAIR_MASK
-      end
+      return !!Sadie::Slate::CPU::REGISTERPAIR2CODE[data.to_s]
     end
 
     def literal_cast_as(target_datatype, data)
       case target_datatype
       when :register, :reg
-        return Sadie::SASM::Sacpu::CODE2REGISTER[data]
+        return Sadie::Slate::CPU::CODE2REGISTER[data]
       else
         return data
       end
     end
 
     def cast_as_null(data)
-      return Sadie::SASM::Sacpu::BNULL
+      return Sadie::Slate::CPU::BNULL
     end
 
     def cast_as_register(data)
-      if code = Sadie::SASM::Sacpu::REGISTER2CODE[data.upcase]
+      if code = Sadie::Slate::CPU::REGISTER2CODE[data.upcase]
         return code
       else
         return nil
@@ -117,7 +114,7 @@ module Sadie
     end
 
     def cast_as_register_pair(data)
-      if reg2code = Sadie::SASM::Sacpu::REGISTERPAIR2CODE[data.upcase]
+      if reg2code = Sadie::Slate::CPU::REGISTERPAIR2CODE[data.upcase]
         return reg2code
       else
         return nil

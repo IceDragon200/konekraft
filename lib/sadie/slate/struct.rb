@@ -1,0 +1,1 @@
+require 'sadie/slate/struct/bit_array'

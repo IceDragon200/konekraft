@@ -1,0 +1,31 @@
+;
+; SASM Code Sample
+;
+namespace SASM
+  label set0
+    mvi A, 0
+    ret
+  label set1
+    mvi A, 1
+    ret
+  label set2
+    mvi A, 2
+    ret
+namespace SASM::Program
+  label prog_entry
+    mvi B, 22
+    ret
+namespace ; returns to global namespace
+using SASM::Program
+extern SASM::Helper.blak
+label something ; a global label
+  nop ; does nothing
+namespace SASM::Program ; namespacing
+  label main ; this is a label
+    mvi A, 0 ; ensure that the accumulator is empty
+    adi 2 ; add 2 to the accumulator
+    mov B, A ; move the value of the accumulator to the
+    ret ; return I think?
+    hlt
+namespace ; returns to global namespace
+jmp SASM::Program.main ; this is a comment

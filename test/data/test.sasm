@@ -3,16 +3,10 @@
 ; using ISAVR Instruction Set
 
 jmp main
-
-label: ; :D
-  nop ; No Operation
-  ; DOSOMETHING param ; skip this
-  add A, B ; Add with other register
-  adi A, 12 ; Add with immediate value
-
-main:
+label main
   nop ; No Operation
   adi B, 12 ;
   adi C, 2 ;
-  add B, C ; Add contents of register C to B
+  mov B, C ; Add contents of register C to B
   mov A, B
+  hlt

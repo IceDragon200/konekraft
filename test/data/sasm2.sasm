@@ -1,0 +1,17 @@
+;
+; SASM Code Sample
+;
+jmp Program.main ; this is a comment
+
+label something ; a global label
+  nop ; does nothing
+
+namespace Program ; namespacing
+  label main ; this is a label
+    mov A, 0 ; ensure that the accumulator is empty
+    adi A, 2 ; add 2 to the accumulator
+    mov B, A ; move the value of the accumulator to the
+    ret ; return I think?
+    hlt
+
+namespace ; returns to global namespace

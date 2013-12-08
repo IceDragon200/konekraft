@@ -6,7 +6,7 @@ require_relative 'common'
 class SadieSasmTest < Test::Unit::TestCase
 
   def test_sasm_sacpu_clock
-    clock = Sadie::SASM::Sacpu::Clock.new(nil, 2 ** 4)
+    clock = Sadie::Slate::CPU::Clock.new(nil, 2 ** 4)
     10.times do
       clock.cycle do |clk|
         #puts "TICK[#{clk.tick}] CYCLE[#{clk.cycle_count}] CYCLETICK[#{clk.cycle_tick}]"
@@ -16,27 +16,28 @@ class SadieSasmTest < Test::Unit::TestCase
 
   ## TODO
   #
-  def test_compile
-    file = File.read('data/test.sasm')
-    puts Sadie::SASM::Assembler8085.build(file).instructions_str
+  def test_assemble
+    puts "Assembling test program"
+    file = 'data/test.sasm'
+    pp Sadie::SASM::Assembler.assemble_file(file)
   end
 
   ## TODO
   #
-  def test_interpreter
-    file = File.read('data/test-8085.sasm')
-    assembler = Sadie::SASM::Assembler8085
-    sasmvm = Sadie::SASM::SlateVM.new
+  def test_cpu_load_program
+    file = 'data/test-8085.sasm'
+    assembler = Sadie::SASM::Assembler
+    sasmvm = Sadie::Slate::SlateVM.new
     cpu = sasmvm.cpu
-    program = assembler.build(file)
-    puts program.instructions_str
-    puts cpu.freq_s
-    intp = sasmvm.interpreter
-    intp.load_program(program)
+    program = assembler.assemble_file(file)
+    pp program
+    File.write("vm_mem.bin", sasmvm.memory.dump)
+    cpu.load_program(program)
+    File.write("vm_mem.bin", sasmvm.memory.dump)
     puts cpu.to_s
-    puts intp.tick
+    puts cpu.run
     puts cpu.to_s
-    puts "cpu.idle? => %s" % intp.idle?
+    puts "cpu.idle? => %s" % cpu.idle?
   end
 
 end
