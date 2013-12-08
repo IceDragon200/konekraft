@@ -1,7 +1,20 @@
 #!/usr/bin/ruby
 # Sadie/bin/sasmc
-#   dc 29/07/2013
-#   dm 29/07/2013
-# vr 1.0.0
-#   sasmc - SASM Bytecode Compiler
-require 'sadie/sasm/sasmc'
+# sasmc - SASM Bytecode Compiler
+require 'thor'
+require 'sadie/sasmc'
+class SASMC < Thor
+
+  desc "compile <filename> [-o output_filename]", "compiles the input source file"
+  option :output, type: :string, aliases: :o
+
+  def compile(filename)
+    dst_filename = options[:out]
+    if dst_filename
+      compile_to(filename, dst_filename)
+    else
+      puts compile(filename)
+    end
+  end
+
+end
