@@ -6,4 +6,6 @@ Sadie - A reactive component library
 Sadie, or what I prefer to call it, Sadie's Reaktors, is a library of Electrical inspired Objects, which 'connect' together to perform different operations (well currently it just passes an energy parameter around)
 
 ## Dependencies
-Since 1.2.1 there are no dependencies for Sadie
+Since 1.2.1 there are no dependencies for Sadie's Reaktors
+
+SASM requires rltk
