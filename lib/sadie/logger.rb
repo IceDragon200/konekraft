@@ -1,8 +1,6 @@
 #
 # Sadie/lib/sadie/logger.rb
 #   by IceDragon (mistdragon100@gmail.com)
-#   dc 28/07/2013
-#   dm 28/07/2013
 module Sadie
   module Logger
 
