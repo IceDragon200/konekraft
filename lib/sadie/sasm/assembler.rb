@@ -64,9 +64,9 @@ module Sadie
         asts.each do |ast|
           case ast
           when AST::UsingNamespace
-            p "keyword `using` is not yet support"
+            p "keyword `using` is not yet supported"
           when AST::ExternLabel
-            p "keyword `extern` is not yet support"
+            p "keyword `extern` is not yet supported"
           when AST::NamespaceDeclaration
             if ns = ast.ns
               current_namespace = (namespaces[ns.path] ||= [])
