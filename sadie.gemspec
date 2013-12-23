@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'
+  s.executables = ["sasii", "sasmc", "sasm"]
   s.files = ["Rakefile", "LICENSE", "README.md"]
   s.files.concat(Dir.glob("lib/**/*"))
   s.files.concat(Dir.glob("test/**/*"))
