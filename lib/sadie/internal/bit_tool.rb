@@ -13,6 +13,44 @@ module Sadie
       #
     end
 
+    UINT4_MIN  =  0x0
+    UINT8_MIN  =  0x0
+    UINT16_MIN =  0x0
+    UINT32_MIN =  0x0
+
+    UINT4_MAX  =  0xF
+    UINT8_MAX  =  0xFF
+    UINT16_MAX =  0xFFFF
+    UINT32_MAX =  0xFFFFFFFF
+
+    INT4_MIN   = -0x7
+    INT8_MIN   = -0x7F
+    INT16_MIN  = -0x7FFF
+    INT32_MIN  = -0x7FFFFFFF
+
+    INT4_MAX   =  0x7
+    INT8_MAX   =  0x7F
+    INT16_MAX  =  0x7FFF
+    INT32_MAX  =  0x7FFFFFFF
+
+    [
+      [:uint4,  [UINT4_MIN,  UINT4_MAX]],
+      [:uint8,  [UINT8_MIN,  UINT8_MAX]],
+      [:uint16, [UINT16_MIN, UINT16_MAX]],
+      [:uint32, [UINT32_MIN, UINT32_MAX]],
+      [:int4,   [INT4_MIN,   INT4_MAX]],
+      [:int8,   [INT8_MIN,   INT8_MAX]],
+      [:int16,  [INT16_MIN,  INT16_MAX]],
+      [:int32,  [INT32_MIN,  INT32_MAX]]
+    ].each do |s, (mn, mx)|
+      define_method("#{s}_wrap") do |value|
+        mn + (value % (mx - mn))
+      end
+      define_method("#{s}_clamp") do |value|
+        [[value, mn].max, mx].min
+      end
+    end
+
     ##
     # ::ary_to_int(Array<int> ary) -> int
     #   Converts an Array<int> to a |Little Endian| int
@@ -136,34 +174,31 @@ module Sadie
       end
     end
 
+    def cast_as_int8(data)
+      cast_as_int(data)
+    end
+
     def cast_as_int16(data)
       cast_as_int(data)
     end
 
     def cast_as_address(data)
-      cast_as_int(data)
+      uint8_clamp(cast_as_int8(data))
     end
 
     def cast_as_address16(data)
-      cast_as_int16(data)
+      uint16_clamp(cast_as_int16(data))
     end
 
     def data_cast_as(target_datatype, data)
       case target_datatype
-      when :null
-        cast_as_null(data)
-      when :register, :reg # A, B, C, D, E, H, L
-        cast_as_register(data)
-      when :register_pair, :reg_pair
-        cast_as_register_pair(data)
-      when :integer, :int, :integer8, :int8
-        cast_as_int(data)
-      when :integer16, :int16
-        cast_as_int16(data)
-      when :address, :adr
-        cast_as_address(data)
-      when :address16, :adr16
-        cast_as_address16(data)
+      when :null                              then cast_as_null(data)
+      when :register, :reg                    then cast_as_register(data)
+      when :register_pair, :reg_pair          then cast_as_register_pair(data)
+      when :integer, :int, :integer8, :int8   then cast_as_int8(data)
+      when :integer16, :int16                 then cast_as_int16(data)
+      when :address, :adr                     then cast_as_address(data)
+      when :address16, :adr16                 then cast_as_address16(data)
       else
         raise(CastFailure,
               "failed to cast %s as a %s" % [data.inspect,
@@ -171,6 +206,9 @@ module Sadie
       end
     end
 
+    ##
+    # @param [Object] type
+    # @return [Symbol]
     def identify_type(obj)
       if is_register?(obj)
         return is_register_pair?(obj) ? :register_pair : :register
@@ -187,14 +225,15 @@ module Sadie
       data_cast_as(identify_type(obj), obj)
     end
 
+    ##
+    # @param [Symbol] type
+    # @param [Integer]
     def type_bytesize(type)
       case type
-      when :integer, :int, :int8, :address, :adr
-        1
-      when :integer16, :int16, :address16, :adr16
-        2
-      else
-        0
+      when :integer, :int, :int8, :address, :adr  then 1
+      when :integer16, :int16, :address16, :adr16 then 2
+      when :integer32, :int32, :address32, :adr32 then 4
+      else                                             0
       end
     end
 
