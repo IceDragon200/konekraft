@@ -8,19 +8,19 @@ Sadie - Experimental Designs
 ## What is this?
 Sadie is a collection of experimental libraries, associated with Computer
 Architecture and Electronics.
-* Slate
+* Slate:
   Is a virtual machine based on the 8085 CPU, it uses a custom
   language for writing programs, currently the languages are: RASM and SASM
 
-* SASM / RASM
+* SASM / RASM:
   Is an Assembly like language written for Slate, SASM is parsed and structured
   as its own language.
   RASM on the other hand is written in ruby, and exports to SASM bytecode.
 
-* Reaktor
-  An simulation library for electronics like components.
+* Reaktor:
+  A simulation library for electronics like components.
 
 ## Dependencies
-Since 1.2.1 there are no dependencies for Sadie's Reaktors
+As of 1.2.1, there are no dependencies for Sadie::Reaktor
 
 * SASM requires rltk
