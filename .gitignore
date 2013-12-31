@@ -1,2 +1,4 @@
 pkg/*
+test/*.memdump
+test/*.tbl
 test/log
