@@ -1,7 +1,8 @@
 ;
 ; SASM Code Sample
 ;
-jmp Program.main ; this is a comment
+; this is a comment
+jmp Program.main ; Example of namespace jumping
 
 label something ; a global label
   nop ; does nothing
@@ -10,7 +11,7 @@ namespace Program ; namespacing
   label main ; this is a label
     mov A, 0 ; ensure that the accumulator is empty
     adi A, 2 ; add 2 to the accumulator
-    mov B, A ; move the value of the accumulator to the
+    mov B, A ; move the value of the accumulator to B
     ret ; return I think?
     hlt
 
