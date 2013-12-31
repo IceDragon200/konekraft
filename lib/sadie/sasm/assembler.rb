@@ -9,6 +9,18 @@ module Sadie
       SoftLabel = Struct.new(:name)
 
       ##
+      #
+      def self.make_program(insts)
+        #pp insts
+        Program.new(insts.map do |code, params|
+          # TODO.
+          #   Slate::CPU is used for the InstructionSet, this needs to be
+          #   changed
+          Program::Instruction.new(Sadie::Slate::CPU, code, params)
+        end)
+      end
+
+      ##
       # namespace code is written to the bottom while instructions are
       # written at the top
       # the global namespace is ALWAYS placed first, all of its code will
@@ -143,13 +155,7 @@ module Sadie
             prms
           end
         end
-        #pp insts
-        Program.new(insts.map do |code, params|
-          # TODO.
-          #   Slate::CPU is used for the InstructionSet, this needs to be
-          #   changed
-          Program::Instruction.new(Sadie::Slate::CPU, code, params)
-        end)
+        make_program(insts)
       end
 
       def self.assemble_file(filename)
