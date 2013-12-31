@@ -4,7 +4,7 @@
 # TODO
 #   define entry point for a SASM program
 #
-# SASM - Sadie Assembly VM
+# SASM - Sadie Assembly
 module Sadie
   module SASM
 
