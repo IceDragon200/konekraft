@@ -62,7 +62,7 @@ module Sadie
         return [] if @param_types.empty?
         zip_params = params.zip(@param_types)
         zip_params.map do |o, t|
-          Sadie::BitTool.data_cast_as(t, o)
+          Sadie::BitTool.data_cast_as(o, t)
         end
       end
 

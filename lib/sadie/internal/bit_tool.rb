@@ -190,7 +190,7 @@ module Sadie
       uint16_clamp(cast_as_int16(data))
     end
 
-    def data_cast_as(target_datatype, data)
+    def data_cast_as(data, target_datatype)
       case target_datatype
       when :null                              then cast_as_null(data)
       when :register, :reg                    then cast_as_register(data)
@@ -222,7 +222,7 @@ module Sadie
     end
 
     def try_cast_obj(obj)
-      data_cast_as(identify_type(obj), obj)
+      data_cast_as(obj, identify_type(obj))
     end
 
     ##
