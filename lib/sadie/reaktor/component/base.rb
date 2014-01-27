@@ -3,6 +3,9 @@
 #   by IceDragon
 #   dc 11/03/2013
 #   dm 15/08/2013
+require 'sadie/internal/callback'
+require 'sadie/reaktor/mixin/reaktorable'
+
 module Sadie
   module Reaktor
     class Base
