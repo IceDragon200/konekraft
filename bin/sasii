@@ -1,12 +1,10 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Sadie/bin/sasii
 #   dc 28/07/2013
 #   dm 28/07/2013
 # vr 1.0.0
 #   sasii - SASM Interactive Interpreter
-dir = File.dirname(__FILE__)
-$LOAD_PATH.unshift(File.expand_path(File.join(dir, "..", "lib")))
-require 'sadie/sasm/sasii.rb'
+require 'sadie/sasm/sasii'
 
 class String
 
@@ -17,7 +15,7 @@ class String
 end
 
 begin
-  loop do 
+  loop do
     begin
       system("stty raw -echo")
       str = STDIN.getc

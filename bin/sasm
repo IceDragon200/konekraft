@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Sadie/bin/sasm
 # sasm - SASM Interpreter
-# TODO
+require 'sadie/sasm'

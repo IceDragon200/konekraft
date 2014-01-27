@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # Sadie/bin/sasmc
 # sasmc - SASM Bytecode Compiler
 require 'thor'
