@@ -16,6 +16,7 @@ end
 # remove this when building gem
 $:.unshift(Dir.getwd)
 
+require 'sadie/root_path'
 require 'sadie/logger'
 Sadie.extend(Sadie::Logger)
 #Sadie.log = STDERR

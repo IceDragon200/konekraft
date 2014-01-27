@@ -7,6 +7,7 @@
 # makes moving them around a bit easier.
 #   Reaktor Networks can be placed under other Networks if necessary.
 #   Just be careful not to end up looping them
+require 'sadie/root_path'
 module Sadie
   module Reaktor
     class Network
@@ -16,6 +17,9 @@ module Sadie
 
       ### instance_attributes
       attr_accessor :id
+      attr_accessor :name
+      attr_reader :reaktors
+      attr_reader :reaktor_mains
       attr_reader :ticks
       attr_reader :trigger
 
@@ -25,11 +29,20 @@ module Sadie
       # initialize
       def initialize
         @id = 0
+        @name = File.readlines(File.join(Sadie::ROOT_PATH, "reaktor", "data", "words.txt")).sample.chomp <<
+                "-" <<
+                File.readlines(File.join(Sadie::ROOT_PATH, "reaktor", "data", "names.txt")).sample.chomp
         @reaktors = []
         @reaktor_mains = []
         @triggers = 0
         @ticks = 0
         @post_ticks = 0
+      end
+
+      ##
+      # reset
+      def reset
+        @reaktors.each(&:reset)
       end
 
       ##
@@ -101,6 +114,14 @@ module Sadie
           rktr.post_tick
         end
         @post_ticks += 1
+      end
+
+      ##
+      # step
+      def step
+        tick
+        trigger
+        post_tick
       end
 
     end
