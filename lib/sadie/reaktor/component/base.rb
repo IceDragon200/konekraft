@@ -264,7 +264,7 @@ module Sadie
       # emit_port(Port port, Energy energy)
       def emit_port(port, energy)
         try_vlog { |io| io.puts emit_s("Ep=", energy, port.id, port) }
-        port.client_send(energy)
+        port.client_react(energy)
       end
 
       ##

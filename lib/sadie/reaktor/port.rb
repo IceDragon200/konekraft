@@ -58,8 +58,8 @@ module Sadie
       end
 
       ##
-      # client_send(Energy energy)
-      def client_send(energy)
+      # client_react(Energy energy)
+      def client_react(energy)
         @client_port.react(energy) if @client_port
       end
 
