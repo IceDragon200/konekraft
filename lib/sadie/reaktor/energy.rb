@@ -3,6 +3,7 @@
 #   by IceDragon
 #   dc 11/03/2013
 #   dm 18/08/2013
+require 'sadie/mixin/mathable'
 module Sadie
   module Reaktor
     class Energy
