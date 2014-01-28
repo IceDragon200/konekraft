@@ -13,8 +13,12 @@ module Sadie
           @_list = []
         end
 
+        def to_instructions
+          Sadie::SASM::Assembler.make_instructions(@_list)
+        end
+
         def to_program
-          Sadie::SASM::Assembler.make_program(@_list)
+          Sadie::SASM::Assembler.make_program(to_instructions)
         end
 
         def _build(data)
@@ -23,6 +27,10 @@ module Sadie
 
         def self.import(data)
           new._build(data)
+        end
+
+        def self.load_file(filename)
+          import(File.read(filename))
         end
 
         def _op(code, *params)
