@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
 
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'
-  s.executables = Dir.glob("bin/*")
+  s.executables = Dir.glob("bin/*").map { |s| File.basename(s) }
   s.files = ["Rakefile", "LICENSE", "README.md"]
   s.files.concat(Dir.glob("lib/**/*"))
-  s.files.concat(Dir.glob("test/**/*"))
+  s.files.concat(Dir.glob("test/**/*.{rb,sasm,rasm}"))
 end
