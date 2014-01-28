@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.email  = %q{mistdragon100@gmail.com}
 
   s.add_runtime_dependency 'colorize', '~> 0.6'
+  s.add_runtime_dependency 'narray',   '~> 0.6' # NArray is required for Slate::Memory
 
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'

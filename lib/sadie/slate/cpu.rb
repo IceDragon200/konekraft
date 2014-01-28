@@ -2,8 +2,8 @@
 # Sadie/lib/sadie/slate/cpu.rb
 #   by IceDragon
 require 'sadie/sasm'
+require 'sadie/slate/memory'
 require 'sadie/slate/cpu/clock'
-require 'sadie/slate/cpu/memory'
 require 'sadie/slate/cpu/register'
 require 'sadie/slate/cpu/register_pair'
 require 'sadie/slate/cpu/ports'
@@ -25,6 +25,7 @@ module Sadie
       attr_reader :clock
       attr_reader :register
       attr_accessor :memory
+      attr_accessor :halted
 
       ##
       # initialize([int memory_size, SASM::InstructionSet instset])
@@ -73,9 +74,10 @@ module Sadie
       ##
       # reset
       def reset
+        @halted = false
         @clock.reset
         @register.values.each(&:reset)
-        @ports.each(&:reset)
+        @ports.reset
         reg_sp.cell_data_set(0xFFFF)
       end
 
@@ -84,6 +86,16 @@ module Sadie
       #   translates to number of instructions per tick
       def freq_s
         "CPU Clock Frequency: #{@clock.frequency} hz"
+      end
+
+      ##
+      # status_s
+      def status_s
+        "a=#{reg_a.cell_data} b=#{reg_b.cell_data} c=#{reg_c.cell_data} " <<
+        "d=#{reg_d.cell_data} e=#{reg_e.cell_data} f=#{reg_f.cell_data} " <<
+        "h=#{reg_h.cell_data} l=#{reg_l.cell_data} pc=#{reg_pc.cell_data} " <<
+        "sp=#{reg_sp.cell_data} psw=#{reg_psw.cell_data} " <<
+        "halted=#{halted}"
       end
 
       ##
@@ -174,6 +186,11 @@ module Sadie
       # reg_pc
       def reg_pc
         reg(REG_PC)
+      end
+
+      # reg_psw
+      def reg_psw
+        reg(REG_PSW)
       end
 
       ### flags
@@ -278,7 +295,12 @@ module Sadie
       ##
       # exec_opcode(int opcode, Array<int> params)
       def exec_opcode(opcode, params)
+        #puts "executing instruction #{self.class.instspec_table[opcode]} with (#{params.join(", ")})"
         __send__("inst_#{opcode}", *params)
+      end
+
+      def exec_inst(inst)
+        exec_opcode(inst.opcode, inst.params)
       end
 
       ##
@@ -292,7 +314,7 @@ module Sadie
           reg_pc.cell_inc!
         end
         reg_pc.cell_data_set(@program_start_pointer)
-        p "loaded program of size #{codes.size} bytes"
+        #p "loaded program of size #{codes.size} bytes"
       end
 
       def next_instruction

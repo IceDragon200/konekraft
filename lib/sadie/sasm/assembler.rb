@@ -9,16 +9,19 @@ module Sadie
 
       SoftLabel = Struct.new(:name)
 
-      ##
-      #
-      def self.make_program(insts)
-        #pp insts
-        Program.new(insts.map do |code, params|
+      def self.make_instructions(data)
+        data.map do |code, params|
           # TODO.
           #   Slate::CPU is used for the InstructionSet, this needs to be
           #   changed
           Program::Instruction.new(Sadie::Slate::CPU, code, params)
-        end)
+        end
+      end
+
+      ##
+      #
+      def self.make_program(insts)
+        Program.new(insts)
       end
 
       ##
@@ -156,14 +159,22 @@ module Sadie
             prms
           end
         end
-        make_program(insts)
+        make_instructions(insts)
+      end
+
+      def self.assemble_string(str)
+        lxs = str.each_line.map { |line| Sadie::SASM::Lexer.lex(line) }
+        asts = lxs.map { |lx| Sadie::SASM::Parser.parse(lx, accept: :all) }
+        Sadie::SASM::Assembler.assemble(asts.flatten)
       end
 
       def self.assemble_file(filename)
         str = File.read(filename)
-        lxs = str.each_line.map { |line| Sadie::SASM::Lexer.lex(line) }
-        asts = lxs.map { |lx| Sadie::SASM::Parser.parse(lx, accept: :all) }
-        Sadie::SASM::Assembler.assemble(asts.flatten)
+        assemble_string(str)
+      end
+
+      def self.assemble_file_to_program(filename)
+        Sadie::SASM::Program.new(assemble_file(filename))
       end
 
     end

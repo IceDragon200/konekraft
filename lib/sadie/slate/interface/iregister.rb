@@ -1,8 +1,6 @@
 #
-# Sadie/lib/sadie/sasm/interface/iregister.rb
+# Sadie/lib/sadie/slate/interface/iregister.rb
 #   by IceDragon
-#   dc 23/05/2013
-#   dm 23/05/2013
 # IRegister is the storage interface for SASM, any Object requiring the ability
 # to store and access data through SASM objects must implement the IRegister
 # interface.
@@ -20,49 +18,49 @@ module Sadie
         ##
         # cell_data -> Integer
         def cell_data
-          nil
+          raise
         end
 
         ##
         # cell_data_set
         def cell_data_set(data)
-          nil
+          raise
         end
 
         ##
         # block_size -> Integer
         def block_size
-          nil
+          raise
         end
 
         ##
         # post_access_data
         def post_access_data
-          nil
+          raise
         end
 
         ##
         # low_data
         def low_data
-          nil
+          raise
         end
 
         ##
         # low_data_set(Integer data)
         def low_data_set(data)
-          nil
+          raise
         end
 
         ##
         # high_data
         def high_data
-          nil
+          raise
         end
 
         ##
         # high_data_set(Integer data)
         def high_data_set(data)
-          nil
+          raise
         end
 
       end

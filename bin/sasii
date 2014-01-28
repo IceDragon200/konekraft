@@ -4,24 +4,96 @@
 #   dm 28/07/2013
 # vr 1.0.0
 #   sasii - SASM Interactive Interpreter
-require 'sadie/sasm/sasii'
+require 'sadie/sasii'
+require 'sadie/cli/common'
 
-class String
+@prompt_heading = "sasii"
+@slate = Sadie::Slate::VirtualMachine.new
 
-  def byte
-    bytes.first
+def process_command(raw_command)
+  command = subsitute_env(raw_command)
+  case command
+  when 'env'
+    @env_table.each do |k, v|
+      puts "#{k} => #{v}"
+    end
+  when /\Aunset\s(\S+)/
+    @env_table.delete($1)
+  when /\Aset\s(\S+)\s(.*)/i
+    @env_table[$1] = $2
+  when /\Aecho\s*(.*)/
+    puts $1
+  when 'run'
+    begin
+      @slate.run
+    rescue Interrupt
+    end
+  when 'print cpumap'
+    puts @slate.cpumap_s
+  when 'print memmap'
+    puts @slate.memmap_s
+  when 'property get memory blocksize'
+    puts @env_table["0"] = @slate.memory.block_size
+  when 'property get memory blockcount'
+    puts @env_table["0"] = @slate.memory.block_count
+  when 'memclr'
+    @slate.memory.memclr
+  when /\Amemset\s(\d+)\s(\d+)\s(\d+)/
+    pointer = $1.to_i
+    value   = $2.to_i
+    length  = $3.to_i
+    begin
+      @slate.memory.memset(pointer, value, length)
+    rescue IndexError => ex
+      log_error ex.message
+    end
+  when 'reset'
+    @slate.reset
+  when 'status'
+    puts @slate.status_s
+  when 'status memory'
+    puts @slate.memory.status_s
+  when 'status cpu'
+    puts @slate.cpu.status_s
+  when /\Ainst\s(.*)/
+    str = $1
+    begin
+      @slate.exec_eval(str)
+    rescue RLTK::LexingError
+      log_error "could not assemble (#{str})"
+    end
+  when /\Aop\s(\d+)(?:\s+(\d+(?:\s*,\s*\d+)*))?/
+    opcode = $1.to_i
+    params = $2.gsub(" ", "").split(",")
+    @slate.exec_opcode(opcode, params)
+  when /\Aload program\s(.+)/
+    filename = $1
+    begin
+      prog = Sadie::SASM::Assembler.assemble_file_to_program(filename)
+      @slate.load_program(prog)
+    rescue RLTK::LexingError
+      log_error "could not assemble (#{str})"
+    end
+  when 'quit'
+    throw :quit
+  else
+    log_error "unknown command: (#{command})"
   end
-
 end
 
-begin
-  loop do
-    begin
-      system("stty raw -echo")
-      str = STDIN.getc
-    ensure
-      system("stty -raw echo")
+puts "Sadie Interactive Interpreter"
+puts "Sadie Version #{Sadie::VERSION}"
+puts "Sadie::SASM Version #{Sadie::SASM::VERSION}"
+puts "Sadie::Slate Version #{Sadie::Slate::VERSION}"
+
+catch :quit do
+  if ARGV.empty?
+    loop { prompt; to_commands(gets) { |str| process_command(str) } }
+  else
+    in_filename = ARGV.first
+    to_commands(File.read(in_filename)) do |str|
+      prompt; puts "#{str}"
+      process_command(str)
     end
-    break if str == "\x03" # Interrupt
   end
 end

@@ -1,8 +1,6 @@
 #
-# Sadie/lib/sadie/sasm/helper/iregister_data.rb
+# Sadie/lib/sadie/slate/helper/iregister_data.rb
 #   by IceDragon
-#   dc 23/05/2013
-#   dm 28/07/2013
 require 'sadie/slate/interface/iregister'
 module Sadie
   module Slate

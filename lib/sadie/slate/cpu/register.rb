@@ -1,8 +1,6 @@
 #
-# Sadie/lib/sadie/sasm/sacpu/register.rb
+# Sadie/lib/sadie/slate/cpu/register.rb
 #   by IceDragon
-#   dc 22/05/2013
-#   dm 25/05/2013
 require 'sadie/slate/struct/bit_array'
 module Sadie
   module Slate

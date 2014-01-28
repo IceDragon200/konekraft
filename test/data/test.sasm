@@ -5,8 +5,8 @@
 jmp main
 label main
   nop ; No Operation
-  adi B, 12 ;
-  adi C, 2 ;
-  mov B, C ; Add contents of register C to B
-  mov A, B
+  mvi A, 0 ;
+  adi 12 ;
+  adi 2 ;
+  mov B, A
   hlt

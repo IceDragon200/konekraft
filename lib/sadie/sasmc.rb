@@ -15,7 +15,8 @@ module Sadie
       end
 
       def self.compile(filename)
-        prog = Sadie::SASM::Assembler.assemble_file(filename)
+        assemble_file_to_program
+        prog = Sadie::SASM::Assembler.assemble_file_to_program(filename)
         data = to_bytecode_prog(prog)
         return data
       end

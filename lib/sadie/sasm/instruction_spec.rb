@@ -96,7 +96,8 @@ module Sadie
       end
 
       def to_s
-        "#{"%03d" % opcode} | #{name} (#{param_types.join(", ")}) [#{@arity}]"
+        param_str = param_types.compact.empty? ? "()" : "(#{param_types.compact.join(", ")})"
+        "#{opcode}:#{name}#{param_str}"
       end
 
     end

@@ -9,3 +9,4 @@ require 'sadie/slate/interface'        # Slate Interface Classes
 require 'sadie/slate/virtual_machine'  # Slate Virtual Machine
 require 'sadie/slate/cpu'              # Slate CPU
 require 'sadie/slate/interpreter'      # Slate Interpreter
+require 'sadie/slate/version'          # Slate Version Number

@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+require 'sadie/slate'
+
+def args_str(params)
+  final_params = params.select do |n|
+    case n
+    when :reg_a, :reg_b, :reg_c, :reg_d, :reg_e, :reg_h, :reg_l,
+         :reg_bc, :reg_de, :reg_hl, :reg_psw, :reg_sp, :reg_m, 0..7
+      false
+    else
+      true
+    end
+  end
+  final_params.empty? ? "()" : "(#{final_params.join(", ")})"
+end
+
+puts Sadie::Slate::CPU.struct_spec.map { |k,v| "#{k}:#{v.first}#{args_str(v[1])}" }

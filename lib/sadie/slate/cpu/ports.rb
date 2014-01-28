@@ -1,7 +1,6 @@
 #
-# Sadie/lib/sadie/sasm/sacpu/clock.rb
-#   dc 22/05/2013
-#   dm 22/05/2013
+# Sadie/lib/sadie/slate/cpu/clock.rb
+#
 module Sadie
   module Slate
     class CPU

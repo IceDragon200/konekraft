@@ -1,7 +1,6 @@
 #
-# Sadie/lib/sadie/sasm/sacpu/clock.rb
-#   dc 22/05/2013
-#   dm 22/05/2013
+# Sadie/lib/sadie/slate/cpu/clock.rb
+#
 module Sadie
   module Slate
     class CPU
@@ -49,6 +48,12 @@ module Sadie
             @cycle_tick += 1
             yield self
           end
+        end
+
+        def reset
+          @tick = 0
+          @cycle_tick = 0
+          @cycle_count = 0
         end
 
       end

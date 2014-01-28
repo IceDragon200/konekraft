@@ -1,6 +1,7 @@
 #
 # Sadie/lib/sadie/logger.rb
 #   by IceDragon (mistdragon100@gmail.com)
+require 'sadie/version'
 module Sadie
   module Logger
 

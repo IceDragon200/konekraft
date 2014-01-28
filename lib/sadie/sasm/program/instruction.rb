@@ -63,8 +63,11 @@ module Sadie
         end
 
         def inspect
-          #"<#{self.class.name}[#{self.object_id}]: #{"%03d" % opcode} | #{name}(#{params.join(", ")})>"
-          "<#{"%03d" % opcode} | #{name}(#{params.join(", ")})>"
+          "#{opcode}:#{name}(#{params.join(", ")})"
+        end
+
+        def to_s
+          "#{opcode}:#{name}(#{params.join(", ")})"
         end
 
       end
