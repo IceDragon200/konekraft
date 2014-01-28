@@ -2,41 +2,18 @@
 # Sadie/bin/reaktk
 # Reaktor Toolkit
 require 'sadie/reaktor'
+require 'sadie/cli/common'
 require 'yaml'
-require 'colorize'
 
 puts "Reaktor Interactive Toolkit"
-puts "Sadie::Reaktor vr. #{Sadie::Reaktor::VERSION}"
-commands = %w[echo ls quit help]
+puts "Sadie Version #{Sadie::VERSION}"
+puts "Sadie::Reaktor Version #{Sadie::Reaktor::VERSION}"
+
 @networks = []
-@env_table = { }
-@line_number = 1
+@prompt_heading = "reaktor"
 
 def keyword_new
   "new".magenta
-end
-
-def to_commands(str)
-  return to_enum :to_commands, str unless block_given?
-  str.to_s.chomp.each_line do |line|
-    l = line.gsub(/\#(.*)/,'').chomp
-    unless l.empty?
-      yield l
-      @line_number += 1
-    end
-  end
-end
-
-def prompt
-  print "reaktor:#{"%03d" % @line_number}~> ".light_green
-end
-
-def log_error(str)
-  puts "!!! ".light_red << str
-end
-
-def subsitute_env(str)
-  str.gsub(/\$([A-Z0-9_]+)/i) { @env_table[$1] }
 end
 
 def find_network(network_id)
@@ -147,7 +124,7 @@ def process_command(raw_command)
     find_network(network_id) do |network|
       find_reaktor(network, id: reaktor_id) do |reaktor|
         begin
-          puts reaktor.property_get(property_key)
+          puts @env_table["0"] = reaktor.property_get(property_key)
         rescue KeyError => ex
           print "[#{network.id_s}][#{reaktor.id_s}] ".light_blue
           log_error ex.message
