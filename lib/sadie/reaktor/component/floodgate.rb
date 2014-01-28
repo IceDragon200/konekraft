@@ -17,19 +17,19 @@ module Sadie
       register_port(:out, OUTPUT_ID = :output, "output")
 
       ### instance_attributes
-      attr_accessor :flood_trigger_thresh # Integer
+      attr_accessor :threshold # Integer
 
       ##
       # init
       def init
         super
-        @flood_trigger_thresh = 1
+        @threshold = 1
       end
 
       ##
       # trigger_floodgate?
       def trigger_floodgate?(energy)
-        energy.value >= @flood_trigger_thresh
+        energy.value >= @threshold
       end
 
       ##
@@ -45,7 +45,23 @@ module Sadie
       ##
       # export_h -> Hash
       def export_h
-        super.merge(flood_trigger_thresh: @flood_trigger_thresh)
+        super.merge(threshold: @threshold)
+      end
+
+      def property_get(k)
+        case k.to_s
+        when "threshold" then @threshold
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "threshold" then @threshold = v.to_i
+        else
+          super(k, v)
+        end
       end
 
       ### registration

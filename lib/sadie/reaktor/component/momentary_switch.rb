@@ -62,6 +62,24 @@ module Sadie
         super.merge(state: @state, default_state: @default_state)
       end
 
+      def property_get(k)
+        case k.to_s
+        when "default_state" then @default_state
+        when "state"         then @state
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "default_state" then @default_state = bool_parse(v)
+        when "state"         then @state = bool_parse(v) # state is released afterwards anyway
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('momentary_switch')
 

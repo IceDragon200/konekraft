@@ -59,6 +59,24 @@ module Sadie
         super.merge(threshold: @threshold, lit: @lit)
       end
 
+      def property_get(k)
+        case k.to_s
+        when "threshold" then @threshold
+        when "lit"       then @lit
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "threshold" then @threshold = v.to_i
+        when "lit"       then @lit = bool_parse(v)
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('indicator')
 

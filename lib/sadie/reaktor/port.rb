@@ -14,7 +14,6 @@ module Sadie
       attr_accessor :name
       attr_reader :client_port
       attr_reader :client
-      attr_reader :client_port_id
       attr_reader :parent
       attr_reader :id
       attr_reader :type
@@ -26,10 +25,19 @@ module Sadie
         @port_spec      = spec
         @client_port    = nil
         @client         = nil
-        @client_port_id = nil
         @id   = @port_spec.id
         @name = @port_spec.name.dup
         @type = @port_spec.type
+      end
+
+      def to_rktm_h
+        {
+
+        }
+      end
+
+      def import_rktm_h(hsh)
+        hsh[]
       end
 
       ##
@@ -99,10 +107,20 @@ module Sadie
         valid_type?(:out)
       end
 
+      def id_s
+        "#{@id}:#{@name}"
+      end
+
       ##
       # to_s -> String
       def to_s
-        "PORT(#{id}|#{name}|#{type})"
+        "#{id_s}.#{type}"
+      end
+
+      def self.load_rktm_h(reaktor, port_spec, hsh)
+        port = new reaktor, port_spec
+        port.import_rktm_h(hsh)
+        return hsh
       end
 
       alias :< :connect_as_child

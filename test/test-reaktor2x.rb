@@ -32,9 +32,7 @@ def network_block(network, hsh={})
     network.vlog.puts # space!
     frame_sleep
     yield network if block_given?
-    network.tick
-    network.trigger
-    network.post_tick
+    network.step
     break if condition_func.(network)
   end
   network.vlog.puts # space!
@@ -153,7 +151,7 @@ class SadieReaktor2xTest < Test::Unit::TestCase
       ### setup
       emitter.energy.value = 1
       capacitor.charge_ceil = 7
-      floodgate.flood_trigger_thresh = 4
+      floodgate.threshold = 4
       ### callbacks
       floodgate.add_callback(:on_react_flood) do |rktr, port, energy|
         rktr.try_vlog { |io| io.puts "  !!! DA FLOOD!!! D:" }
@@ -262,7 +260,7 @@ class SadieReaktor2xTest < Test::Unit::TestCase
       emitter.energy.value = 1
       emitter_common.energy.value = 1
       capacitor.charge_ceil = 5
-      relay.coil_state_thresh = 3
+      relay.threshold = 3
       indicator_coil.threshold = 1
       indicator_nc.threshold = 1
       indicator_no.threshold = 1

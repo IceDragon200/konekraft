@@ -21,7 +21,8 @@ module Sadie
       attr_reader :reaktors
       attr_reader :reaktor_mains
       attr_reader :ticks
-      attr_reader :trigger
+      attr_reader :post_ticks
+      attr_reader :triggers
 
       attr_accessor :vlog
 
@@ -37,6 +38,16 @@ module Sadie
         @triggers = 0
         @ticks = 0
         @post_ticks = 0
+      end
+
+      def find(options)
+        if rid = options[:id]
+          @reaktors.find { |r| r.id == rid }
+        elsif nm = options[:name]
+          @reaktors.find { |r| r.name == nm }
+        else
+          raise ArgumentError, "expected :id or :name key"
+        end
       end
 
       ##
@@ -122,6 +133,32 @@ module Sadie
         tick
         trigger
         post_tick
+      end
+
+      def to_rktm_h
+        {
+          "id" => @id,
+          "name" => @name,
+          "reaktors" => @reaktors.map(&:to_rktm_h),
+          "reaktor_mains" => @reaktor_mains.map(&:id),
+          "ticks" => @ticks,
+          "post_ticks" => @post_ticks,
+          "triggers" => @triggers
+        }
+      end
+
+      def import_rktm_h(hsh)
+        @id            = hsh["id"]
+        @name          = hsh["name"]
+        @reaktors      = hsh["reaktors"].map { |h| Sadie::Reaktor.load_rktm_h(h) }
+        @reaktor_mains = hsh["reaktor_mains"].map { |id| id=id.to_i;@reaktors.find { |r| r.id == id } }
+        @ticks         = hsh["ticks"]
+        @post_ticks    = hsh["post_ticks"]
+        @triggers      = hsh["triggers"]
+      end
+
+      def id_s
+        "#{@id}:#{@name}"
       end
 
     end

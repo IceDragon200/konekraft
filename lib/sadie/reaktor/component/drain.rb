@@ -31,6 +31,28 @@ module Sadie
         end
       end
 
+      ##
+      # export_h -> Hash
+      def export_h
+        super.merge(threshold: threshold)
+      end
+
+      def property_get(k)
+        case k.to_s
+        when "threshold" then @threshold
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "threshold" then @threshold = v.to_i
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('drain')
 

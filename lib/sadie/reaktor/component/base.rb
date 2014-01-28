@@ -88,10 +88,63 @@ module Sadie
         end
       end
 
+      def to_rktm_h
+        {
+          "TYPE"       => self.class.registered_name,
+          "id"         => @id,
+          "name"       => @name,
+          "energy"     => @energy.to_rktm_h,
+          "port"       => Hash[@port.map { |k,v| [k,v.to_rktm_h] }],
+          "stats"      => @stats,
+          "ticks"      => @ticks,
+          "post_ticks" => @post_ticks,
+        }
+      end
+
+      def import_rktm_h(hsh)
+        @id         = hsh["id"]
+        @name       = hsh["name"]
+        @energy     = Sadie::Reaktor::Energy.load_rktm_h(hsh["energy"])
+        @port       = Hash[hsh["port"].map { |k,v| [k, Port.load_rktm_h(v)] }]
+        @stats      = hsh["stats"]
+        @ticks      = hsh["ticks"]
+        @post_ticks = hsh["post_ticks"]
+      end
+
+      def bool_parse(str)
+        case str
+        when "on", "true", "yes", "1"  then true
+        when "off", "false", "no", "0" then false
+        else                                false
+        end
+      end
+
+      def property_get(key)
+        case key.to_s
+        when "energy"     then @energy.to_i
+        when "post_ticks" then @post_ticks
+        when "ticks"      then @ticks
+        else                   raise KeyError, "could not find property #{key}"
+        end
+      end
+
+      def property_set(key, value)
+        case key.to_s
+        when "energy"     then @energy.set(value.to_i)
+        when "post_ticks" then @post_ticks = value.to_i
+        when "ticks"      then @ticks = value.to_i
+        else                   raise KeyError, "could not find property #{key}"
+        end
+      end
+
       ##
       # export_h -> Hash
       def export_h
-        { energy: @energy.to_s }
+        { ticks: @ticks, post_ticks: @post_ticks, energy: @energy.to_s }
+      end
+
+      def id_s
+        "#{@id}:#{@name}"
       end
 
       ##
@@ -355,7 +408,6 @@ module Sadie
       def self.register_port(type, id, name)
         port_spec[id] = PortSpec.new(id, name, type)
       end
-
 
       private :initialize
       private :init_id

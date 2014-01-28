@@ -84,6 +84,32 @@ module Sadie
         )
       end
 
+      def property_get(k)
+        case k.to_s
+        when "charge_ceil"     then @charge_ceil
+        when "charge_foot"     then @charge_foot
+        when "charge_lost"     then @charge_lost
+        when "charge_pull_max" then @charge_pull_max
+        when "charge_pull_min" then @charge_pull_min
+        when "discharge"       then @discharge
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "charge_ceil"     then @charge_ceil = v.to_i
+        when "charge_foot"     then @charge_foot = v.to_i
+        when "charge_lost"     then @charge_lost = v.to_i
+        when "charge_pull_max" then @charge_pull_max = v.to_i
+        when "charge_pull_min" then @charge_pull_min = v.to_i
+        when "discharge"       then @discharge = bool_parse(v) # the discharge is internally controlled
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('capacitor')
 

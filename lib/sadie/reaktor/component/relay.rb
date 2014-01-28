@@ -21,32 +21,32 @@ module Sadie
 
       ### extensions
       extend Sadie::Reaktor::Mixin::SwitchState2
-      ss2_def :coil_state
+      ss2_def :state
 
       ### instance_attributes
-      attr_reader :coil_state            # Boolean
-      attr_accessor :coil_state_default  # Boolean
-      attr_accessor :coil_state_thresh   # Integer
+      attr_reader :state           # Boolean
+      attr_accessor :default_state # Boolean
+      attr_accessor :threshold     # Integer
 
       ##
       # init
       def init
         super
-        @coil_state = @coil_state_default = false
-        @coil_state_thresh = 1
+        @state = @state_default = false
+        @threshold = 1
       end
 
       ##
-      # coil_state_inverted
-      def coil_state_inverted
-        return !coil_state_default
+      # state_inverted
+      def state_inverted
+        return !state_default
       end
 
       ##
       # coil_trigger?(energy)
       def coil_trigger?(energy)
         # can the coil be trigger from the given energy?
-        energy.value >= @coil_state_thresh
+        energy.value >= @threshold
       end
 
       ##
@@ -58,13 +58,13 @@ module Sadie
           # if energy is valid for coil then its state is inverted (ON)
           # however if it is not present then the coil will default to its
           # normal state (OFF)
-          @coil_state = coil_trigger?(energy) ? coil_state_inverted :
-                                                coil_state_default
+          @state = coil_trigger?(energy) ? state_inverted :
+                                                state_default
           emit(OUTPUT_COIL_ID, energy)
           try_callback(:on_react_coil, self, port, energy)
         when INPUT_COMMON_ID
-          emit(@coil_state ? OUTPUT_NO_ID : OUTPUT_NC_ID, energy)
-          emit(!@coil_state ? OUTPUT_NO_ID : OUTPUT_NC_ID, emit_energy_null)
+          emit(@state ? OUTPUT_NO_ID : OUTPUT_NC_ID, energy)
+          emit(!@state ? OUTPUT_NO_ID : OUTPUT_NC_ID, emit_energy_null)
           try_callback(:on_react_common, self, port, energy)
         end
       end
@@ -72,7 +72,29 @@ module Sadie
       ##
       # export_h -> Hash
       def export_h
-        super.merge(coil_state: @coil_state, coil_state_default: @coil_state_default, coil_state_thresh: @coil_state_thresh)
+        super.merge(state: @state,
+                    state_default: @state_default,
+                    threshold: @threshold)
+      end
+
+      def property_get(k)
+        case k.to_s
+        when "default_state" then @default_state
+        when "state"         then @state
+        when "threshold"     then @threshold
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "default_state" then @default_state = bool_parse(v)
+        when "state"         then @state = bool_parse(v) # state is released afterwards anyway
+        when "threshold"     then @threshold = v.to_i
+        else
+          super(k, v)
+        end
       end
 
       ### registration

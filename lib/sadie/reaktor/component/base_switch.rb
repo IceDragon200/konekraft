@@ -37,6 +37,22 @@ module Sadie
         super.merge(state: state)
       end
 
+      def property_get(k)
+        case k.to_s
+        when "state" then @state
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "state" then @state = bool_parse(v)
+        else
+          super(k, v)
+        end
+      end
+
     end
   end
 end

@@ -45,5 +45,20 @@ module Sadie
       @@reaktor_register
     end
 
+    def self.find(name)
+      @@reaktor_register.fetch(name)
+    end
+
+    def self.all
+      reaktors
+    end
+
+    def self.load_rktm_h(hsh)
+      reaktor_klass = find(hsh.delete("TYPE"))
+      reaktor = reaktor_klass.new
+      reaktor.import_rktm_h(hsh)
+      return reaktor
+    end
+
   end
 end

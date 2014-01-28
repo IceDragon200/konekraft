@@ -107,6 +107,30 @@ module Sadie
                     aux_trigger_energy: aux_trigger_energy.to_s)
       end
 
+      def property_get(k)
+        case k.to_s
+        when "aux_state1"          then @aux_state[:aux1_in]
+        when "aux_state2"          then @aux_state[:aux2_in]
+        when "aux_trigger_energy1" then @aux_trigger_energy[:aux1_in]
+        when "aux_trigger_energy2" then @aux_trigger_energy[:aux2_in]
+        when "coil_state_normal"   then @coil_state_normal
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "aux_state1"          then @aux_state[:aux1_in] = bool_parse(v)
+        when "aux_state2"          then @aux_state[:aux2_in] = bool_parse(v)
+        when "aux_trigger_energy1" then @aux_trigger_energy[:aux1_in] = v.to_i
+        when "aux_trigger_energy2" then @aux_trigger_energy[:aux2_in] = v.to_i
+        when "coil_state_normal"   then @coil_state_normal = bool_parse(v)
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('contactor')
 

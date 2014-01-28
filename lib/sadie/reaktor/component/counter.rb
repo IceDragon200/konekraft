@@ -53,7 +53,25 @@ module Sadie
       ##
       # export_h -> Hash
       def export_h
-        super.merge(counter: counter)
+        super.merge(counter: counter, threshold: threshold)
+      end
+
+      def property_get(k)
+        case k.to_s
+        when "counter"   then @counter
+        when "threshold" then @threshold
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "counter"   then @counter   = v.to_i
+        when "threshold" then @threshold = v.to_i
+        else
+          super(k, v)
+        end
       end
 
       ### registration

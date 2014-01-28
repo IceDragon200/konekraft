@@ -36,6 +36,14 @@ module Sadie
       end
 
       ##
+      # set(int other)
+      # set(Energy other)
+      def set(other)
+        @value = cast_value(other)
+        self
+      end
+
+      ##
       # add!(int other)
       # add!(Energy other)
       def add!(other)
@@ -93,7 +101,7 @@ module Sadie
       ##
       # to_s -> String
       def to_s
-        "power|#{@value}"
+        "power:#{@value}"
       end
 
       ##

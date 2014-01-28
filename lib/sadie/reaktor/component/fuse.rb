@@ -57,6 +57,24 @@ module Sadie
         super.merge(threshold: @threshold, broken: @broken)
       end
 
+      def property_get(k)
+        case k.to_s
+        when "broken"    then @broken
+        when "threshold" then @threshold
+        else
+          super(k)
+        end
+      end
+
+      def property_set(k, v)
+        case k.to_s
+        when "broken"    then @broken = bool_parse(v)
+        when "threshold" then @threshold = v.to_i
+        else
+          super(k, v)
+        end
+      end
+
       ### registration
       register('fuse')
 
