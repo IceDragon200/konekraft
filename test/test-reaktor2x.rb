@@ -303,7 +303,7 @@ class SadieReaktor2xTest < Test::Unit::TestCase
       seven_segment  = network.add(SevenSegment)
       ###
       emitter_seg.each { |emitter| emitter.energy.value = 1 }
-      seven_segment.segment_thresh = 1
+      seven_segment.threshold = 1
       ###
       (emitter_seg[0]/:output) | (seven_segment/:seg1_in)
       (emitter_seg[1]/:output) | (seven_segment/:seg2_in)
