@@ -3,6 +3,7 @@
 #   by IceDragon
 #
 # RASM - Ruby Sadie Assembly
+require 'sadie/sasm/assembler'
 module Sadie
   module SASM
     module RASM

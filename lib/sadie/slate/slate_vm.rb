@@ -9,7 +9,7 @@
 #   This is the Slate Virtual Machine, a virtual machine for the SASM language
 module Sadie
   module Slate
-    class SlateVM
+    class VirtualMachine
 
       ### constants
       VERSION = "0.1.0".freeze

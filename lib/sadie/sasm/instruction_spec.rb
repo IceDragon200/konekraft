@@ -1,6 +1,7 @@
 #
 # Sadie/lib/sadie/sasm/instruction_spec.rb
 #   by IceDragon
+require 'sadie/internal/bit_tool'
 module Sadie
   module SASM
     class InstructionSpec

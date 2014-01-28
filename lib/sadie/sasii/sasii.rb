@@ -14,7 +14,7 @@ module Sadie
       VERSION = "1.0.0".freeze
 
       def self.init
-        @slate = Sadie::Slate::SlateVM.new
+        @slate = Sadie::Slate::VirtualMachine.new
       end
 
       def self.exec_eval(string)
@@ -24,7 +24,7 @@ module Sadie
       def self.run
         loop do
           time = Time.now.strftime("%H:%M:%S")
-          print "[#{time}] SlateVM :> "
+          print "[#{time}] Slate::VirtualMachine :> "
           begin
             str = gets.chomp
             if str == "quit" || str == "exit"

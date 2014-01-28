@@ -12,4 +12,5 @@ module Sadie
     end
 
   end
+  extend Logger
 end

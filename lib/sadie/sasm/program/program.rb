@@ -1,6 +1,7 @@
 #
 # Sadie/lib/sadie/sasm/program.rb
 #   by IceDragon
+require 'sadie/sasm/program/instruction'
 module Sadie
   module SASM
     class Program

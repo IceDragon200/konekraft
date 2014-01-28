@@ -1,4 +1,4 @@
 #
-# Sadie/src/sadie/easy.rb
-#   by IceDragon
-require 'sadie/easy/easy.rb'
+# Sadie/lib/sadie/easy.rb
+#
+require 'sadie/easy/easy'

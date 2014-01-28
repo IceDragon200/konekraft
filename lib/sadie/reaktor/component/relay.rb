@@ -32,14 +32,14 @@ module Sadie
       # init
       def init
         super
-        @state = @state_default = false
+        @state = @default_state = false
         @threshold = 1
       end
 
       ##
       # state_inverted
       def state_inverted
-        return !state_default
+        return !default_state
       end
 
       ##
@@ -59,7 +59,7 @@ module Sadie
           # however if it is not present then the coil will default to its
           # normal state (OFF)
           @state = coil_trigger?(energy) ? state_inverted :
-                                                state_default
+                                                default_state
           emit(OUTPUT_COIL_ID, energy)
           try_callback(:on_react_coil, self, port, energy)
         when INPUT_COMMON_ID
@@ -73,7 +73,7 @@ module Sadie
       # export_h -> Hash
       def export_h
         super.merge(state: @state,
-                    state_default: @state_default,
+                    default_state: @default_state,
                     threshold: @threshold)
       end
 

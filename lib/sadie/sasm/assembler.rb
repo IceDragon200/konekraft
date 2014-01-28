@@ -2,6 +2,7 @@
 # Sadie/lib/sadie/sasm/assembler.rb
 #
 require 'sadie/sasm/ast'
+require 'sadie/sasm/program'
 module Sadie
   module SASM
     class Assembler

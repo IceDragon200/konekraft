@@ -307,7 +307,7 @@ module Sadie
         AST::NamespaceLabel.new(lb, ns)
       end
       ### finalize
-      finalize use: 'sparser.tbl'#, lookahead: false
+      finalize #use: 'sparser.tbl'#, lookahead: false
     end
   end
 end
