@@ -99,6 +99,10 @@ module Sadie
           block_s
         end
 
+        def reset
+          cell_data_set(0)
+        end
+
       end
     end
   end

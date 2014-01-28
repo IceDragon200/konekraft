@@ -29,6 +29,10 @@ module Sadie
             @data = ireg.cell_data
           end
 
+          def reset
+            @data = 0
+          end
+
         end
 
         ### constants
@@ -43,6 +47,11 @@ module Sadie
           @cpu = cpu
           @input = Array.new(input_count) { Port.new }
           @output = Array.new(output_count) { Port.new }
+        end
+
+        def reset
+          @input.each(&:reset)
+          @output.each(&:reset)
         end
 
       end

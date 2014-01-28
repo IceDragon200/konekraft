@@ -42,6 +42,13 @@ module Sadie
       end
 
       ##
+      # reset
+      def reset
+        @cpu.reset
+        @memory.reset
+      end
+
+      ##
       # exec_opcode(int bytecode, *Array<int> parameters)
       def exec_opcode(bytecode, *parameters)
         @cpu.exec_opcode(bytecode, *parameters)
@@ -68,7 +75,8 @@ module Sadie
         when String                            then exec_eval(arg)
         when Sadie::SASM::Program::Instruction then exec_inst(arg)
         else
-          raise(ArgumentError, "expected a Bytecode or String or a Instruction")
+          raise ArgumentError,
+                "wrong argument type #{arg.class} (expected a Bytecode, String, or Instruction)"
         end
       end
 

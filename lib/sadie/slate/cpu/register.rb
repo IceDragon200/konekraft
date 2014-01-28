@@ -37,6 +37,10 @@ module Sadie
           (0...@size).each { |i| yield bit_at(i) }
         end
 
+        def reset
+          cell_data_set(0)
+        end
+
       end
     end
   end

@@ -71,6 +71,15 @@ module Sadie
       end
 
       ##
+      # reset
+      def reset
+        @clock.reset
+        @register.values.each(&:reset)
+        @ports.each(&:reset)
+        reg_sp.cell_data_set(0xFFFF)
+      end
+
+      ##
       # freq_s
       #   translates to number of instructions per tick
       def freq_s
