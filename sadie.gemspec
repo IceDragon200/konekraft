@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'colorize', '~> 0.6'
   s.add_runtime_dependency 'narray',   '~> 0.6' # NArray is required for Slate::Memory
+  s.add_runtime_dependency 'rltk',     '~> 2.2' # RLTK is needed for SASM
 
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'
