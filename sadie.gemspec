@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.author = "Corey Powell"
   s.email  = %q{mistdragon100@gmail.com}
 
+  s.add_runtime_dependency 'colorize', '~> 0.6'
+
   s.require_path = "lib"
   s.test_file = 'test/test-suite.rb'
   s.executables = Dir.glob("bin/*")
