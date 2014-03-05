@@ -66,13 +66,31 @@ def process_command(raw_command)
     opcode = $1.to_i
     params = $2.gsub(" ", "").split(",")
     @slate.exec_opcode(opcode, params)
-  when /\Aload program\s(.+)/
+  when /\Aimport rasm\s(.+)/
+    filename = $1
+    Sadie::SASM::RASM.load_file(filename).to_instructions.each do |inst|
+      puts inst
+      @slate.exec(inst)
+    end
+  when /\Aimport sasm\s(.+)/
+    filename = $1
+    Sadie::SASM::Assembler.assemble_file(filename).each do |inst|
+      puts inst
+      @slate.exec(inst)
+    end
+  when /\Aload rasm program\s(.+)/
+    filename = $1
+    begin
+      prog = Sadie::SASM::RASM::Builder.load_file(filename).to_program
+      @slate.load_program(prog)
+    end
+  when /\Aload sasm program\s(.+)/
     filename = $1
     begin
       prog = Sadie::SASM::Assembler.assemble_file_to_program(filename)
       @slate.load_program(prog)
     rescue RLTK::LexingError
-      log_error "could not assemble (#{str})"
+      log_error "could not assemble from file (#{filename})"
     end
   when 'quit'
     throw :quit
