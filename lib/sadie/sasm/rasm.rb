@@ -21,16 +21,16 @@ module Sadie
           Sadie::SASM::Assembler.make_program(to_instructions)
         end
 
-        def _build(data)
-          instance_eval(data); self
+        def _build(data, filename="rasm-builder")
+          instance_eval(data, filename); self
         end
 
-        def self.import(data)
-          new._build(data)
+        def self.import(data, filename="rasm-builder")
+          new._build(data, filename)
         end
 
         def self.load_file(filename)
-          import(File.read(filename))
+          import(File.read(filename), filename)
         end
 
         def _op(code, *params)
@@ -51,6 +51,14 @@ module Sadie
           when 6 then :num6
           when 7 then :num7
           end
+        end
+
+        def jmp_to_label(sym)
+
+        end
+
+        def label(sym)
+          yield
         end
 
         def nop
