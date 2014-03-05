@@ -3,7 +3,7 @@
 #   by IceDragon
 #   dc 11/03/2013
 #   dm 15/08/2013
-require 'sadie/internal/callback'
+require 'sadie/internal/callbacks'
 require 'sadie/reaktor/mixin/reaktorable'
 
 module Sadie
@@ -13,7 +13,7 @@ module Sadie
       ### constants
       VERSION = "2.2.0".freeze
 
-      include Sadie::Callback
+      include Sadie::Callbacks
       include Sadie::Reaktor::Mixin::Reaktorable
 
       ### instance_attributes
