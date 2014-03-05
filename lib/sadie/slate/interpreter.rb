@@ -1,6 +1,7 @@
 #
 # Sadie/lib/sadie/slate/interpreter.rb
 #   by IceDragon
+require 'sadie/sasm'
 module Sadie
   module Slate
     class Interpreter

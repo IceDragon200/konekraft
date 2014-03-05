@@ -1,6 +1,8 @@
 #
 # Sadie/lib/sadie/slate/cpu/register_pair.rb
 #   by IceDragon
+require 'sadie/slate/interface/iregister'
+require 'sadie/slate/helper/iregister_data'
 module Sadie
   module Slate
     class CPU

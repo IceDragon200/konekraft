@@ -5,6 +5,7 @@
 #   dm 23/05/2013
 # Array<Bit> used by Sadie::Sacpu for its registers, otherwise
 # pretty much useless
+require 'sadie/slate/helper/iregister_data'
 module Sadie
   class BitArray
 
