@@ -1,0 +1,189 @@
+#!/usr/bin/env ruby
+# Sadie/bin/reaktk
+# Reaktor Toolkit
+require 'sadie/reaktor2'
+require 'sadie/cli/common'
+require 'yaml'
+
+puts "Reaktor Interactive Toolkit"
+puts "Sadie Version #{Sadie::VERSION}"
+puts "Sadie::Reaktor2 Version #{Sadie::Reaktor2::VERSION}"
+
+@networks = []
+@prompt_heading = "reaktor"
+
+def keyword_new
+  "new".magenta
+end
+
+def find_network(network_id)
+  network = @networks[network_id]
+  if network
+    yield network if block_given?
+  else
+    log_error "network[#{network_id}] not found"
+  end
+  network
+end
+
+def find_reaktor(network, opts)
+  reaktor = network.find(opts)
+  if reaktor
+    yield reaktor if block_given?
+  else
+    log_error "[#{network.id_s}] ".light_blue << "reaktor[#{opts}] not found"
+  end
+  reaktor
+end
+
+def find_reaktor_class(reaktor_type)
+  begin
+    reaktor_klass = Sadie::Reaktor2.find(reaktor_type)
+    yield reaktor_klass
+    return reaktor_klass
+  rescue KeyError
+    log_error "reaktor type[#{reaktor_type}] not found"
+    return nil
+  end
+end
+
+def process_command(raw_command)
+  command = subsitute_env(raw_command)
+  case command
+  when 'env'
+    @env_table.each do |k, v|
+      puts "#{k} => #{v}"
+    end
+  when /\Aunset\s(\S+)/
+    @env_table.delete($1)
+  when /\Aset\s(\S+)\s(.*)/i
+    @env_table[$1] = $2
+  when /\Aecho\s*(.*)/
+    puts $1
+  when 'run'
+    t = 0
+    d = "..ili".split("")
+    idle_anim = d.size.times.map { |i| d.rotate(-i).join }
+    begin
+      loop do
+        @networks.each(&:step)
+        sleep 0.25
+        t += 1
+        print "\rRunning [#{idle_anim[t % idle_anim.size]}] #{t}"
+      end
+    rescue Interrupt
+    end
+    puts "\rRan for #{t} ticks                "
+  when 'step'
+    @networks.each(&:step)
+  when 'status'
+    @networks.each do |network|
+      puts "[#{network.id_s}] ".light_blue << "ticks=#{network.ticks}"
+      network.reaktors.each do |reaktor|
+        puts "  #{reaktor.id_s} ".light_blue << reaktor.export_h.map{|k,v|"#{k}=#{v}"}.join(" ")
+      end
+    end
+  when 'new network'
+    network = Sadie::Reaktor2::Network.new
+    network.id = @networks.size
+    @networks << network
+    @env_table["last_network_id"] = network.id.to_s
+    puts "#{keyword_new} Network #{network.id_s}"
+  when /\Anew reaktor\s(\d+)\s(\S+)(\s\+)?/
+    network_id   = $1.to_i
+    reaktor_type = $2
+    is_main      = !!$3
+    find_network(network_id) do |network|
+      find_reaktor_class(reaktor_type) do |reaktor_klass|
+        reaktor = network.add_from_class(reaktor_klass, is_main)
+        @env_table["last_reaktor_id"] = "#{reaktor.id}"
+        puts "[#{network.id_s}] ".light_blue << "#{keyword_new} #{is_main ? "main " : ""}Reaktor #{reaktor.id_s}"
+      end
+    end
+  when /\Aconnect reaktor\s(\d+)\s(\d+)\/(\S+)\s([><\|])\s(\d+)\/(\S+)/
+    network_id = $1.to_i
+    output_reaktor_id = $2.to_i
+    output_reaktor_port_id = $3
+    connection_method = $4
+    input_reaktor_id = $5.to_i
+    input_reaktor_port_id = $6
+    find_network(network_id) do |network|
+      oreaktor = find_reaktor(network, id: output_reaktor_id)
+      return unless oreaktor
+      ireaktor = find_reaktor(network, id: input_reaktor_id)
+      return unless ireaktor
+      out_port = oreaktor/output_reaktor_port_id.to_sym
+      in_port  = ireaktor/input_reaktor_port_id.to_sym
+      out_port.send(connection_method, in_port)
+      puts "[#{network.id_s}] ".light_blue << "connected #{oreaktor.id_s}/#{out_port.name} to #{ireaktor.id_s}/#{in_port.name}"
+    end
+  when /\Aproperty get\s(\d+)\s(\d+)\s(\S+)/
+    network_id   = $1.to_i
+    reaktor_id   = $2.to_i
+    property_key = $3
+    find_network(network_id) do |network|
+      find_reaktor(network, id: reaktor_id) do |reaktor|
+        begin
+          puts @env_table["0"] = reaktor.property_get(property_key)
+        rescue KeyError => ex
+          print "[#{network.id_s}][#{reaktor.id_s}] ".light_blue
+          log_error ex.message
+        end
+      end
+    end
+  when /\Aproperty set\s(\d+)\s(\d+)\s(\S+)\s(.*)/
+    network_id   = $1.to_i
+    reaktor_id   = $2.to_i
+    property_key = $3
+    property_val = $4
+    find_network(network_id) do |network|
+      find_reaktor(network, id: reaktor_id) do |reaktor|
+        begin
+          reaktor.property_set(property_key, property_val)
+        rescue KeyError => ex
+          print "[#{network.id_s}][#{reaktor.id_s}] ".light_blue
+          log_error ex.message
+        end
+      end
+    end
+  when 'ls'
+  when /\Als reaktors\s(\d+)/
+    network_id = $1.to_i
+    find_network(network_id) do |network|
+      puts "=> reaktors (main)"
+      network.reaktor_mains.each do |r|
+        puts "[#{network.id_s}] ".light_blue << "#{r.id_s}"
+      end
+      puts "=> reaktors"
+      network.reaktors.each do |r|
+        puts "[#{network.id_s}] ".light_blue << "#{r.id_s}"
+      end
+    end
+  when 'ls networks'
+    puts "=> networks"
+    @networks.each do |n|
+      puts "#{n.id_s}"
+    end
+  when /save rktm\s(.*)/
+    filename = $1
+    File.open(filename, "w") { |f| f.write(networks.map(&:to_rktm_h).to_yaml) }
+  when 'quit'
+    throw :quit
+  when 'help'
+    puts "too lazy to implement it"
+  else
+    log_error "unknown command: (#{command})"
+  end
+end
+
+catch :quit do
+  if ARGV.empty?
+    loop { prompt; to_commands(gets) { |str| process_command(str) } }
+  else
+    in_filename = ARGV.first
+    to_commands(File.read(in_filename)) do |str|
+      prompt; puts "#{str}"
+      process_command(str)
+    end
+  end
+end

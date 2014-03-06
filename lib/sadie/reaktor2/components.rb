@@ -1,0 +1,22 @@
+#
+# Sadie/lib/sadie/reaktor/components.rb
+#   dm 15/08/2013
+require 'sadie/reaktor2/component/base'
+require 'sadie/reaktor2/component/base_switch'
+require 'sadie/reaktor2/component/busbar'
+require 'sadie/reaktor2/component/capacitor'
+require 'sadie/reaktor2/component/contactor'
+require 'sadie/reaktor2/component/counter'
+require 'sadie/reaktor2/component/drain'
+require 'sadie/reaktor2/component/emitter'
+require 'sadie/reaktor2/component/floodgate'
+require 'sadie/reaktor2/component/fuse'
+require 'sadie/reaktor2/component/indicator'
+require 'sadie/reaktor2/component/momentary_switch'
+require 'sadie/reaktor2/component/passive'
+require 'sadie/reaktor2/component/relay'
+require 'sadie/reaktor2/component/seven_segment'
+require 'sadie/reaktor2/component/switch_spdt'
+require 'sadie/reaktor2/component/switch_spst'
+require 'sadie/reaktor2/component/switch_dpdt'
+require 'sadie/reaktor2/component/switch_dpst'
