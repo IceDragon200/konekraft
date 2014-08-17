@@ -1,9 +1,9 @@
 #
-# Sadie/lib/sadie/reaktor/version.rb
-#   dm 15/08/2013
+# sadie/reaktor2/version.rb
+#
 module Sadie
   module Reaktor2
     ### constants
-    VERSION = "2.1.0".freeze
+    VERSION = "2.2.0".freeze
   end
 end

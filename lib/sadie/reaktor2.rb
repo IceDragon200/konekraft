@@ -1,6 +1,6 @@
 #
-# Sadie/src/reaktors.rb
-#   by IceDragon
+# sadie/reaktor2.rb
+#
 require 'sadie/reaktor2/mixin'
 require 'sadie/reaktor2/energy'
 require 'sadie/reaktor2/port_spec'

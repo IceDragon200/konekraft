@@ -2,6 +2,7 @@
 # Sadie/test/test-reaktor2x.rb
 #
 require_relative 'common'
+require 'sadie/reaktor2'
 
 FileUtils.rm(Dir.glob("log/*"), force: true)
 
@@ -17,7 +18,7 @@ def quick_network
   log.sync = true
   #Sadie::Reaktor::Base.vlog = log
   ###
-  network = Sadie::Reaktor::Network.new
+  network = Sadie::Reaktor2::Network.new
   network.vlog = log
   yield network
   network.terminate
@@ -42,7 +43,7 @@ end
 # this test-suite is created for Reaktor 2.x components
 class SadieReaktor2xTest < Test::Unit::TestCase
 
-  include Sadie::Reaktor
+  include Sadie::Reaktor2
 
   #File.write("reaktor_map.lst", Sadie::Reaktor.reaktors.map do |rktr_c|
   #  [rktr_c.name.to_s, rktr_c.port_spec.map { |k, v| {k => v.to_s} }.join("\n")]
