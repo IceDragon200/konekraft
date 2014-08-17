@@ -1,0 +1,23 @@
+#!/usr/bin/env sasii
+# hi
+reset
+status
+# first up, print the memory map
+print memmap
+# lets see the memory blocksize
+property get memory blockcount
+set memory_block_count $0
+# okay its all empty I guess
+# now lets fill all the blocks
+memset 0 255 $memory_block_count
+# and lets print the memmap again
+print memmap
+# okay reset
+reset
+print cpumap
+load sasm program test/data/test.sasm
+print cpumap
+run
+print cpumap
+reset
+load rasm program examples/rasm/rasm_example01.rasm.rb

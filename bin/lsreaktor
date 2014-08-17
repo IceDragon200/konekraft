@@ -1,3 +1,0 @@
-#!/usr/bin/env ruby
-require 'sadie/reaktor'
-puts Sadie::Reaktor.all.map(&:registered_name)

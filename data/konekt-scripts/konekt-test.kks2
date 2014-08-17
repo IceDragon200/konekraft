@@ -1,0 +1,19 @@
+# Oh look, a comment
+new network
+set my_network_id $last_network_id
+
+new reaktor $my_network_id emitter +
+set emitter_id $last_reaktor_id
+property set $my_network_id $emitter_id energy 1
+
+new reaktor $my_network_id indicator
+set indicator_id $last_reaktor_id
+
+connect reaktor $my_network_id $emitter_id/output | $indicator_id/input
+
+status
+step
+status
+run
+status
+# save rktm test.rktm.yml # not ready for usage yet

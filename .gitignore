@@ -1,3 +1,13 @@
+*.smxe
+*.tbl
+*.bin
+*.dylib
+*.dll
+*.so
+*.a
+*.gem
+doc/
+.yardoc/
 build/rasm.rb
 pkg/*
 test/*.memdump

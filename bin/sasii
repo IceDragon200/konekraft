@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
-# Sadie/bin/sasii
+# Konekraft/bin/sasii
 #   dc 28/07/2013
 #   dm 28/07/2013
 # vr 1.0.0
 #   sasii - SASM Interactive Interpreter
-require 'sadie/sasii'
-require 'sadie/cli/common'
+require 'konekraft/sasii'
+require 'konekraft/cli/common'
 
 @prompt_heading = "sasii"
-@slate = Sadie::Slate::VirtualMachine.new
+@slate = Konekraft::Slate::VirtualMachine.new
 
 def process_command(raw_command)
   command = subsitute_env(raw_command)
@@ -68,26 +68,26 @@ def process_command(raw_command)
     @slate.exec_opcode(opcode, params)
   when /\Aimport rasm\s(.+)/
     filename = $1
-    Sadie::SASM::RASM.load_file(filename).to_instructions.each do |inst|
+    Konekraft::SASM::RASM.load_file(filename).to_instructions.each do |inst|
       puts inst
       @slate.exec(inst)
     end
   when /\Aimport sasm\s(.+)/
     filename = $1
-    Sadie::SASM::Assembler.assemble_file(filename).each do |inst|
+    Konekraft::SASM::Assembler.assemble_file(filename).each do |inst|
       puts inst
       @slate.exec(inst)
     end
   when /\Aload rasm program\s(.+)/
     filename = $1
     begin
-      prog = Sadie::SASM::RASM::Builder.load_file(filename).to_program
+      prog = Konekraft::SASM::RASM::Builder.load_file(filename).to_program
       @slate.load_program(prog)
     end
   when /\Aload sasm program\s(.+)/
     filename = $1
     begin
-      prog = Sadie::SASM::Assembler.assemble_file_to_program(filename)
+      prog = Konekraft::SASM::Assembler.assemble_file_to_program(filename)
       @slate.load_program(prog)
     rescue RLTK::LexingError
       log_error "could not assemble from file (#{filename})"
@@ -99,10 +99,10 @@ def process_command(raw_command)
   end
 end
 
-puts "Sadie Interactive Interpreter"
-puts "Sadie Version #{Sadie::VERSION}"
-puts "Sadie::SASM Version #{Sadie::SASM::VERSION}"
-puts "Sadie::Slate Version #{Sadie::Slate::VERSION}"
+puts "Konekraft Interactive Interpreter"
+puts "Konekraft Version #{Konekraft::VERSION}"
+puts "Konekraft::SASM Version #{Konekraft::SASM::VERSION}"
+puts "Konekraft::Slate Version #{Konekraft::Slate::VERSION}"
 
 catch :quit do
   if ARGV.empty?

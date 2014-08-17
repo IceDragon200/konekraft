@@ -1,4 +1,4 @@
-namespace "SASM" do
+namespace "SlateAssembly" do
   label "set0" do
     mvi :a, 0
     ret
@@ -12,20 +12,20 @@ namespace "SASM" do
     ret
   end
 end
-namespace "SASM::Program" do
+namespace "SlateAssembly::Program" do
   label "prog_entry" do
     mvi :b, 22
     ret
   end
 end
-# exposes all labels in the namespace SASM::Program to the current level
-using "SASM::Program"
+# exposes all labels in the namespace SlateAssembly::Program to the current level
+using "SlateAssembly::Program"
 # tells the assembler that this instruction is outside the current sourcefile
-extern "SASM::Helper.blak"
+extern "SlateAssembly::Helper.blak"
 label "something" do
   nop # does nothing
 end
-namespace "SASM::Program" do
+namespace "SlateAssembly::Program" do
   label "main" do
     mvi :a, 0   # ensure that the accumulator is empty
     adi 2       # add 2 to the accumulator
@@ -33,5 +33,5 @@ namespace "SASM::Program" do
     ret         # return I think?
   end
 end
-jmp "SASM::Program.main"
+jmp "SlateAssembly::Program.main"
 hlt

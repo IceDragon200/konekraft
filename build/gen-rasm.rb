@@ -3,11 +3,11 @@ $LOAD_PATH.unshift(File.join(Dir.getwd, "..", "lib"))
 require 'fileutils'
 require 'test/unit'
 require 'pp'
-require 'sadie'
+require 'konekraft'
 
 target = File.open("rasm.rb", "w")
 target.sync = true
-specs = Sadie::Slate::CPU.struct_spec#.uniq { |_,a| a[0] }
+specs = Konekraft::Slate::CPU.struct_spec#.uniq { |_,a| a[0] }
 spec_batches = specs.each_with_object({}) do |(c, a), hsh|
   #puts [c, a].inspect
   op_sym = a[0]

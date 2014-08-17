@@ -1,12 +1,16 @@
-Sadie - Experimental Designs
-============================
-### 1.4.0 [![Code Climate](https://codeclimate.com/github/IceDragon200/Sadie.png)](https://codeclimate.com/github/IceDragon200/Sadie)
-### SASM 0.5.0
+Konekraft - Experimental Designs
+================================
+### 1.7.0 [![Code Climate](https://codeclimate.com/github/IceDragon200/Konekraft.png)](https://codeclimate.com/github/IceDragon200/Konekraft)
 ### Slate 1.1.0
-### Reaktor 2.1.0
+### SASM 0.5.0
+### Konekt 3.0.0
+
+## What happened to Sadie?
+This IS Sadie, however the name was changed.
+Reaktor was renamed to Konekt, to avoid conflicting with Native Instruments's Reaktor
 
 ## What is this?
-Sadie is a collection of experimental libraries, associated with Computer
+Konekraft is a collection of experimental libraries, associated with Computer
 Architecture and Electronics.
 * Slate:
   Is a virtual machine based on the 8085 CPU, it uses a custom
@@ -24,3 +28,22 @@ Architecture and Electronics.
 As of 1.2.1, there are no dependencies for Sadie::Reaktor
 
 * SASM requires rltk
+
+## File Extensions
+.reks2, .kks2
+  Legacy Reaktor 2 / Konekt 2 Script
+
+.reks3, .kks3
+  Konekt 3 Script
+
+.smxe
+  Slate binary program
+
+.sasm
+  Slate source program
+
+.rsasm
+  Ruby DSL Slate source program
+
+## Why is everything that should be spelt with a 'c' have a 'k' instead?
+I'm not German, but k is a kool letter.

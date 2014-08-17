@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-# Sadie/test/test-reaktor2x.rb
+# Konekraft/test/test-konekt2x.rb
 #
 require_relative 'common'
-require 'sadie/reaktor2'
+require 'konekraft/konekt2'
 
 FileUtils.rm(Dir.glob("log/*"), force: true)
 
@@ -16,9 +16,9 @@ def quick_network
   Dir.mkdir("log") unless Dir.exist?("log")
   log = File.new("log/#{logname}.log", "w+")
   log.sync = true
-  #Sadie::Reaktor::Base.vlog = log
+  #Konekraft::Konekt::Base.vlog = log
   ###
-  network = Sadie::Reaktor2::Network.new
+  network = Konekraft::Konekt2::Network.new
   network.vlog = log
   yield network
   network.terminate
@@ -40,12 +40,12 @@ def network_block(network, hsh={})
 end
 
 ##
-# this test-suite is created for Reaktor 2.x components
-class SadieReaktor2xTest < Test::Unit::TestCase
+# this test-suite is created for Konekt 2.x components
+class KonekraftKonekt2xTest < Test::Unit::TestCase
 
-  include Sadie::Reaktor2
+  include Konekraft::Konekt2
 
-  #File.write("reaktor_map.lst", Sadie::Reaktor.reaktors.map do |rktr_c|
+  #File.write("konekt_map.lst", Konekraft::Konekt.konekts.map do |rktr_c|
   #  [rktr_c.name.to_s, rktr_c.port_spec.map { |k, v| {k => v.to_s} }.join("\n")]
   #end.join("\n\n"))
 

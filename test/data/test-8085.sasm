@@ -1,5 +1,5 @@
 ;
-; Sadie/test/data/test.sasm
+; Konekraft/test/data/test.sasm
 jmp main
 
 label main

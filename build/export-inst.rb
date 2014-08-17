@@ -3,14 +3,14 @@ $LOAD_PATH.unshift(File.join(Dir.getwd, "..", "lib"))
 require 'fileutils'
 require 'test/unit'
 require 'pp'
-require 'sadie'
+require 'konekraft'
 
-    #insts = Sadie::Slate::Interpreter8085.instspec_table.values.map(&:inst_sym).uniq
+    #insts = Konekraft::Slate::Interpreter8085.instspec_table.values.map(&:inst_sym).uniq
     #puts
     #insts.sort.map do |sym|
     #  puts "rule(/#{sym}/) { :KI#{sym.to_s.upcase} }"
     #end
-    Sadie::Slate::CPU.struct_spec.map do |c, a|
+    Konekraft::Slate::CPU.struct_spec.map do |c, a|
       sym, params = a
       params = params.map do |prm|
         case prm.to_s

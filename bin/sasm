@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
-# Sadie/bin/sasm
+# Konekraft/bin/sasm
 # sasm - SASM Interpreter
-require 'sadie/sasm'
+require 'konekraft/sasm'
