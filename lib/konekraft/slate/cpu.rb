@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/slate/cpu.rb
-#   by IceDragon
+#
 require 'konekraft/sasm'
 require 'konekraft/slate/memory'
 require 'konekraft/slate/cpu/clock'
@@ -15,7 +15,6 @@ require 'konekraft/slate/cpu/ports'
 module Konekraft
   module Slate
     class CPU
-
       include Konekraft::SlateAssembly::Constants
 
       ### constants
@@ -1241,7 +1240,6 @@ module Konekraft
       alias :reg_a :reg_accumulator
       alias :reg_f :reg_flag
       alias :reg_sp :stack_pointer
-
     end
   end
 end

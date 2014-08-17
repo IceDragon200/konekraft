@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/sasmc.rb
-#   by IceDragon
+#
 # SlateAssembly::Compiler is a bytecode compiler for SlateAssembly
 require 'konekraft/sasm'
 module Konekraft

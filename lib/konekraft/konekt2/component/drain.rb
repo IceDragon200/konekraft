@@ -1,9 +1,8 @@
 #
 # Konekraft/lib/konekraft/konekt/component/drain.rb
-#   by IceDragon
-#   dc 12/03/2013
-#   dm 22/06/2013
+#
 require 'konekraft/konekt2/component/base'
+
 module Konekraft
   module Konekt2
     class Drain < Base

@@ -1,10 +1,9 @@
 #
 # Konekraft/lib/konekraft/sasm/constants.rb
-#   by IceDragon
+#
 module Konekraft
   module SlateAssembly
     module Constants
-
       ## Bit Booleans
       BNULL  = 0x0
       BFALSE = 0x0
@@ -137,7 +136,6 @@ module Konekraft
         REG_DE => [REG_D, REG_E],
         REG_HL => [REG_H, REG_L],
       }
-
     end
   end
   module BitTool

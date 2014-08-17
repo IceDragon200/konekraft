@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt2/component/base.rb
-#   by IceDragon
-#   dc 11/03/2013
-#   dm 15/08/2013
+#
 require 'konekraft/internal/callbacks'
 require 'konekraft/konekt2/mixin/konektable'
 

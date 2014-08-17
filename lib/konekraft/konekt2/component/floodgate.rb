@@ -1,9 +1,8 @@
 #
 # Konekraft/lib/konekraft/konekt/component/floodgate.rb
-#   by IceDragon
-#   dc 12/03/2013
-#   dm 22/06/2013
+#
 require 'konekraft/konekt2/component/base'
+
 module Konekraft
   module Konekt2
     class Floodgate < Base

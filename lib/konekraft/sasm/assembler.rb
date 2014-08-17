@@ -6,7 +6,6 @@ require 'konekraft/sasm/program'
 module Konekraft
   module SlateAssembly
     class Assembler
-
       SoftLabel = Struct.new(:name)
 
       def self.make_instructions(data)
@@ -176,7 +175,6 @@ module Konekraft
       def self.assemble_file_to_program(filename)
         Konekraft::SlateAssembly::Program.new(assemble_file(filename))
       end
-
     end
   end
 end

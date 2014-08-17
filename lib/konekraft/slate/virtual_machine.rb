@@ -1,18 +1,14 @@
 #
-# Konekraft/lib/konekraft/slate/sasm_vm.rb
-#   by IceDragon
-# CHANELOG
-#   vr 0.1.0 (28/07/2013)
-#     Started the Slate Virtual Machine
+# Konekraft/lib/konekraft/slate/virtual_machine.rb
 #
 # Introduction
 #   This is the Slate Virtual Machine, a virtual machine for the SlateAssembly language
 require 'konekraft/slate/cpu'
 require 'konekraft/slate/memory'
+
 module Konekraft
   module Slate
     class VirtualMachine
-
       ### constants
       VERSION = "0.1.0".freeze
 
@@ -118,7 +114,6 @@ module Konekraft
         "sp=#{"%016b" % @cpu.reg_sp.cell_data}\n" <<
         "psw=#{"%016b" % @cpu.reg_psw.cell_data}\n"
       end
-
     end
   end
 end

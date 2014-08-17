@@ -1,14 +1,10 @@
 #
 # Konekraft/lib/konekraft/konekt/mixin/switch_state2.rb
-#   by IceDragon
-#   dc 31/05/2013
-#   dm 31/05/2013
-# vr 1.0.0
+#
 module Konekraft
   module Konekt2
     module Mixin
       module SwitchState2
-
         def ss2_def(statename, target=statename)
           @states ||= []
           @states.push(statename)
@@ -58,8 +54,6 @@ module Konekraft
           end
           alias_method("#{statename}_reset", "#{statename}_depress")
         end
-
-
       end
     end
   end

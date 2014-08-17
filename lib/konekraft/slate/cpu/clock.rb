@@ -5,7 +5,6 @@ module Konekraft
   module Slate
     class CPU
       class Clock
-
         ### constants
         VERSION = "1.0.0".freeze
 
@@ -55,7 +54,6 @@ module Konekraft
           @cycle_tick = 0
           @cycle_count = 0
         end
-
       end
     end
   end

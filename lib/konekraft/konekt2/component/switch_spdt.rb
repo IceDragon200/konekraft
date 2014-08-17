@@ -1,9 +1,8 @@
 #
 # Konekraft/lib/konekraft/konekt/component/switch_spdt.rb
-#   by IceDragon
-#   dc 15/08/2013
-#   dm 15/08/2013
+#
 require 'konekraft/konekt2/component/base'
+
 module Konekraft
   module Konekt2
     class SwitchSPDT < BaseSwitch

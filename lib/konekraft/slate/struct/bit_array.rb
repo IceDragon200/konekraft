@@ -1,14 +1,12 @@
 #
 # Konekraft/lib/konekraft/slate/struct/bit_array.rb
-#   by IceDragon
-#   dc 11/05/2013
-#   dm 23/05/2013
+#
 # Array<Bit> used by Konekraft::Sacpu for its registers, otherwise
 # pretty much useless
 require 'konekraft/slate/helper/iregister_data'
+
 module Konekraft
   class BitArray
-
     VERSION = "1.1.0"
 
     include Konekraft::Slate::Helper::IRegisterData
@@ -123,6 +121,5 @@ module Konekraft
     alias :/ :cell_div  # Arithmetic Divide
     alias :| :cell_lor  # Logical OR
     alias :& :cell_land # Logical AND
-
   end
 end

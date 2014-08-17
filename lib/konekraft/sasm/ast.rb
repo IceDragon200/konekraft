@@ -1,11 +1,10 @@
 #
 # Konekraft/lib/konekraft/sasm/ast.rb
-#   by IceDragon
+#
 require 'rltk/ast'
 module Konekraft
   module SlateAssembly
     module AST
-
       class Expression < RLTK::ASTNode ; end
 
       class Number < Expression
@@ -55,7 +54,6 @@ module Konekraft
         value :inst, String
         child :params, [Expression]
       end
-
     end
   end
 end

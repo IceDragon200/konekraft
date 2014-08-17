@@ -1,9 +1,8 @@
 #
 # Konekraft/lib/konekraft/konekt/konekt.rb
-#   dm 15/08/2013
+#
 module Konekraft
   module Konekt2
-
     class RegistrationError < Exception
     end
 
@@ -59,6 +58,5 @@ module Konekraft
       konekt.import_rktm_h(hsh)
       return konekt
     end
-
   end
 end

@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt/port.rb
-#   by IceDragon
-#   dc 09/04/2013
-#   dm 15/08/2013
+#
 module Konekraft
   module Konekt2
     class Port

@@ -1,11 +1,10 @@
 #
 # Konekraft/lib/konekraft/sasm/program.rb
-#   by IceDragon
+#
 require 'konekraft/sasm/program/instruction'
 module Konekraft
   module SlateAssembly
     class Program
-
       include Enumerable
 
       ### constants
@@ -39,7 +38,6 @@ module Konekraft
       def to_bytecode
         @instructions.map(&:to_bytecode).join("")
       end
-
     end
   end
 end

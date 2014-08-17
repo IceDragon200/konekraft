@@ -1,12 +1,11 @@
 #
 # Konekraft/lib/konekraft/slate/cpu/register.rb
-#   by IceDragon
+#
 require 'konekraft/slate/struct/bit_array'
 module Konekraft
   module Slate
     class CPU
       class Register < Konekraft::BitArray
-
         include Enumerable
 
         ### constants
@@ -38,7 +37,6 @@ module Konekraft
         def reset
           cell_data_set(0)
         end
-
       end
     end
   end

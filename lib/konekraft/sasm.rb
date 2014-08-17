@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/sasm.rb
-#   by IceDragon
+#
 require 'forwardable'
 require 'konekraft/logger'                # Konekraft's Logger Interface
 require 'konekraft/sasm/constants'        # SlateAssembly Constants

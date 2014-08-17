@@ -1,9 +1,10 @@
 #
 # Konekraft/lib/konekraft/sasm/parser.rb
-#   by IceDragon
+#
 require 'rltk/parser'
 require 'konekraft/sasm/lexer'
 require 'konekraft/sasm/ast'
+
 module Konekraft
   module SlateAssembly
     class Parser < RLTK::Parser
@@ -27,10 +28,12 @@ module Konekraft
         # instructions
         clause('instruction') { |i| i }
       end
+
       production(:namespace_arg) do
         clause("IDENT") { |n| AST::Namespace.new([n]) }
         clause("IDENT DCOLON namespace_arg") { |n, _, n2| n2.path.unshift(n); n2 }
       end
+
       production(:instruction) do
         clause('NUMBER')                    { |t|        AST::Number.new(t) }
         #
@@ -291,21 +294,26 @@ module Konekraft
         clause('KICPI NUMBER')              { |_,n1|     AST::Instruction.new(254, [n1])}
         clause('KIRST NUM7')                { |_,_|      AST::Instruction.new(255, [])}
       end
+
       empty_list(:params, :param, :COMMA)
+
       production(:param) do
         clause("REG")       { |t| AST::Register.new(t) }
         clause("NUMBER")    { |t| AST::Number.new(t) }
         clause("namespace_arg") { |t| t }
         clause("IDENT")     { |t| t }
       end
+
       production(:address) do
         clause('IDENT')     { |i| AST::Label.new(i) }
         clause('NUMBER')    { |n| AST::Number.new(n) }
         clause('namespace_label') { |i| i }
       end
+
       production(:namespace_label, "namespace_arg PERIOD IDENT") do |ns, _, lb|
         AST::NamespaceLabel.new(lb, ns)
       end
+
       ### finalize
       finalize #use: 'sparser.tbl'#, lookahead: false
     end

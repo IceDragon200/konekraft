@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt/component/busbar.rb
-#   by IceDragon
-#   dc 30/05/2013
-#   dm 22/06/2013
+#
 require 'konekraft/konekt2/component/base'
 module Konekraft
   module Konekt2

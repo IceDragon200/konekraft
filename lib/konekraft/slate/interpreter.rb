@@ -1,7 +1,8 @@
 #
 # Konekraft/lib/konekraft/slate/interpreter.rb
-#   by IceDragon
+#
 require 'konekraft/sasm'
+
 module Konekraft
   module Slate
     class Interpreter

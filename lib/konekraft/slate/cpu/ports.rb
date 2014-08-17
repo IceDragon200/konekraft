@@ -6,7 +6,6 @@ module Konekraft
     class CPU
       class Ports
         class Port
-
           ### instance_variables
           attr_accessor :data
 
@@ -31,7 +30,6 @@ module Konekraft
           def reset
             @data = 0
           end
-
         end
 
         ### constants
@@ -52,7 +50,6 @@ module Konekraft
           @input.each(&:reset)
           @output.each(&:reset)
         end
-
       end
     end
   end

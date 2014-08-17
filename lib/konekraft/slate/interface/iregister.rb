@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/slate/interface/iregister.rb
-#   by IceDragon
+#
 # IRegister is the storage interface for SlateAssembly, any Object requiring the ability
 # to store and access data through SlateAssembly objects must implement the IRegister
 # interface.
@@ -8,7 +8,6 @@ module Konekraft
   module Slate
     module Interface
       module IRegister
-
         VERSION = "0.6.0".freeze
 
         # implement a #cell_data and #cell_data_set method within your class
@@ -62,7 +61,6 @@ module Konekraft
         def high_data_set(data)
           raise
         end
-
       end
     end
   end

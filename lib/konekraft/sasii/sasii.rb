@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/sasm/sasii/sasii.rb
-#   by IceDragon
+#
 # sasii - SlateAssembly Interactive Interpreter [Core]
 require 'konekraft/slate'
 

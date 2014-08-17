@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/internal/logic_tool.rb
-#   by IceDragon
-#   dc 23/05/2013
-#   dm 23/05/2013
+#
 module Konekraft
   module LogicTool
 

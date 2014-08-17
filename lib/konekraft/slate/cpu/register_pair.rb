@@ -1,13 +1,12 @@
 #
 # Konekraft/lib/konekraft/slate/cpu/register_pair.rb
-#   by IceDragon
+#
 require 'konekraft/slate/interface/iregister'
 require 'konekraft/slate/helper/iregister_data'
 module Konekraft
   module Slate
     class CPU
       class RegisterPair
-
         include Konekraft::Slate::Interface::IRegister
         include Konekraft::Slate::Helper::IRegisterData
 
@@ -102,7 +101,6 @@ module Konekraft
         def reset
           cell_data_set(0)
         end
-
       end
     end
   end

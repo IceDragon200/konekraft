@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt/energy.rb
-#   by IceDragon
-#   dc 11/03/2013
-#   dm 18/08/2013
+#
 require 'konekraft/mixin/mathable'
 module Konekraft
   module Konekt2

@@ -1,11 +1,10 @@
 #
 # Konekraft/lib/konekraft/sasm/instruction_spec.rb
-#   by IceDragon
+#
 require 'konekraft/internal/bit_tool'
 module Konekraft
   module SlateAssembly
     class InstructionSpec
-
       ### instance_attributes
       attr_reader :opcode
       attr_reader :inst_sym
@@ -99,7 +98,6 @@ module Konekraft
         param_str = param_types.compact.empty? ? "()" : "(#{param_types.compact.join(", ")})"
         "#{opcode}:#{name}#{param_str}"
       end
-
     end
   end
 end

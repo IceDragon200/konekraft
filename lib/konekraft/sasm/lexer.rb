@@ -1,11 +1,10 @@
 #
 # Konekraft/lib/konekraft/sasm/lexer.rb
-#   by IceDragon
+#
 require 'rltk'
 module Konekraft
   module SlateAssembly
     class Lexer < RLTK::Lexer
-
       ### ignore
       rule(/\n/)
       rule(/\s/)
@@ -128,7 +127,6 @@ module Konekraft
       rule(/;/)                     { push_state(:comment) }
       rule(/\n/, :comment)          { pop_state }
       rule(/.+/, :comment)
-
     end
   end
 end

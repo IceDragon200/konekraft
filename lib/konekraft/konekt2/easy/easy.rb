@@ -1,11 +1,8 @@
 #
 # Konekraft/lib/konekraft/easy/easy.rb
-#   by IceDragon
-#   dc 31/05/2013
-#   dm 31/05/2013
+#
 module Konekraft
   module EasyKonekt
-
     ### constants
     VERSION = "2.0.0".freeze
 
@@ -54,20 +51,5 @@ module Konekraft
     end
 
     extend self
-
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-

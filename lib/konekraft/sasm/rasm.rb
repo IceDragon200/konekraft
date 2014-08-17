@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/sasm/rasm.rb
-#   by IceDragon
+#
 #
 # RASM - Ruby Konekraft Assembly
 require 'konekraft/sasm/assembler'
@@ -8,7 +8,6 @@ module Konekraft
   module SlateAssembly
     module RASM
       class Builder
-
         def initialize
           @_list = []
         end
@@ -629,7 +628,6 @@ module Konekraft
         private :_register
         private :_rst
         private :_op
-
       end
     end
   end

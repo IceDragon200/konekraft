@@ -1,13 +1,12 @@
 #
 # Konekraft/lib/konekraft/sasm/program/instruction.rb
-#   by IceDragon
+#
 require 'konekraft/internal/bit_tool'
 require 'konekraft/sasm/instruction_spec'
 module Konekraft
   module SlateAssembly
     class Program
       class Instruction
-
         ### constants
         VERSION = "1.0.0".freeze
 
@@ -69,7 +68,6 @@ module Konekraft
         def to_s
           "#{opcode}:#{name}(#{params.join(", ")})"
         end
-
       end
     end
   end

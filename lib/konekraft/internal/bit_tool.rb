@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/internal/bit_tool.rb
-#   by IceDragon
-#   dc 21/05/2013
-#   dm 23/05/2013
+#
 module Konekraft
   module BitTool
 

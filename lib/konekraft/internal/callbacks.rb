@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/internal/callbacks.rb
-#   by IceDragon
-#   dc 23/05/2013
-#   dm 23/05/2013
+#
 # A copy of the MACL::Mixin::Callbacks, modified to fit Konekraft's needs
 module Konekraft
   class CallbackError < RuntimeError

@@ -1,13 +1,14 @@
-Konekraft - Experimental Designs
-================================
-### 1.7.0 [![Code Climate](https://codeclimate.com/github/IceDragon200/Konekraft.png)](https://codeclimate.com/github/IceDragon200/Konekraft)
+Konekraft - Code Toys
+=====================
+[![Code Climate](https://codeclimate.com/github/IceDragon200/Konekraft.png)](https://codeclimate.com/github/IceDragon200/Konekraft)
+### 1.7.0
 ### Slate 1.1.0
 ### SASM 0.5.0
 ### Konekt 3.0.0
 
 ## What happened to Sadie?
 This IS Sadie, however the name was changed.
-Reaktor was renamed to Konekt, to avoid conflicting with Native Instruments's Reaktor
+Reaktor was renamed to Konekt, to avoid conflicting with Native Instruments's Konekt
 
 ## What is this?
 Konekraft is a collection of experimental libraries, associated with Computer
@@ -21,7 +22,7 @@ Architecture and Electronics.
   as its own language.
   RASM on the other hand is written in ruby, and exports to SASM bytecode.
 
-* Reaktor:
+* Konekt:
   A simulation library for electronics like components.
 
 ## Dependencies

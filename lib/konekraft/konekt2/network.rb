@@ -1,8 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt/network.rb
-#   by IceDragon
-#   dc 01/06/2013
-#   dm 15/08/2013
+#
 # A collection of Konekts, helps manage individual Konekt ids, and
 # makes moving them around a bit easier.
 #   Konekt Networks can be placed under other Networks if necessary.

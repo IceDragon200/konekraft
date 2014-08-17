@@ -1,12 +1,11 @@
 #
 # Konekraft/lib/konekraft/slate/helper/iregister_data.rb
-#   by IceDragon
+#
 require 'konekraft/slate/interface/iregister'
 module Konekraft
   module Slate
     module Helper
       module IRegisterData
-
         include Konekraft::Slate::Interface::IRegister
         include Comparable
 
@@ -182,7 +181,6 @@ module Konekraft
         def <=>(other)
           cast_data(self) <=> cast_data(other)
         end
-
       end
     end
   end

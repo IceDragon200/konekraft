@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/slate.rb
-#   by IceDragon
+#
 require 'konekraft/logger'                 # Konekraft's Logging interface
 require 'konekraft/internal/bit_tool'      # Bit Toolkit
 require 'konekraft/sasm'                   # SlateAssembly Language

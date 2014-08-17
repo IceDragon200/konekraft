@@ -1,9 +1,8 @@
 #
 # Konekraft/lib/konekraft/konekt/component/passive.rb
-#   by IceDragon
-#   dc 11/03/2013
-#   dm 22/06/2013
+#
 require 'konekraft/konekt2/component/base'
+
 module Konekraft
   module Konekt2
     class Passive < Base

@@ -1,12 +1,12 @@
 #
 # Konekraft/lib/konekraft/slate/memory.rb
-#   by IceDragon
+#
 require 'narray'
 require 'konekraft/slate/helper'
+
 module Konekraft
   module Slate
     class Memory
-
       include Enumerable
       include Konekraft::Slate::Helper::IRegisterData
 
@@ -147,7 +147,6 @@ module Konekraft
       def status_s
         "block_size=#{@block_size}bit block_count=#{@data.size} capacity=#{@data.size * @block_size}bytes"
       end
-
     end
   end
 end

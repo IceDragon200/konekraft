@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/konekt/components.rb
-#   dm 15/08/2013
+#
 require 'konekraft/konekt2/component/base'
 require 'konekraft/konekt2/component/base_switch'
 require 'konekraft/konekt2/component/busbar'

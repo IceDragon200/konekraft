@@ -1,14 +1,11 @@
 #
 # Konekraft/lib/konekraft/mixin/mathable.rb
-#   by IceDragon
-#   dc 18/08/2013
-#   dm 18/08/2013
+#
 # Create a add!, sub!, mul!, and div! method in your class, when using this
 # mixin
 module Konekraft
   module Mixin
     module Mathable
-
       def add(other)
         dup.add!(other)
       end
@@ -29,7 +26,6 @@ module Konekraft
       alias :- :sub
       alias :* :mul
       alias :/ :div
-
     end
   end
 end

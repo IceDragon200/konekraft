@@ -1,6 +1,6 @@
 #
 # Konekraft/lib/konekraft/logger.rb
-#   by IceDragon (mistdragon100@gmail.com)
+# (mistdragon100@gmail.com)
 require 'konekraft/version'
 module Konekraft
   module Logger
