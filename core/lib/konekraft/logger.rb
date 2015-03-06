@@ -1,7 +1,5 @@
-#
-# Konekraft/lib/konekraft/logger.rb
-# (mistdragon100@gmail.com)
 require 'konekraft/version'
+
 module Konekraft
   module Logger
 

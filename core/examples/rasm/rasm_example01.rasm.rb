@@ -1,4 +1,4 @@
-namespace "Program::Main" do
+namespace 'Program::Main' do
   jmp_to_label :main
   label :main do
     mov :a, 0
@@ -7,4 +7,4 @@ namespace "Program::Main" do
     hlt
   end
 end
-jmp_to_label "Program::Main.main"
+jmp_to_label 'Program::Main.main'

@@ -1,6 +1,3 @@
-#
-# Konekraft/lib/konekraft/errors.rb
-#
 module Konekraft
   class KonekraftError < Exception
   end

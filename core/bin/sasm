@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-# Konekraft/bin/sasm
-# sasm - SASM Interpreter
-require 'konekraft/sasm'

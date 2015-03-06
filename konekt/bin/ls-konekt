@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'konekraft/konekt3/cli/ls'
+Konekraft::Konekt3::Cli.ls

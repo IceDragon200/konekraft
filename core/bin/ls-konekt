@@ -1,3 +1,0 @@
-#!/usr/bin/env ruby
-require 'konekraft/konekt'
-#puts Konekraft::Konekt.all.map(&:registered_name)
