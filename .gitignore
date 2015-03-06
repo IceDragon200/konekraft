@@ -11,3 +11,4 @@
 doc/
 .yardoc/
 build/rasm.rb
+Gemfile.lock
