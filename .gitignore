@@ -6,10 +6,8 @@
 *.so
 *.a
 *.gem
+*.memdump
+*.log
 doc/
 .yardoc/
 build/rasm.rb
-pkg/*
-test/*.memdump
-test/*.tbl
-test/log
