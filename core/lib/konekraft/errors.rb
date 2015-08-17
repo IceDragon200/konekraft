@@ -1,6 +1,7 @@
 module Konekraft
-  class KonekraftError < Exception
+  class KonekraftError < RuntimeError
   end
+
   class KonektError < KonekraftError
   end
 end
