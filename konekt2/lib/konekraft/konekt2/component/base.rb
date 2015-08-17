@@ -266,14 +266,14 @@ module Konekraft
       # trigger
       def trigger
         # have this Konekt act on its own, only used by stand-alone konekts
-        try_vlog { |io| io.puts indent_s + "[TRG] #{signature_s}" }
+        try_vlog { |io| io.puts indent_s + "[trigger] #{signature_s}" }
       end
 
       ##
       # tick
       def tick
         # update the konekt internals, regardless of connection state
-        try_vlog { |io| io.puts indent_s + "[TCK] #{signature_s}" }
+        try_vlog { |io| io.puts indent_s + "[tick] #{signature_s}" }
         @ticks += 1
       end
 
@@ -281,7 +281,7 @@ module Konekraft
       # post_tick
       def post_tick
         # update the konekt internals, regardless of connection state
-        try_vlog { |io| io.puts indent_s + "[TKP] #{signature_s}" }
+        try_vlog { |io| io.puts indent_s + "[post_tick] #{signature_s}" }
         @post_ticks += 1
       end
 
