@@ -25,11 +25,7 @@ module Konekraft
       # initialize
       def initialize
         @id = 0
-        @name = File.readlines(File.join(Konekraft::ROOT_PATH, "konekt", "data", "words.txt")).sample.chomp <<
-                "-" <<
-                File.readlines(File.join(Konekraft::ROOT_PATH, "konekt", "data", "names.txt")).sample.chomp
-        @konekts = []
-        @konekt_mains = []
+        @name = NameGenerator.random_name
         @triggers = 0
         @ticks = 0
         @post_ticks = 0
