@@ -2,19 +2,19 @@
 # makes moving them around a bit easier.
 #   Konekt Networks can be placed under other Networks if necessary.
 #   Just be careful not to end up looping them
-require 'konekraft/root_path'
+require 'konekraft/name_generator'
+
 module Konekraft
   module Konekt2
     class Network
-
       ### constants
       VERSION = "0.1.0".freeze
 
       ### instance_attributes
       attr_accessor :id
       attr_accessor :name
-      attr_reader :konekts
-      attr_reader :konekt_mains
+      attr_reader :components
+      attr_reader :component_mains
       attr_reader :ticks
       attr_reader :post_ticks
       attr_reader :triggers
@@ -26,6 +26,8 @@ module Konekraft
       def initialize
         @id = 0
         @name = NameGenerator.random_name
+        @components = []
+        @component_mains = []
         @triggers = 0
         @ticks = 0
         @post_ticks = 0
@@ -33,9 +35,9 @@ module Konekraft
 
       def find(options)
         if rid = options[:id]
-          @konekts.find { |r| r.id == rid }
+          @components.find { |r| r.id == rid }
         elsif nm = options[:name]
-          @konekts.find { |r| r.name == nm }
+          @components.find { |r| r.name == nm }
         else
           raise ArgumentError, "expected :id or :name key"
         end
@@ -44,19 +46,19 @@ module Konekraft
       ##
       # reset
       def reset
-        @konekts.each(&:reset)
+        @components.each(&:reset)
       end
 
       ##
       # clear
       def clear
-        @konekts.clear
+        @components.clear
       end
 
       ##
       # terminate
       def terminate
-        for rktr in @konekts
+        for rktr in @components
           rktr.terminate
         end
       end
@@ -82,11 +84,11 @@ module Konekraft
 
       ##
       # add_instance(Konekt* rktr, bool is_a_main)
-      def add_instance(rktr, is_a_main=false)
-        rktr.id = @konekts.size
+      def add_instance(rktr, is_a_main = false)
+        rktr.id = @components.size
         rktr.vlog = @vlog
-        @konekts.push(rktr)
-        @konekt_mains.push(rktr) if is_a_main
+        @components.push(rktr)
+        @component_mains.push(rktr) if is_a_main
         yield rktr if block_given?
         return rktr
       end
@@ -94,7 +96,7 @@ module Konekraft
       ##
       # trigger
       def trigger
-        for rktr in @konekt_mains
+        for rktr in @component_mains
           rktr.trigger
         end
         @triggers += 1
@@ -103,7 +105,7 @@ module Konekraft
       ##
       # tick
       def tick
-        for rktr in @konekts
+        for rktr in @components
           rktr.tick
         end
         @ticks += 1
@@ -112,7 +114,7 @@ module Konekraft
       ##
       # post_tick
       def post_tick
-        for rktr in @konekts
+        for rktr in @components
           rktr.post_tick
         end
         @post_ticks += 1
@@ -130,8 +132,8 @@ module Konekraft
         {
           'id' => @id,
           'name' => @name,
-          'konekts' => @konekts.map(&:to_rktm_h),
-          'konekt_mains' => @konekt_mains.map(&:id),
+          'components' => @components.map(&:to_rktm_h),
+          'component_mains' => @component_mains.map(&:id),
           'ticks' => @ticks,
           'post_ticks' => @post_ticks,
           'triggers' => @triggers
@@ -141,8 +143,8 @@ module Konekraft
       def import_rktm_h(hsh)
         @id           = hsh['id']
         @name         = hsh['name']
-        @konekts      = hsh['konekts'].map { |h| Konekraft::Konekt.load_rktm_h(h) }
-        @konekt_mains = hsh['konekt_mains'].map { |id| id=id.to_i;@konekts.find { |r| r.id == id } }
+        @components      = hsh['components'].map { |h| Konekraft::Konekt.load_rktm_h(h) }
+        @component_mains = hsh['component_mains'].map { |id| id=id.to_i;@components.find { |r| r.id == id } }
         @ticks        = hsh['ticks']
         @post_ticks   = hsh['post_ticks']
         @triggers     = hsh['triggers']
@@ -151,7 +153,6 @@ module Konekraft
       def id_s
         "#{@id}:#{@name}"
       end
-
     end
   end
 end
