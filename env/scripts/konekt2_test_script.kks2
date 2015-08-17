@@ -1,0 +1,28 @@
+#!/usr/bin/env konekt-tk2
+# test script
+echo Hello World
+
+new network
+set network_id $last_network_id
+
+new component $network_id emitter
+set emitter_id $last_component_id
+
+new component $network_id indicator
+set indicator_id $last_component_id
+
+ls component-ports $network_id $emitter_id
+ls component-ports $network_id $indicator_id
+
+connect component $network_id $emitter_id output > $indicator_id input
+
+status
+step
+
+status
+property set $network_id $emitter_id energy 2
+
+status
+step
+
+status

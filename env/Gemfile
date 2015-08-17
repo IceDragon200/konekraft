@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'konekraft-core', path: '../'
+gem 'konekraft-konekt', path: '../'
+gem 'konekraft-konekt2', path: '../'
+gem 'konekraft-konekt3', path: '../'
+gem 'konekraft-sasm0', path: '../'
+gem 'konekraft-sasm1', path: '../'
+gem 'konekraft-slate1', path: '../'
+gem 'konekraft-slate2', path: '../'
