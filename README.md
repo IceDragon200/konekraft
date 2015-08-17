@@ -1,6 +1,6 @@
 Konekraft - Code Toys
 =====================
-[![Code Climate](https://codeclimate.com/github/IceDragon200/Konekraft.png)](https://codeclimate.com/github/IceDragon200/Konekraft)
+[![Code Climate](https://codeclimate.com/github/IceDragon200/konekraft.svg)](https://codeclimate.com/github/IceDragon200/konekraft)
 ### 1.7.0
 ### Slate 1.1.0
 ### SASM 0.5.0
