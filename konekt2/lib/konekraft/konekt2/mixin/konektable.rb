@@ -9,10 +9,10 @@ module Konekraft
           Konekraft::Konekt2::Energy.new
         end
 
-        def emit(port_id, energy=emit_energy)
+        def emit(port_id, energy = emit_energy)
         end
 
-        def react(port_id, energy=emit_energy)
+        def react(port_id, energy = emit_energy)
         end
       end
     end

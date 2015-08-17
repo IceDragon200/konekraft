@@ -3,7 +3,6 @@
 #
 module Konekraft
   module LogicTool
-
     def and(a, b)
       (a && b) ? true : false
     end
@@ -37,6 +36,5 @@ module Konekraft
     end
 
     extend self
-
   end
 end
