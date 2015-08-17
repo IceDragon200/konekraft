@@ -5,8 +5,8 @@
 module Konekraft
   class CallbackError < RuntimeError
   end
-  module Callbacks
 
+  module Callbacks
     VERSION = "1.1.3".freeze
 
     class << self
@@ -18,7 +18,7 @@ module Konekraft
     ##
     # init_callbacks
     def init_callbacks
-      @callback_log = Konekraft::Callback.log
+      @callback_log = Konekraft::Callbacks.log
       @callback = {}
       @callback_settings = {
         args_prepend: [],
@@ -100,6 +100,5 @@ module Konekraft
     private :init_callbacks,
             :call_callback,
             :try_callback
-
   end
 end
